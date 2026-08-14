@@ -32,6 +32,15 @@ body {
   background: #B7FF36;
 }
 
+/* Touch-friendly horizontal scrollbar hiding */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Custom utilities */
 .glow-purple {
   box-shadow: 0 0 30px rgba(122, 77, 255, 0.35);
