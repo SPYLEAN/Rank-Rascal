@@ -1,0 +1,27 @@
+[
+  {
+    "id": "quest_crusader",
+    "name": "Quest Crusader",
+    "description": "Completed 10 verified Rank Rascal quests.",
+    "rule": { "type": "quest_completions", "threshold": 10 },
+    "webAsset": "/brand/badges/quest-crusader.png",
+    "discordAsset": "quest-crusader-256.png"
+  },
+  {
+    "id": "drip_monarch",
+    "name": "Drip Monarch",
+    "description": "Completed self Drip Checks on five different days.",
+    "rule": { "type": "distinct_self_dripcheck_days", "threshold": 5 },
+    "webAsset": "/brand/badges/drip-monarch.png",
+    "discordAsset": "drip-monarch-256.png"
+  },
+  {
+    "id": "veteran_noob",
+    "name": "Veteran Noob",
+    "description": "Verified a Roblox account that is at least three years old.",
+    "rule": { "type": "roblox_account_age_days", "threshold": 1095 },
+    "webAsset": "/brand/badges/veteran-noob.png",
+    "discordAsset": "veteran-noob-256.png"
+  }
+]
+

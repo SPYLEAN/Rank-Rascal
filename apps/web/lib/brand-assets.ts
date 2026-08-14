@@ -1,6 +1,6 @@
 /**
  * Rank Rascal Centralized Brand Asset Manifest
- * All brand image paths, mascot poses, Discord emojis, animations, and website art.
+ * All brand image paths, mascot poses, Discord emojis, animations, badges, and website art.
  * Every path maps to a verified file inside apps/web/public/.
  */
 
@@ -35,10 +35,21 @@ export const BRAND_ASSETS = {
     loading: "/brand/emojis/discord/rascal-loading.png",
   },
 
-  // Animations
+  // Animations & GIFs
   animation: {
     loadingWebp: "/brand/animation/razz-loading.webp",
     loadingGif: "/brand/animation/razz-loading.gif",
+  },
+
+  // Official Badge Artwork
+  badges: {
+    questCrusader: "/brand/badges/quest-crusader.png",
+    dripMonarch: "/brand/badges/drip-monarch.png",
+    veteranNoob: "/brand/badges/veteran-noob.png",
+    questCrusader256: "/brand/badges/discord/quest-crusader-256.png",
+    dripMonarch256: "/brand/badges/discord/drip-monarch-256.png",
+    veteranNoob256: "/brand/badges/discord/veteran-noob-256.png",
+    badgePackPreview: "/brand/badges/badge-pack-preview.png",
   },
 
   // Website Art Illustrations

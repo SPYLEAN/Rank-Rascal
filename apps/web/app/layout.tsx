@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { PageLoadingOverlay } from "@/components/PageLoadingOverlay";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rankrascal.com";
@@ -72,6 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-midnight-bg text-cloud-white min-h-screen flex flex-col antialiased">
+        <PageLoadingOverlay />
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
@@ -79,3 +81,4 @@ export default function RootLayout({
     </html>
   );
 }
+

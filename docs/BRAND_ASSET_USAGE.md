@@ -8,16 +8,24 @@ Complete catalog of production assets used across the Rank Rascal web applicatio
 | `app-icon.png` | 512x512 | Transparent | All Routes | `Navbar.tsx`, `RazzMascot.tsx` | `Rank Rascal App Icon` | Meaningful | Yes |
 | `mascot.png` | 1024x1024 | Transparent | All Routes | `RazzMascot.tsx` | `Razz the Rank Rascal mascot` | Meaningful | Yes |
 | `razz-hero-point.png` | 1024x1024 | Transparent | `/` (Homepage) | `RazzMascot.tsx` | `Razz pointing forward enthusiastically` | Meaningful | Yes |
-| `razz-badge-present.png` | 1024x1024 | Transparent | `/rewards` | `RazzMascot.tsx` | `Razz presenting shiny gaming badges` | Meaningful | Yes |
+| `razz-badge-present.png` | 1024x1024 | Transparent | `/rewards`, `/verify` | `RazzMascot.tsx`, `/verify` success state | `Razz presenting shiny gaming badges` | Meaningful | Yes |
 | `razz-detective.png` | 1024x1024 | Transparent | `/safety`, `/commands`, `/support` | `RazzMascot.tsx` | `Razz investigating suspicious server stats` | Meaningful | Yes |
 | `razz-celebrate.png` | 1024x1024 | Transparent | `/invite`, Homepage CTA | `RazzMascot.tsx` | `Razz celebrating victory with confetti` | Meaningful | Yes |
+| `razz-loading.gif` | 512x512 | Transparent | All Routes (Page Transitions) | `PageLoadingOverlay.tsx` | `Razz loading animation` | Meaningful | Yes |
 | `razz-loading.webp` | 512x512 | Transparent | All Loading / `/linked-roles` | `RazzMascot.tsx`, `LoadingRazz.tsx` | `Razz spinning around happily loading data` | Meaningful | Yes |
-| `rascal-hype.png` | 256x256 | Transparent | All Routes | `FloatingSticker.tsx`, Hero, Emojis | `""` (Decorative) | Decorative | Yes |
-| `rascal-win.png` | 256x256 | Transparent | All Routes | `BadgeCard.tsx`, Rotfile, Emojis | `""` (Decorative) | Decorative | Yes |
-| `rascal-sus.png` | 256x256 | Transparent | All Routes | `LeaderboardPreview.tsx`, Emojis | `""` (Decorative) | Decorative | Yes |
-| `rascal-lol.png` | 256x256 | Transparent | All Routes | `CommandCard.tsx`, Emojis | `""` (Decorative) | Decorative | Yes |
-| `rascal-cooked.png` | 256x256 | Transparent | All Routes | Error states, Emojis | `""` (Decorative) | Decorative | Yes |
-| `rascal-loading.png` | 256x256 | Transparent | All Routes | Loading indicators, Emojis | `""` (Decorative) | Decorative | Yes |
+| `quest-crusader.png` | 1024x1024 | Transparent | `/rewards` | `BadgeShelf.tsx` | `Quest Crusader Badge` | Meaningful | Yes |
+| `drip-monarch.png` | 1024x1024 | Transparent | `/rewards` | `BadgeShelf.tsx` | `Drip Monarch Badge` | Meaningful | Yes |
+| `veteran-noob.png` | 1024x1024 | Transparent | `/rewards` | `BadgeShelf.tsx` | `Veteran Noob Badge` | Meaningful | Yes |
+| `quest-crusader-256.png` | 256x256 | Transparent | `/rewards` / Discord | `BadgeShelf.tsx` | `Quest Crusader Badge Icon` | Meaningful | Yes |
+| `drip-monarch-256.png` | 256x256 | Transparent | `/rewards` / Discord | `BadgeShelf.tsx` | `Drip Monarch Badge Icon` | Meaningful | Yes |
+| `veteran-noob-256.png` | 256x256 | Transparent | `/rewards` / Discord | `BadgeShelf.tsx` | `Veteran Noob Badge Icon` | Meaningful | Yes |
+| `badge-pack-preview.png` | 1024x1024 | Transparent | `/rewards` | `BadgeShelf.tsx` | `Rank Rascal Badge Pack Preview` | Meaningful | Yes |
+| `rascal-hype.png` | 256x256 | Transparent | All Routes | `FloatingSticker.tsx`, Hero, Rails | `""` (Decorative) | Decorative | Yes |
+| `rascal-win.png` | 256x256 | Transparent | All Routes | `BadgeCard.tsx`, Rotfile, Rails | `""` (Decorative) | Decorative | Yes |
+| `rascal-sus.png` | 256x256 | Transparent | All Routes | `LeaderboardPreview.tsx`, Rails | `""` (Decorative) | Decorative | Yes |
+| `rascal-lol.png` | 256x256 | Transparent | All Routes | `CommandCard.tsx`, Rails | `""` (Decorative) | Decorative | Yes |
+| `rascal-cooked.png` | 256x256 | Transparent | All Routes | Error states, Rails | `""` (Decorative) | Decorative | Yes |
+| `rascal-loading.png` | 256x256 | Transparent | All Routes | Loading indicators, Rails | `""` (Decorative) | Decorative | Yes |
 | `razz-why-different.png` | 1536x1024 | Transparent | `/` (Homepage) | `VisualStorySection.tsx` | `Razz connects verified profiles, badges, rivalries, rankings and privacy controls.` | Meaningful | Yes |
 | `razz-reward-machine.png` | 1536x1024 | Transparent | `/rewards`, Homepage | `VisualStorySection.tsx` | `Razz turns a machine that produces collectible badges and quest tickets.` | Meaningful | Yes |
 | `razz-privacy-guardian.png` | 1024x1536 | Transparent | `/verify`, `/privacy`, Homepage | `VisualStorySection.tsx` | `Razz protects a verified profile with a privacy shield and key.` | Meaningful | Yes |

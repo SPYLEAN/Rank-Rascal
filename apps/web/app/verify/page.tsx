@@ -1,6 +1,7 @@
-import Link from "next/link";
+import React from "react";
 import Image from "next/image";
-import { ShieldCheck, Lock, CheckCircle2, EyeOff } from "lucide-react";
+import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { ShieldCheck, Lock, CheckCircle2, EyeOff, Award } from "lucide-react";
 
 export default function VerifyGuidePage() {
   return (
@@ -9,11 +10,12 @@ export default function VerifyGuidePage() {
       <div className="p-8 sm:p-12 rounded-3xl bg-panel-navy border-sticker-purple glow-purple grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div className="lg:col-span-5 flex justify-center">
           <Image
-            src="/brand/website-art/razz-privacy-guardian.png"
+            src={BRAND_ASSETS.websiteArt.privacyGuardian}
             alt="Razz protects a verified profile with a privacy shield and key."
             width={450}
             height={675}
             className="w-full h-auto max-w-xs object-contain rounded-2xl"
+            priority
           />
         </div>
 
@@ -87,41 +89,64 @@ export default function VerifyGuidePage() {
         </div>
       </div>
 
-      {/* Step-by-Step Verification Flow */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-panel-navy border-sticker space-y-6">
-        <h2 className="font-display font-bold text-2xl text-cloud-white">
-          How to Link Your Roblox Profile
-        </h2>
+      {/* Step-by-Step Verification Flow & Successful Verification Showcase */}
+      <div className="p-8 sm:p-10 rounded-3xl bg-panel-navy border-sticker grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="lg:col-span-7 space-y-6">
+          <h2 className="font-display font-bold text-2xl text-cloud-white">
+            How to Link Your Roblox Profile
+          </h2>
 
-        <div className="space-y-4 text-xs font-mono text-cloud-white/90">
-          <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light flex items-start space-x-3">
-            <span className="px-2.5 py-1 rounded bg-royal-purple text-cloud-white font-bold">1</span>
-            <div>
-              <p className="font-bold text-cloud-white text-sm">Run /link-roblox in Discord</p>
-              <p className="text-muted-text mt-1">
-                The bot sends a private ephemeral message containing a secure Roblox OAuth link.
-              </p>
+          <div className="space-y-4 text-xs font-mono text-cloud-white/90">
+            <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light flex items-start space-x-3">
+              <span className="px-2.5 py-1 rounded bg-royal-purple text-cloud-white font-bold">1</span>
+              <div>
+                <p className="font-bold text-cloud-white text-sm">Run /link-roblox in Discord</p>
+                <p className="text-muted-text mt-1">
+                  The bot sends a private ephemeral message containing a secure Roblox OAuth link.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light flex items-start space-x-3">
+              <span className="px-2.5 py-1 rounded bg-hot-pink text-cloud-white font-bold">2</span>
+              <div>
+                <p className="font-bold text-cloud-white text-sm">Authorize on Roblox.com</p>
+                <p className="text-muted-text mt-1">
+                  Review permissions on Roblox&apos;s official OAuth screen and confirm ownership.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light flex items-start space-x-3">
+              <span className="px-2.5 py-1 rounded bg-toxic-lime text-midnight-bg font-bold">3</span>
+              <div>
+                <p className="font-bold text-cloud-white text-sm">Receive Verified Rotfile & Badges</p>
+                <p className="text-muted-text mt-1">
+                  Rank Rascal records your public Roblox ID and presents your verified Rotfile & initial badge unlocks!
+                </p>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light flex items-start space-x-3">
-            <span className="px-2.5 py-1 rounded bg-hot-pink text-cloud-white font-bold">2</span>
-            <div>
-              <p className="font-bold text-cloud-white text-sm">Authorize on Roblox.com</p>
-              <p className="text-muted-text mt-1">
-                Review permissions on Roblox&apos;s official OAuth screen and confirm ownership.
-              </p>
-            </div>
+        {/* Verification Success Showcase with razz-badge-present */}
+        <div className="lg:col-span-5 p-6 rounded-2xl bg-midnight-bg border-sticker-lime text-center space-y-4">
+          <div className="relative w-48 h-48 mx-auto">
+            <Image
+              src={BRAND_ASSETS.poses.badgePresent}
+              alt="Razz presenting shiny gaming badges after successful verification"
+              width={200}
+              height={200}
+              className="object-contain"
+            />
           </div>
-
-          <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light flex items-start space-x-3">
-            <span className="px-2.5 py-1 rounded bg-toxic-lime text-midnight-bg font-bold">3</span>
-            <div>
-              <p className="font-bold text-cloud-white text-sm">Receive Verified Rotfile</p>
-              <p className="text-muted-text mt-1">
-                Rank Rascal records your public Roblox ID and presents your verified Rotfile identity card.
-              </p>
-            </div>
+          <div className="space-y-1">
+            <span className="px-3 py-1 rounded-full bg-toxic-lime/20 text-toxic-lime text-xs font-mono font-bold border border-toxic-lime/40">
+              VERIFICATION SUCCESSFUL
+            </span>
+            <p className="text-xs text-cloud-white/80 font-mono mt-2">
+              &quot;Verified Rascal badge unlocked!&quot;
+            </p>
           </div>
         </div>
       </div>
