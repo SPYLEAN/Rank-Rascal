@@ -23,9 +23,10 @@ export const BRAND_ASSETS = {
     detective: "/brand/poses/razz-detective.png",
     celebrate: "/brand/poses/razz-celebrate.png",
     contact: "/brand/poses/razz-poses-contact.png",
+    loadStatic: "/brand/animation/razz-load-01.png",
   },
 
-  // Discord Emojis
+  // Discord Emojis (Expressive UI Accents)
   emojis: {
     hype: "/brand/emojis/discord/rascal-hype.png",
     cooked: "/brand/emojis/discord/rascal-cooked.png",
@@ -35,13 +36,16 @@ export const BRAND_ASSETS = {
     loading: "/brand/emojis/discord/rascal-loading.png",
   },
 
-  // Animations & GIFs
+  // Animations & GIFs (3-second slow loop)
   animation: {
+    loadingSlowWebp: "/brand/animation/razz-loading-slow.webp",
+    loadingSlowGif: "/brand/animation/razz-loading-slow.gif",
     loadingWebp: "/brand/animation/razz-loading.webp",
     loadingGif: "/brand/animation/razz-loading.gif",
+    loadStatic: "/brand/animation/razz-load-01.png",
   },
 
-  // Official Badge Artwork
+  // Official Badge Artwork (3 Canonical Badges)
   badges: {
     questCrusader: "/brand/badges/quest-crusader.png",
     dripMonarch: "/brand/badges/drip-monarch.png",
