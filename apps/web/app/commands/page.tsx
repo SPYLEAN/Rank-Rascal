@@ -56,6 +56,22 @@ const COMMANDS_DATA: CommandCardProps[] = [
     example: "/yapping-order",
   },
   {
+    name: "/badges",
+    syntax: "/badges [player:<roblox_username>]",
+    description: "Displays earned and available illustrated reward badges (Quest Crusader, Drip Monarch, Veteran Noob) for yourself or another player.",
+    category: "Humor & Flex",
+    privacyIndicator: "Witness Protection Aware",
+    example: "/badges player:Builderman",
+  },
+  {
+    name: "/quests",
+    syntax: "/quests",
+    description: "Displays active daily server quests to complete and earn progress toward the Quest Crusader badge.",
+    category: "Humor & Flex",
+    privacyIndicator: "Witness Protection Aware",
+    example: "/quests",
+  },
+  {
     name: "/witness-protection",
     syntax: "/witness-protection enabled:<true|false>",
     description: "Toggles your profile visibility on public server leaderboards and discovery commands.",
@@ -130,7 +146,7 @@ export default function CommandsPage() {
           Rank Rascal Commands
         </h1>
         <p className="text-muted-text text-base">
-          All 9 active Discord slash commands currently supported by the Gateway bot. Search, filter, and copy syntax directly.
+          All 11 active Discord slash commands currently supported by the Gateway bot. Search, filter, and copy syntax directly.
         </p>
       </div>
 
