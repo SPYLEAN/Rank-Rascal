@@ -11,9 +11,10 @@
     "build": "tsc && npm run build --workspace=apps/web",
     "build:bot": "tsc",
     "build:web": "npm run build --workspace=apps/web",
-    "check": "tsc --noEmit && npm run check --workspace=apps/web",
+    "check": "tsx scripts/verify-assets.ts && tsc --noEmit && npm run check --workspace=apps/web",
     "check:bot": "tsc --noEmit",
     "check:web": "npm run check --workspace=apps/web",
+    "verify-assets": "tsx scripts/verify-assets.ts",
     "register": "tsx src/register-commands.ts",
     "preflight": "tsx scripts/preflight.ts",
     "test": "node --import tsx --test test/**/*.test.ts"
