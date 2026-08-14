@@ -2,50 +2,61 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 
 export const PageLoadingOverlay: React.FC = () => {
-  const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [statusText, setStatusText] = useState("Waking up Razz...");
 
   useEffect(() => {
-    // Only show brief feedback if a route change takes longer than 150ms
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 150);
+    // Only run on initial site entrance / page refresh (mount once)
+    const step1 = setTimeout(() => {
+      setStatusText("Cooking your server lore...");
+    }, 900);
 
-    const hideTimer = setTimeout(() => {
+    const step2 = setTimeout(() => {
+      setStatusText("Ready for chaos! ✨");
+    }, 1800);
+
+    const fadeStart = setTimeout(() => {
+      setIsFadingOut(true);
+    }, 2400);
+
+    const finish = setTimeout(() => {
       setIsVisible(false);
-    }, 450);
+    }, 2700);
 
     return () => {
-      clearTimeout(timer);
-      clearTimeout(hideTimer);
-      setIsVisible(false);
+      clearTimeout(step1);
+      clearTimeout(step2);
+      clearTimeout(fadeStart);
+      clearTimeout(finish);
     };
-  }, [pathname]);
+  }, []);
 
   if (!isVisible) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-[#181335] via-[#120f29] to-[#0c0a1b] text-cloud-white transition-opacity duration-200"
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-[#181335] via-[#120f29] to-[#0c0a1b] text-cloud-white transition-opacity duration-300 ${
+        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}
       role="status"
       aria-live="polite"
-      aria-label="Cooking your server lore"
+      aria-label="Site loading screen"
     >
-      {/* Background Dotted Grid */}
+      {/* Background Dotted Grid Texture */}
       <div className="absolute inset-0 bg-[radial-gradient(#a855f7_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
 
-      <div className="relative flex flex-col items-center justify-center space-y-4 p-8 text-center z-10 max-w-sm">
-        {/* Orbit Line & Sparkles */}
-        <div className="relative flex items-center justify-center w-44 h-44 sm:w-52 sm:h-52">
-          <div className="absolute inset-1 rounded-full border border-toxic-lime/30 animate-spin-slow motion-reduce:hidden" />
-          <div className="absolute top-2 right-4 w-2 h-2 rounded-full bg-hot-pink animate-ping motion-reduce:hidden" />
-          <div className="absolute bottom-4 left-6 w-1.5 h-1.5 rounded-full bg-toxic-lime animate-pulse motion-reduce:hidden" />
+      <div className="relative flex flex-col items-center justify-center space-y-6 p-8 text-center z-10 max-w-sm">
+        {/* Orbit Ring & Sparkles */}
+        <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56">
+          <div className="absolute inset-1 rounded-full border-2 border-toxic-lime/40 animate-spin-slow glow-lime motion-reduce:hidden" />
+          <div className="absolute top-2 right-4 w-2.5 h-2.5 rounded-full bg-hot-pink animate-ping motion-reduce:hidden" />
+          <div className="absolute bottom-4 left-6 w-2 h-2 rounded-full bg-toxic-lime animate-pulse motion-reduce:hidden" />
 
-          {/* Razz Animation (with static fallback under reduced motion) */}
+          {/* Centered Razz Slow GIF Animation */}
           <div className="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center">
             <picture>
               <source
@@ -65,15 +76,15 @@ export const PageLoadingOverlay: React.FC = () => {
           </div>
         </div>
 
-        {/* Stable Status Message */}
-        <div className="space-y-2">
-          <p className="font-display font-bold text-lg text-cloud-white tracking-wide">
-            Cooking your server lore…
+        {/* Dynamic Status Text with Smooth Expression Pacing */}
+        <div className="space-y-3 min-h-[50px] flex flex-col items-center justify-center">
+          <p className="font-display font-extrabold text-xl text-cloud-white tracking-wide uppercase transition-all duration-300">
+            {statusText}
           </p>
-          <div className="flex items-center justify-center space-x-1.5" aria-hidden="true">
-            <div className="w-2 h-2 rounded-full bg-toxic-lime animate-bounce [animation-delay:-0.3s] motion-reduce:animate-none" />
-            <div className="w-2 h-2 rounded-full bg-hot-pink animate-bounce [animation-delay:-0.15s] motion-reduce:animate-none" />
-            <div className="w-2 h-2 rounded-full bg-royal-purple animate-bounce motion-reduce:animate-none" />
+          <div className="flex items-center justify-center space-x-2" aria-hidden="true">
+            <div className="w-2.5 h-2.5 rounded-full bg-toxic-lime animate-bounce [animation-delay:-0.3s] motion-reduce:animate-none" />
+            <div className="w-2.5 h-2.5 rounded-full bg-hot-pink animate-bounce [animation-delay:-0.15s] motion-reduce:animate-none" />
+            <div className="w-2.5 h-2.5 rounded-full bg-royal-purple animate-bounce motion-reduce:animate-none" />
           </div>
         </div>
       </div>
