@@ -3,24 +3,19 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { RazzMascot } from "@/components/RazzMascot";
 import {
-  LayoutDashboard,
   ShieldCheck,
   AlertTriangle,
-  RefreshCw,
   LogOut,
   Award,
   Flame,
-  User,
-  Settings,
-  Eye,
   EyeOff,
-  CheckCircle2,
   AlertCircle,
+  Clock,
 } from "lucide-react";
 
-// Typed Service Boundary Interfaces for PostgreSQL / OAuth integration
 export interface DashboardUserProfile {
   discordId: string;
   discordTag: string;
@@ -39,19 +34,36 @@ export type DashboardState = "logged-out" | "loading" | "empty" | "error" | "con
 export default function DashboardShellPage() {
   const [currentState, setCurrentState] = useState<DashboardState>("connected-profile");
 
-  // Demo user profile data (explicitly labeled Demo)
   const demoProfile: DashboardUserProfile = {
     discordId: "123456789012345678",
     discordTag: "BloxLegend#0001",
     robloxUserId: 98765432,
     robloxUsername: "BloxLegend_2026",
     robloxDisplayName: "NoobSlayer",
-    avatarUrl: "/brand/emojis/rascal-win.png",
+    avatarUrl: BRAND_ASSETS.emojis.win,
     badgeCount: 342,
     rascalRep: 85,
     witnessProtection: false,
     linkedAt: "2026-01-15T10:30:00Z",
   };
+
+  const officialBadges = [
+    {
+      name: "Veteran Noob",
+      src: BRAND_ASSETS.badges.veteranNoob,
+      status: "Preview",
+    },
+    {
+      name: "Drip Monarch",
+      src: BRAND_ASSETS.badges.dripMonarch,
+      status: "Preview",
+    },
+    {
+      name: "Quest Crusader",
+      src: BRAND_ASSETS.badges.questCrusader,
+      status: "Preview",
+    },
+  ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
@@ -62,20 +74,19 @@ export default function DashboardShellPage() {
             <h1 className="font-display font-extrabold text-3xl text-cloud-white">
               Rank Rascal Dashboard
             </h1>
-            {/* EXPLICIT DEMO / PREVIEW TAG */}
             <span className="px-3 py-1 rounded-full bg-reward-yellow/10 border border-reward-yellow/40 text-xs font-mono font-bold text-reward-yellow uppercase tracking-wider flex items-center space-x-1">
               <AlertCircle className="w-3.5 h-3.5" />
-              <span>Demo Dashboard Shell</span>
+              <span>Demo Shell</span>
             </span>
           </div>
           <p className="text-xs text-muted-text font-mono mt-1">
-            Dashboard shell with typed PostgreSQL/OAuth service boundaries. Toggle states below to preview UI behavior.
+            Dashboard shell with typed PostgreSQL/OAuth service boundaries. Toggle preview states below.
           </p>
         </div>
 
-        {/* State Toggle Buttons for UI Review */}
+        {/* State Toggle Buttons */}
         <div className="flex flex-wrap items-center gap-2 p-2 rounded-2xl bg-panel-navy border border-panel-navy-light">
-          <span className="text-[11px] font-mono text-muted-text px-2">State Preview:</span>
+          <span className="text-[11px] font-mono text-muted-text px-2">Preview State:</span>
           {(
             [
               "connected-profile",
@@ -105,7 +116,6 @@ export default function DashboardShellPage() {
       {/* STATE 1: CONNECTED PROFILE */}
       {currentState === "connected-profile" && (
         <div className="space-y-8">
-          {/* Demo Alert Box */}
           <div className="p-4 rounded-2xl bg-reward-yellow/10 border border-reward-yellow/40 flex items-center justify-between text-xs font-mono text-cloud-white">
             <div className="flex items-center space-x-2">
               <AlertCircle className="w-4 h-4 text-reward-yellow flex-shrink-0" />
@@ -176,6 +186,33 @@ export default function DashboardShellPage() {
               </div>
             </div>
           </div>
+
+          {/* Official Badge Preview Section */}
+          <div className="p-8 rounded-3xl bg-panel-navy border-sticker space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="font-display font-bold text-xl text-cloud-white">
+                Official Badge Showcase Demonstration
+              </h3>
+              <span className="px-3 py-1 rounded-full bg-reward-yellow/20 text-reward-yellow text-xs font-mono font-bold border border-reward-yellow/40 flex items-center space-x-1">
+                <Clock className="w-3.5 h-3.5" />
+                <span>PREVIEW</span>
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {officialBadges.map((badge, idx) => (
+                <div key={idx} className="p-4 rounded-2xl bg-midnight-bg border border-panel-navy-light text-center space-y-2">
+                  <div className="relative w-24 h-24 mx-auto">
+                    <Image src={badge.src} alt={badge.name} width={96} height={96} className="object-contain w-full h-full" />
+                  </div>
+                  <h4 className="font-display font-bold text-cloud-white text-sm">{badge.name}</h4>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-reward-yellow/20 text-reward-yellow border border-reward-yellow/40">
+                    {badge.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 
@@ -195,15 +232,24 @@ export default function DashboardShellPage() {
         </div>
       )}
 
-      {/* STATE 3: LOADING */}
+      {/* STATE 3: LOADING (Powered by razz-loading.gif) */}
       {currentState === "loading" && (
-        <div className="text-center py-20 p-8 rounded-3xl bg-panel-navy border-sticker max-w-md mx-auto space-y-6">
-          <RazzMascot pose="loading" size={180} className="mx-auto" />
+        <div className="text-center py-16 p-8 rounded-3xl bg-panel-navy border-sticker max-w-md mx-auto space-y-6">
+          <div className="relative w-36 h-36 mx-auto">
+            <Image
+              src={BRAND_ASSETS.animation.loadingGif}
+              alt="Razz loading animation"
+              width={140}
+              height={140}
+              className="object-contain"
+              unoptimized
+            />
+          </div>
           <h2 className="font-display font-bold text-xl text-cloud-white">
-            Loading Dashboard Data...
+            Syncing Profile Data...
           </h2>
-          <p className="text-xs text-muted-text font-mono">
-            Fetching verified profile records and server rankings.
+          <p className="text-xs text-muted-text font-mono animate-pulse">
+            Fetching verified Roblox identity records and server rankings.
           </p>
         </div>
       )}

@@ -420,26 +420,29 @@ export default function HomePage() {
             <BadgeCard
               title="Veteran Noob"
               category="Roblox Milestones"
-              description="Linked a Roblox account created over 5 years ago. Survived ancient Roblox physics."
+              description="Verify a Roblox account at least 1,095 days old."
               rarity="Epic"
-              isUnlocked={true}
-              statusLabel="Available Now"
+              isUnlocked={false}
+              statusLabel="Preview"
+              badgeImage="/brand/badges/veteran-noob.png"
             />
             <BadgeCard
               title="Drip Monarch"
               category="Drip Inspections"
-              description="Achieved 5 consecutive Heat verdicts on /dripcheck across server channels."
+              description="Complete self Drip Checks on five distinct days with a verified Roblox identity."
               rarity="Legendary"
-              isUnlocked={true}
-              statusLabel="Available Now"
+              isUnlocked={false}
+              statusLabel="Preview"
+              badgeImage="/brand/badges/drip-monarch.png"
             />
             <BadgeCard
               title="Quest Crusader"
               category="Server Quests"
-              description="Completed 10 weekly server badge quests together with guildmates."
+              description="Complete 10 verified Rank Rascal quests across server channels."
               rarity="Rascal"
               isUnlocked={false}
-              statusLabel="Roadmap Concept"
+              statusLabel="Preview"
+              badgeImage="/brand/badges/quest-crusader.png"
             />
           </div>
         </div>

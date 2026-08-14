@@ -1,8 +1,31 @@
 import Link from "next/link";
+import Image from "next/image";
+import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { RotfilePreview } from "@/components/RotfilePreview";
-import { ShieldCheck, CheckCircle2, Award, Terminal, ArrowLeft } from "lucide-react";
+import { ShieldCheck, CheckCircle2, Award, ArrowLeft, Clock } from "lucide-react";
 
 export default function RobloxIntegrationPage() {
+  const officialBadges = [
+    {
+      name: "Veteran Noob",
+      src: BRAND_ASSETS.badges.veteranNoob,
+      criterion: "Verify a Roblox account at least 1,095 days old.",
+      status: "Preview",
+    },
+    {
+      name: "Drip Monarch",
+      src: BRAND_ASSETS.badges.dripMonarch,
+      criterion: "Complete self Drip Checks on five distinct days.",
+      status: "Preview",
+    },
+    {
+      name: "Quest Crusader",
+      src: BRAND_ASSETS.badges.questCrusader,
+      criterion: "Complete 10 verified Rank Rascal quests.",
+      status: "Preview",
+    },
+  ];
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       <div>
@@ -66,6 +89,43 @@ export default function RobloxIntegrationPage() {
 
         <div className="lg:col-span-5">
           <RotfilePreview />
+        </div>
+      </div>
+
+      {/* Official Roblox Badge Milestones (Preview) */}
+      <div className="p-8 rounded-3xl bg-panel-navy border-sticker-purple space-y-6">
+        <div className="flex items-center justify-between">
+          <h3 className="font-display font-bold text-2xl text-cloud-white">
+            Official Roblox Badge Milestones
+          </h3>
+          <span className="px-3 py-1 rounded-full bg-reward-yellow/20 text-reward-yellow text-xs font-mono font-bold border border-reward-yellow/40 flex items-center space-x-1">
+            <Clock className="w-3.5 h-3.5" />
+            <span>PREVIEW</span>
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {officialBadges.map((badge, idx) => (
+            <div
+              key={idx}
+              className="p-5 rounded-2xl bg-midnight-bg border border-panel-navy-light space-y-3 text-center"
+            >
+              <div className="relative w-32 h-32 mx-auto">
+                <Image
+                  src={badge.src}
+                  alt={badge.name}
+                  width={128}
+                  height={128}
+                  className="object-contain w-full h-full"
+                />
+              </div>
+              <h4 className="font-display font-bold text-cloud-white text-base">{badge.name}</h4>
+              <p className="text-xs text-muted-text font-mono leading-relaxed">{badge.criterion}</p>
+              <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-reward-yellow/20 text-reward-yellow border border-reward-yellow/40">
+                {badge.status}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ export interface BadgeCardProps {
   category: string;
   description: string;
   icon?: string;
+  badgeImage?: string;
   isUnlocked?: boolean;
   statusLabel?: string;
   rarity?: "Common" | "Rare" | "Epic" | "Legendary" | "Rascal";
@@ -27,6 +28,7 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
   category,
   description,
   icon = "/brand/emojis/rascal-win.png",
+  badgeImage,
   isUnlocked = true,
   statusLabel = "Unlocked",
   rarity = "Rare",
@@ -53,6 +55,8 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
     return () => observer.disconnect();
   }, []);
 
+  const displayIcon = badgeImage || icon;
+
   return (
     <div
       ref={cardRef}
@@ -60,12 +64,12 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
         isVisible
           ? "opacity-100 translate-y-0 scale-100"
           : "opacity-0 translate-y-4 scale-95 motion-reduce:opacity-100 motion-reduce:translate-y-0 motion-reduce:scale-100"
-      } ${!isUnlocked ? "opacity-75" : ""}`}
+      } ${!isUnlocked ? "opacity-90" : ""}`}
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-3">
-          <div className="relative w-12 h-12 rounded-xl bg-midnight-bg p-2 border border-panel-navy-light flex items-center justify-center flex-shrink-0">
-            <Image src={icon} alt="" width={36} height={36} className="object-contain" />
+          <div className="relative w-14 h-14 rounded-xl bg-midnight-bg p-1.5 border border-panel-navy-light flex items-center justify-center flex-shrink-0">
+            <Image src={displayIcon} alt={title} width={48} height={48} className="object-contain w-full h-full" />
           </div>
           <div>
             <h4 className="font-display font-bold text-cloud-white text-base leading-snug">{title}</h4>
