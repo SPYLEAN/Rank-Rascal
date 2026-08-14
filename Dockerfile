@@ -12,6 +12,7 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
+COPY brand/badges/discord ./brand/badges/discord
 RUN mkdir -p /app/data && chown -R node:node /app
 USER node
 EXPOSE 3000

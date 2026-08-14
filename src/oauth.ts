@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import { config } from "./config.js";
-import { consumeOAuthState, createOAuthState, saveProfile } from "./db.js";
+import { consumeOAuthState, createOAuthState, getProfile, saveProfile } from "./db.js";
+import { evaluateAutomaticBadges } from "./badges.js";
 import { getRobloxProfile } from "./roblox.js";
 
 const AUTHORIZE_URL = "https://apis.roblox.com/oauth/v1/authorize";
@@ -47,6 +48,7 @@ interface RobloxUserInfo {
 export async function completeRobloxAuthorization(code: string, state: string): Promise<{
   displayName: string;
   username: string;
+  awardedBadges: string[];
 }> {
   if (!code || !state || state.length > 256) throw new Error("Invalid OAuth response.");
   const stateHash = sha256(state).toString("hex");
@@ -80,6 +82,8 @@ export async function completeRobloxAuthorization(code: string, state: string): 
 
   const profile = await getRobloxProfile(robloxId);
   saveProfile(pending.guildId, pending.discordUserId, profile, true);
+  const linked = getProfile(pending.guildId, pending.discordUserId);
+  const awardedBadges = linked ? evaluateAutomaticBadges(linked).map((badge) => badge.name) : [];
   // Access and ID tokens are deliberately not stored.
-  return { displayName: profile.displayName, username: profile.username };
+  return { displayName: profile.displayName, username: profile.username, awardedBadges };
 }

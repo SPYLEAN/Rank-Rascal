@@ -2,7 +2,7 @@ import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { config } from "./config.js";
-import type { LinkedProfile, RobloxProfile } from "./types.js";
+import type { BadgeId, EarnedBadge, LinkedProfile, QuestId, RobloxProfile } from "./types.js";
 
 const path = resolve(config.databasePath);
 mkdirSync(dirname(path), { recursive: true });
@@ -10,6 +10,7 @@ const db = new DatabaseSync(path);
 
 db.exec(`
   PRAGMA journal_mode = WAL;
+  PRAGMA foreign_keys = ON;
   CREATE TABLE IF NOT EXISTS profiles (
     guild_id TEXT NOT NULL,
     discord_user_id TEXT NOT NULL,
@@ -40,6 +41,28 @@ db.exec(`
     humor_level INTEGER NOT NULL DEFAULT 2,
     updated_at TEXT NOT NULL
   );
+  CREATE TABLE IF NOT EXISTS user_badges (
+    guild_id TEXT NOT NULL,
+    discord_user_id TEXT NOT NULL,
+    badge_id TEXT NOT NULL,
+    awarded_at TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    PRIMARY KEY (guild_id, discord_user_id, badge_id),
+    FOREIGN KEY (guild_id, discord_user_id)
+      REFERENCES profiles (guild_id, discord_user_id) ON DELETE CASCADE
+  );
+  CREATE TABLE IF NOT EXISTS quest_completions (
+    guild_id TEXT NOT NULL,
+    discord_user_id TEXT NOT NULL,
+    quest_id TEXT NOT NULL,
+    period_key TEXT NOT NULL,
+    completed_at TEXT NOT NULL,
+    PRIMARY KEY (guild_id, discord_user_id, quest_id, period_key),
+    FOREIGN KEY (guild_id, discord_user_id)
+      REFERENCES profiles (guild_id, discord_user_id) ON DELETE CASCADE
+  );
+  CREATE INDEX IF NOT EXISTS quest_completions_user_idx
+    ON quest_completions (guild_id, discord_user_id, completed_at);
 `);
 
 function rowToProfile(row: Record<string, unknown>): LinkedProfile {
@@ -67,6 +90,17 @@ export function saveProfile(
   profile: RobloxProfile,
   verified = false,
 ): void {
+  const existing = db.prepare(`
+    SELECT roblox_user_id FROM profiles
+    WHERE guild_id = ? AND discord_user_id = ?
+  `).get(guildId, discordUserId) as Record<string, unknown> | undefined;
+  if (existing && Number(existing.roblox_user_id) !== profile.id) {
+    // Rewards belong to the verified identity that earned them, not merely the Discord account.
+    db.prepare("DELETE FROM user_badges WHERE guild_id = ? AND discord_user_id = ?")
+      .run(guildId, discordUserId);
+    db.prepare("DELETE FROM quest_completions WHERE guild_id = ? AND discord_user_id = ?")
+      .run(guildId, discordUserId);
+  }
   db.prepare(`
     INSERT INTO profiles (
       guild_id, discord_user_id, roblox_user_id, username, display_name,
@@ -185,4 +219,85 @@ export function setPrivacy(guildId: string, discordUserId: string, isPublic: boo
 export function unlinkProfile(guildId: string, discordUserId: string): boolean {
   return db.prepare("DELETE FROM profiles WHERE guild_id = ? AND discord_user_id = ?")
     .run(guildId, discordUserId).changes > 0;
+}
+
+function rowToEarnedBadge(row: Record<string, unknown>): EarnedBadge {
+  return {
+    guildId: String(row.guild_id),
+    discordUserId: String(row.discord_user_id),
+    badgeId: String(row.badge_id) as BadgeId,
+    awardedAt: String(row.awarded_at),
+    reason: String(row.reason),
+  };
+}
+
+export function awardBadge(
+  guildId: string,
+  discordUserId: string,
+  badgeId: BadgeId,
+  reason: string,
+  awardedAt = new Date().toISOString(),
+): boolean {
+  const result = db.prepare(`
+    INSERT OR IGNORE INTO user_badges (
+      guild_id, discord_user_id, badge_id, awarded_at, reason
+    ) VALUES (?, ?, ?, ?, ?)
+  `).run(guildId, discordUserId, badgeId, awardedAt, reason);
+  return result.changes > 0;
+}
+
+export function listEarnedBadges(guildId: string, discordUserId: string): EarnedBadge[] {
+  const rows = db.prepare(`
+    SELECT * FROM user_badges
+    WHERE guild_id = ? AND discord_user_id = ?
+    ORDER BY awarded_at ASC
+  `).all(guildId, discordUserId) as Record<string, unknown>[];
+  return rows.map(rowToEarnedBadge);
+}
+
+export function recordQuestCompletion(
+  guildId: string,
+  discordUserId: string,
+  questId: QuestId,
+  periodKey: string,
+  completedAt = new Date().toISOString(),
+): boolean {
+  const result = db.prepare(`
+    INSERT OR IGNORE INTO quest_completions (
+      guild_id, discord_user_id, quest_id, period_key, completed_at
+    ) VALUES (?, ?, ?, ?, ?)
+  `).run(guildId, discordUserId, questId, periodKey, completedAt);
+  return result.changes > 0;
+}
+
+export function countQuestCompletions(guildId: string, discordUserId: string): number {
+  const row = db.prepare(`
+    SELECT COUNT(*) AS count FROM quest_completions
+    WHERE guild_id = ? AND discord_user_id = ?
+  `).get(guildId, discordUserId) as Record<string, unknown>;
+  return Number(row.count);
+}
+
+export function countDistinctQuestPeriods(
+  guildId: string,
+  discordUserId: string,
+  questId: QuestId,
+): number {
+  const row = db.prepare(`
+    SELECT COUNT(DISTINCT period_key) AS count FROM quest_completions
+    WHERE guild_id = ? AND discord_user_id = ? AND quest_id = ?
+  `).get(guildId, discordUserId, questId) as Record<string, unknown>;
+  return Number(row.count);
+}
+
+export function listQuestCompletionsForPeriod(
+  guildId: string,
+  discordUserId: string,
+  periodKey: string,
+): QuestId[] {
+  const rows = db.prepare(`
+    SELECT quest_id FROM quest_completions
+    WHERE guild_id = ? AND discord_user_id = ? AND period_key = ?
+  `).all(guildId, discordUserId, periodKey) as Record<string, unknown>[];
+  return rows.map((row) => String(row.quest_id) as QuestId);
 }
