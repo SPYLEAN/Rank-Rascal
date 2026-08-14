@@ -143,9 +143,21 @@ export const Footer: React.FC = () => {
           <p className="text-xs text-muted-text/80 max-w-3xl mx-auto leading-relaxed">
             Rank Rascal is an independent product and is not affiliated with, endorsed by or sponsored by Discord, Roblox, Epic Games or Riot Games.
           </p>
-          <p className="text-xs text-muted-text/60 font-mono">
-            &copy; {new Date().getFullYear()} Rank Rascal. All rights reserved. Built for Discord gaming communities.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-xs text-muted-text/70 font-mono">
+            <span>&copy; {new Date().getFullYear()} Rank Rascal. All rights reserved.</span>
+            <span className="hidden sm:inline">•</span>
+            <span className="flex items-center">
+              Built with <Heart className="w-3.5 h-3.5 text-hot-pink fill-hot-pink mx-1 inline" /> by{" "}
+              <a
+                href="https://spylean-portfolio.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-toxic-lime font-bold hover:underline ml-1 inline-flex items-center space-x-1"
+              >
+                <span>SPYLEAN</span>
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </footer>
