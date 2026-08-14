@@ -129,23 +129,24 @@ export default function VerifyGuidePage() {
           </div>
         </div>
 
-        {/* Verification Success Showcase with razz-badge-present */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-midnight-bg border-sticker-lime text-center space-y-4">
-          <div className="relative w-48 h-48 mx-auto">
+        {/* Verification Success Showcase with razz-celebrate */}
+        <div className="lg:col-span-5 p-6 rounded-2xl bg-midnight-bg border-sticker-lime text-center space-y-4 glow-lime relative overflow-hidden">
+          <div className="relative w-52 h-52 mx-auto">
             <Image
-              src={BRAND_ASSETS.poses.badgePresent}
-              alt="Razz presenting shiny gaming badges after successful verification"
-              width={200}
-              height={200}
-              className="object-contain"
+              src={BRAND_ASSETS.poses.celebrate}
+              alt="Razz celebrating successful Roblox identity verification"
+              width={220}
+              height={220}
+              className="object-contain w-full h-full animate-bounce motion-reduce:animate-none"
+              priority
             />
           </div>
-          <div className="space-y-1">
-            <span className="px-3 py-1 rounded-full bg-toxic-lime/20 text-toxic-lime text-xs font-mono font-bold border border-toxic-lime/40">
-              VERIFICATION SUCCESSFUL
+          <div className="space-y-1.5 z-10 relative">
+            <span className="px-3 py-1.5 rounded-full bg-toxic-lime/20 text-toxic-lime text-xs font-mono font-bold border border-toxic-lime/40 uppercase tracking-wider inline-flex items-center space-x-1.5">
+              <span>✨ VERIFICATION SUCCESSFUL</span>
             </span>
-            <p className="text-xs text-cloud-white/80 font-mono mt-2">
-              &quot;Verified Rascal badge unlocked!&quot;
+            <p className="text-xs text-cloud-white/90 font-mono mt-2 font-semibold">
+              &quot;Roblox identity linked! Your Rotfile and badges are ready!&quot;
             </p>
           </div>
         </div>

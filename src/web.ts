@@ -43,7 +43,7 @@ export function startWebServer() {
         const badgeNotice = result.awardedBadges.length > 0
           ? `<p>🏆 Badge unlocked: <strong>${result.awardedBadges.map(escapeHtml).join(", ")}</strong></p>`
           : "";
-        return send(response, 200, page("Verified", `<span class="stamp">IDENTITY VERIFIED</span><h1>Welcome, ${escapeHtml(result.displayName)}!</h1><p><strong>@${escapeHtml(result.username)}</strong> is connected. Return to Discord and run <code>/rotfile</code>.</p>${badgeNotice}`));
+        return send(response, 200, page("Verified", `<div style="text-align:center;margin-bottom:16px;"><img src="/brand/poses/razz-celebrate.png" alt="Razz Celebrating" style="width:160px;height:160px;object-fit:contain;" /></div><span class="stamp">IDENTITY VERIFIED</span><h1>Welcome, ${escapeHtml(result.displayName)}!</h1><p><strong>@${escapeHtml(result.username)}</strong> is connected. Return to Discord and run <code>/rotfile</code>.</p>${badgeNotice}`));
       } catch (error) {
         const message = error instanceof Error ? error.message : "Verification failed.";
         return send(response, 400, page("Verification failed", `<h1>The Rascal dropped the paperwork.</h1><p>${escapeHtml(message)}</p><p>Return to Discord and generate a new link.</p>`));
