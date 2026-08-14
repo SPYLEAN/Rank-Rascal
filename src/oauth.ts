@@ -11,11 +11,11 @@ const USERINFO_URL = "https://apis.roblox.com/oauth/v1/userinfo";
 const base64url = (input: Buffer) => input.toString("base64url");
 const sha256 = (value: string) => createHash("sha256").update(value).digest();
 
-export function createRobloxAuthorization(discordUserId: string, guildId: string): string {
+export async function createRobloxAuthorization(discordUserId: string, guildId: string): Promise<string> {
   if (!config.robloxOAuthConfigured) throw new Error("Roblox OAuth is not configured yet.");
   const state = base64url(randomBytes(32));
   const verifier = base64url(randomBytes(48));
-  createOAuthState(
+  await createOAuthState(
     sha256(state).toString("hex"),
     discordUserId,
     guildId,
@@ -52,7 +52,7 @@ export async function completeRobloxAuthorization(code: string, state: string): 
 }> {
   if (!code || !state || state.length > 256) throw new Error("Invalid OAuth response.");
   const stateHash = sha256(state).toString("hex");
-  const pending = consumeOAuthState(stateHash);
+  const pending = await consumeOAuthState(stateHash);
   if (!pending) throw new Error("This verification link expired or was already used.");
 
   const tokenResponse = await fetch(TOKEN_URL, {
@@ -81,9 +81,11 @@ export async function completeRobloxAuthorization(code: string, state: string): 
   if (!Number.isSafeInteger(robloxId)) throw new Error("Roblox returned an invalid user ID.");
 
   const profile = await getRobloxProfile(robloxId);
-  saveProfile(pending.guildId, pending.discordUserId, profile, true);
-  const linked = getProfile(pending.guildId, pending.discordUserId);
-  const awardedBadges = linked ? evaluateAutomaticBadges(linked).map((badge) => badge.name) : [];
+  await saveProfile(pending.guildId, pending.discordUserId, profile, true);
+  const linked = await getProfile(pending.guildId, pending.discordUserId);
+  const awardedBadges = linked
+    ? (await evaluateAutomaticBadges(linked)).map((badge) => badge.name)
+    : [];
   // Access and ID tokens are deliberately not stored.
   return { displayName: profile.displayName, username: profile.username, awardedBadges };
 }

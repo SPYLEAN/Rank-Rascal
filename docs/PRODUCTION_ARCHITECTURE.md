@@ -16,7 +16,7 @@ Rank Rascal is designed as a hybrid microservice architecture consisting of a Ne
 │ • Homepage & Product Previews │               │ • Always-on WebSocket Client  │
 │ • Command Directory (/commands)│              │ • Receives Discord Commands   │
 │ • Roblox Integration Hub      │               │ • Executes Drip & Fraud Checks│
-│ • Legal & Safety Policies     │               │ • Manages SQLite/Postgres DB  │
+│ • Legal & Safety Policies     │               │ • Uses production PostgreSQL │
 │ • Dashboard Shell & Previews  │               │ • Scheduled Profile Refresh   │
 └──────────────┬────────────────┘               └──────────────┬────────────────┘
                │                                               │
@@ -34,3 +34,5 @@ Rank Rascal is designed as a hybrid microservice architecture consisting of a Ne
 2. **Zero Persistent SQLite on Vercel**: Serverless platforms like Vercel have ephemeral filesystems. Production persistence for shared web and bot state uses PostgreSQL (`DATABASE_URL`).
 3. **Secret Security**: No secrets or private tokens are embedded in `NEXT_PUBLIC_` environment variables or client JavaScript bundles.
 4. **Teen Safety Boundaries**: All automated bot verdicts and website copy enforce 13+ safety, opt-in privacy (`/witness-protection`), and curated meme templates.
+
+Local development may use SQLite. Production sets `DATABASE_URL` and stores profiles, OAuth state, badges, quests, and guild settings in PostgreSQL. The public callback base is `https://api.rankrascal.lol`; the marketing site remains `https://rankrascal.lol`.

@@ -67,27 +67,27 @@ export function accountAgeDays(created: string, now = new Date()): number {
   return Math.max(0, Math.floor((now.getTime() - createdAt) / DAY_MS));
 }
 
-export function evaluateAutomaticBadges(
+export async function evaluateAutomaticBadges(
   profile: LinkedProfile,
   now = new Date(),
-): BadgeDefinition[] {
+): Promise<BadgeDefinition[]> {
   if (!profile.verified) return [];
   const newlyAwarded: BadgeDefinition[] = [];
 
-  const maybeAward = (id: BadgeId, reason: string) => {
-    if (awardBadge(profile.guildId, profile.discordUserId, id, reason, now.toISOString())) {
+  const maybeAward = async (id: BadgeId, reason: string) => {
+    if (await awardBadge(profile.guildId, profile.discordUserId, id, reason, now.toISOString())) {
       newlyAwarded.push(getBadgeDefinition(id));
     }
   };
 
   if (accountAgeDays(profile.created, now) >= 1_095) {
-    maybeAward("veteran_noob", "Verified Roblox account is at least 1,095 days old.");
+    await maybeAward("veteran_noob", "Verified Roblox account is at least 1,095 days old.");
   }
-  if (countDistinctQuestPeriods(profile.guildId, profile.discordUserId, "self_dripcheck") >= 5) {
-    maybeAward("drip_monarch", "Completed self Drip Checks on five distinct UTC days.");
+  if (await countDistinctQuestPeriods(profile.guildId, profile.discordUserId, "self_dripcheck") >= 5) {
+    await maybeAward("drip_monarch", "Completed self Drip Checks on five distinct UTC days.");
   }
-  if (countQuestCompletions(profile.guildId, profile.discordUserId) >= 10) {
-    maybeAward("quest_crusader", "Completed 10 verified daily Rank Rascal quests.");
+  if (await countQuestCompletions(profile.guildId, profile.discordUserId) >= 10) {
+    await maybeAward("quest_crusader", "Completed 10 verified daily Rank Rascal quests.");
   }
 
   return newlyAwarded;
@@ -99,25 +99,24 @@ export interface QuestProgressResult {
   newlyAwarded: BadgeDefinition[];
 }
 
-export function recordVerifiedQuest(
+export async function recordVerifiedQuest(
   guildId: string,
   discordUserId: string,
   questId: QuestId,
   now = new Date(),
-): QuestProgressResult {
-  const profile = getProfile(guildId, discordUserId);
+): Promise<QuestProgressResult> {
+  const profile = await getProfile(guildId, discordUserId);
   if (!profile?.verified) {
     return { recorded: false, totalCompletions: 0, newlyAwarded: [] };
   }
-  const recorded = recordQuestCompletion(
+  const recorded = await recordQuestCompletion(
     guildId,
     discordUserId,
     questId,
     utcPeriodKey(now),
     now.toISOString(),
   );
-  const totalCompletions = countQuestCompletions(guildId, discordUserId);
-  const newlyAwarded = evaluateAutomaticBadges(profile, now);
+  const totalCompletions = await countQuestCompletions(guildId, discordUserId);
+  const newlyAwarded = await evaluateAutomaticBadges(profile, now);
   return { recorded, totalCompletions, newlyAwarded };
 }
-

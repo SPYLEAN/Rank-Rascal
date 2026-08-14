@@ -1,6 +1,7 @@
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import { handleCommand } from "./commands.js";
 import { config } from "./config.js";
+import { closeDatabase, initializeDatabase } from "./db.js";
 import { startProfileRefreshJob } from "./jobs.js";
 import { startWebServer } from "./web.js";
 
@@ -23,6 +24,27 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 process.on("unhandledRejection", (error) => console.error("Unhandled rejection", error));
-startWebServer();
-startProfileRefreshJob();
+
+const databaseEngine = await initializeDatabase();
+console.log(`Rank Rascal database ready (${databaseEngine}).`);
+const webServer = startWebServer();
+const refreshTimer = startProfileRefreshJob();
+
+let stopping = false;
+async function shutdown(signal: string): Promise<void> {
+  if (stopping) return;
+  stopping = true;
+  console.log(`Received ${signal}; shutting down cleanly.`);
+  clearInterval(refreshTimer);
+  client.destroy();
+  await new Promise<void>((resolve) => webServer.close(() => resolve()));
+  await closeDatabase();
+}
+
+for (const signal of ["SIGINT", "SIGTERM"] as const) {
+  process.once(signal, () => {
+    void shutdown(signal).finally(() => process.exit(0));
+  });
+}
+
 await client.login(config.discordToken());

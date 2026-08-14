@@ -1,5 +1,8 @@
 import { createServer, type ServerResponse } from "node:http";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { config } from "./config.js";
+import { databaseHealth } from "./db.js";
 import { completeRobloxAuthorization } from "./oauth.js";
 
 function escapeHtml(value: string): string {
@@ -14,10 +17,10 @@ function page(title: string, content: string): string {
   </style></head><body><main class="card">${content}<footer>Rank Rascal is not endorsed by Roblox or Discord. For Discord users aged 13+.</footer></main></body></html>`;
 }
 
-function send(response: ServerResponse, status: number, body: string, contentType = "text/html; charset=utf-8"): void {
+function send(response: ServerResponse, status: number, body: string | Buffer, contentType = "text/html; charset=utf-8"): void {
   response.writeHead(status, {
     "Content-Type": contentType,
-    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'",
+    "Content-Security-Policy": "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'",
     "Referrer-Policy": "no-referrer",
     "X-Content-Type-Options": "nosniff",
   });
@@ -28,7 +31,23 @@ export function startWebServer() {
   const server = createServer(async (request, response) => {
     const url = new URL(request.url || "/", config.publicBaseUrl);
     if (request.method !== "GET") return send(response, 405, "Method not allowed", "text/plain");
-    if (url.pathname === "/health") return send(response, 200, JSON.stringify({ ok: true }), "application/json");
+    if (url.pathname === "/brand/poses/razz-celebrate.png") {
+      try {
+        const image = await readFile(resolve("brand", "poses", "razz-celebrate.png"));
+        return send(response, 200, image, "image/png");
+      } catch {
+        return send(response, 404, "Not found", "text/plain");
+      }
+    }
+    if (url.pathname === "/health") {
+      const health = await databaseHealth();
+      return send(
+        response,
+        health.ok ? 200 : 503,
+        JSON.stringify({ ok: health.ok, database: health.engine }),
+        "application/json",
+      );
+    }
     if (url.pathname === "/") return send(response, 200, page("Home", `<span class="stamp">CERTIFIED BRAIN ROT</span><h1>Rank Rascal</h1><p>Your Roblox stats have officially rotted.</p><p>Link a verified Roblox identity from the <code>/link-roblox</code> command, build a Rotfile, survive Drip Inspection, and enter the Yapping Order.</p><a class="button" href="/privacy">Privacy</a>`));
     if (url.pathname === "/privacy") return send(response, 200, page("Privacy", `<h1>Privacy without the yapping</h1><ul><li>We store Discord and Roblox user IDs, public profile snapshots, privacy choices, and game scores.</li><li>Roblox OAuth tokens are discarded after identity verification.</li><li>We never request or store Roblox passwords.</li><li>Use <code>/unlink-roblox</code> to delete your server-specific profile.</li><li>Use Witness Protection to leave public comparisons.</li></ul><p>Server operators must provide a real support contact before public launch.</p>`));
     if (url.pathname === "/terms") return send(response, 200, page("Terms", `<h1>Terms of Rascalry</h1><p>Rank Rascal is for Discord users aged 13 or older, subject to local minimum-age rules. Do not use it to bully, impersonate, gamble, expose private information, or violate Roblox or Discord rules.</p><p>Stats may be delayed or unavailable. Rascal Rep is entertainment, not an official skill rating.</p>`));

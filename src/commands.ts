@@ -84,8 +84,8 @@ function guildId(interaction: ChatInputCommandInteraction): string {
   return interaction.guildId;
 }
 
-function getVisibleProfile(interaction: ChatInputCommandInteraction, userId: string) {
-  const profile = getProfile(guildId(interaction), userId);
+async function getVisibleProfile(interaction: ChatInputCommandInteraction, userId: string) {
+  const profile = await getProfile(guildId(interaction), userId);
   if (!profile) throw new Error("That player has no Rotfile yet. Use `/link-roblox` first.");
   if (userId !== interaction.user.id && !profile.publicProfile) {
     throw new Error("That Rascal is currently in Witness Protection.");
@@ -105,7 +105,7 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
   if (!interaction.inGuild()) throw new Error("Rank Rascal only works inside a server.");
 
   if (interaction.commandName === "link-roblox") {
-    const url = createRobloxAuthorization(interaction.user.id, guildId(interaction));
+    const url = await createRobloxAuthorization(interaction.user.id, guildId(interaction));
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Verify with Roblox").setEmoji("🧪").setURL(url),
     );
@@ -119,14 +119,14 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
 
   if (interaction.commandName === "preview-roblox") {
     await interaction.deferReply({ ephemeral: true });
-    const existing = getProfile(guildId(interaction), interaction.user.id);
+    const existing = await getProfile(guildId(interaction), interaction.user.id);
     if (existing?.verified) {
       throw new Error("You already have a verified Rotfile. Unlink it before creating a preview for another account.");
     }
     const username = interaction.options.getString("username", true).trim();
     const profile = await findRobloxProfile(username);
     if (!profile) throw new Error("That Roblox username escaped the database. Check the spelling.");
-    saveProfile(guildId(interaction), interaction.user.id, profile);
+    await saveProfile(guildId(interaction), interaction.user.id, profile);
     await interaction.editReply({
       embeds: [new EmbedBuilder()
         .setColor(LIME)
@@ -144,9 +144,9 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
 
   if (interaction.commandName === "rotfile") {
     const user = interaction.options.getUser("player") ?? interaction.user;
-    const profile = getVisibleProfile(interaction, user.id);
+    const profile = await getVisibleProfile(interaction, user.id);
     const progress = user.id === interaction.user.id
-      ? recordVerifiedQuest(guildId(interaction), interaction.user.id, "rotfile_checkin")
+      ? await recordVerifiedQuest(guildId(interaction), interaction.user.id, "rotfile_checkin")
       : null;
     const badgeLabel = profile.badgeCount >= 1000 ? `${profile.badgeCount}+` : String(profile.badgeCount);
     const embed = new EmbedBuilder()
@@ -168,9 +168,9 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
 
   if (interaction.commandName === "dripcheck") {
     const user = interaction.options.getUser("player") ?? interaction.user;
-    const profile = getVisibleProfile(interaction, user.id);
+    const profile = await getVisibleProfile(interaction, user.id);
     const progress = user.id === interaction.user.id
-      ? recordVerifiedQuest(guildId(interaction), interaction.user.id, "self_dripcheck")
+      ? await recordVerifiedQuest(guildId(interaction), interaction.user.id, "self_dripcheck")
       : null;
     const embed = new EmbedBuilder()
       .setColor(PINK)
@@ -186,15 +186,15 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
   if (interaction.commandName === "fraudcheck") {
     const opponent = interaction.options.getUser("opponent", true);
     if (opponent.id === interaction.user.id) throw new Error("Self-beef detected. Please locate an actual opponent.");
-    const own = getVisibleProfile(interaction, interaction.user.id);
-    const theirs = getVisibleProfile(interaction, opponent.id);
+    const own = await getVisibleProfile(interaction, interaction.user.id);
+    const theirs = await getVisibleProfile(interaction, opponent.id);
     const difference = Math.abs(own.badgeCount - theirs.badgeCount);
     const winner = own.badgeCount === theirs.badgeCount
       ? "Nobody. An unprecedented draw in tiny JPEG ownership."
       : own.badgeCount > theirs.badgeCount
         ? `${interaction.user} owns ${difference} more badges. Generational incident.`
         : `${opponent} owns ${difference} more badges. The allegations are developing.`;
-    const progress = recordVerifiedQuest(guildId(interaction), interaction.user.id, "friendly_rivalry");
+    const progress = await recordVerifiedQuest(guildId(interaction), interaction.user.id, "friendly_rivalry");
     const embed = new EmbedBuilder()
       .setColor(LIME)
       .setTitle("🕵️ FRAUD CHECK INITIATED")
@@ -211,7 +211,7 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
   }
 
   if (interaction.commandName === "yapping-order") {
-    const profiles = listPublicProfiles(guildId(interaction));
+    const profiles = await listPublicProfiles(guildId(interaction));
     const lines = profiles.map((profile, index) =>
       `**${index + 1}. ${profile.displayName}** — ${profile.rascalRep} Rep · ${profile.badgeCount} badges`,
     );
@@ -225,9 +225,9 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
 
   if (interaction.commandName === "badges") {
     const user = interaction.options.getUser("player") ?? interaction.user;
-    const profile = getVisibleProfile(interaction, user.id);
-    evaluateAutomaticBadges(profile);
-    const earned = new Map(listEarnedBadges(guildId(interaction), user.id)
+    const profile = await getVisibleProfile(interaction, user.id);
+    await evaluateAutomaticBadges(profile);
+    const earned = new Map((await listEarnedBadges(guildId(interaction), user.id))
       .map((badge) => [badge.badgeId, badge] as const));
     const files = BADGES.map((badge) => new AttachmentBuilder(badgeAssetPath(badge), { name: badge.assetFile }));
     const embeds = BADGES.map((badge) => {
@@ -259,22 +259,22 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
   }
 
   if (interaction.commandName === "quests") {
-    const profile = getProfile(guildId(interaction), interaction.user.id);
+    const profile = await getProfile(guildId(interaction), interaction.user.id);
     if (!profile?.verified) throw new Error("Verify your Roblox identity before starting badge quests.");
-    evaluateAutomaticBadges(profile);
+    await evaluateAutomaticBadges(profile);
     const today = utcPeriodKey();
-    const completedToday = new Set(listQuestCompletionsForPeriod(
+    const completedToday = new Set(await listQuestCompletionsForPeriod(
       guildId(interaction),
       interaction.user.id,
       today,
     ));
-    const total = countQuestCompletions(guildId(interaction), interaction.user.id);
-    const dripDays = countDistinctQuestPeriods(
+    const total = await countQuestCompletions(guildId(interaction), interaction.user.id);
+    const dripDays = await countDistinctQuestPeriods(
       guildId(interaction),
       interaction.user.id,
       "self_dripcheck",
     );
-    const earnedIds = new Set(listEarnedBadges(guildId(interaction), interaction.user.id)
+    const earnedIds = new Set((await listEarnedBadges(guildId(interaction), interaction.user.id))
       .map((badge) => badge.badgeId));
     const questLines = QUESTS.map((quest) =>
       `${completedToday.has(quest.id) ? "✅" : "⬜"} **${quest.name}** — ${quest.description}`,
@@ -302,7 +302,7 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
 
   if (interaction.commandName === "witness-protection") {
     const isPublic = interaction.options.getBoolean("public", true);
-    if (!setPrivacy(guildId(interaction), interaction.user.id, isPublic)) {
+    if (!await setPrivacy(guildId(interaction), interaction.user.id, isPublic)) {
       throw new Error("Create a Rotfile before entering Witness Protection.");
     }
     await interaction.reply({
@@ -315,7 +315,7 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
   }
 
   if (interaction.commandName === "unlink-roblox") {
-    const removed = unlinkProfile(guildId(interaction), interaction.user.id);
+    const removed = await unlinkProfile(guildId(interaction), interaction.user.id);
     await interaction.reply({
       content: removed ? "🧹 Rotfile deleted. The Rascal remembers nothing." : "No Rotfile was linked.",
       ephemeral: true,
@@ -327,10 +327,10 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
     if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
       throw new Error("You need Manage Server permission to operate the Rascal machinery.");
     }
-    const settings = getGuildSettings(guildId(interaction));
+    const settings = await getGuildSettings(guildId(interaction));
     settings.announcementsEnabled = interaction.options.getBoolean("announcements") ?? settings.announcementsEnabled;
     settings.humorLevel = interaction.options.getInteger("humor-level") ?? settings.humorLevel;
-    saveGuildSettings(guildId(interaction), settings);
+    await saveGuildSettings(guildId(interaction), settings);
     await interaction.reply({
       content: `⚙️ Rascal calibrated: announcements **${settings.announcementsEnabled ? "on" : "off"}**, humor level **${settings.humorLevel}/3**.`,
       ephemeral: true,
