@@ -1,41 +1,67 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { RazzMascot } from "@/components/RazzMascot";
-import { Sparkles, ExternalLink } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { Sparkles, ExternalLink, ShieldCheck } from "lucide-react";
 
 export default function InviteRedirectPage() {
-  const installUrl =
-    process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL ||
-    "https://discord.com/oauth2/authorize?client_id=DISCORD_CLIENT_ID&scope=bot%20applications.commands&permissions=117760";
+  const [targetUrl, setTargetUrl] = useState<string>("/api/invite");
 
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL) {
-      window.location.href = process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL;
+    const customUrl = process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL;
+    const clientId = process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID;
+
+    if (customUrl && customUrl.startsWith("https://discord.com")) {
+      setTargetUrl(customUrl);
+      window.location.href = customUrl;
+    } else if (clientId) {
+      const generatedUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&scope=bot%20applications.commands&permissions=277025770560`;
+      setTargetUrl(generatedUrl);
+      window.location.href = generatedUrl;
     }
   }, []);
 
   return (
-    <div className="max-w-md mx-auto px-4 py-20 text-center space-y-6">
-      <div className="p-8 rounded-3xl bg-panel-navy border-sticker-lime glow-lime space-y-6">
-        <RazzMascot pose="celebrate" size={180} className="mx-auto" />
-        <h1 className="font-display font-extrabold text-3xl text-cloud-white">
-          Add Rank Rascal to Discord
-        </h1>
-        <p className="text-xs text-muted-text font-mono leading-relaxed">
-          Redirecting to the official Discord authorization portal...
-        </p>
+    <div className="max-w-lg mx-auto px-4 py-16 text-center space-y-6">
+      <div className="p-8 sm:p-10 rounded-3xl bg-panel-navy border-sticker-lime glow-lime space-y-6">
+        <div className="relative w-48 h-48 mx-auto">
+          <Image
+            src={BRAND_ASSETS.poses.celebrate}
+            alt="Razz celebrating Discord Bot installation"
+            width={200}
+            height={200}
+            className="object-contain w-full h-full animate-bounce motion-reduce:animate-none"
+            priority
+          />
+        </div>
 
-        <div className="pt-2">
+        <div className="space-y-2">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-toxic-lime/20 text-toxic-lime text-xs font-mono font-bold border border-toxic-lime/40">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>DISCORD BOT INSTALLATION</span>
+          </div>
+          <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-cloud-white uppercase">
+            Add Rank Rascal to Discord
+          </h1>
+          <p className="text-xs text-muted-text font-mono leading-relaxed max-w-sm mx-auto">
+            Opening Discord&apos;s official Bot Authorization portal so you can select the server you wish to add Rank Rascal to.
+          </p>
+        </div>
+
+        <div className="pt-2 space-y-3">
           <a
-            href={installUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full inline-flex items-center justify-center space-x-2 bg-royal-purple text-cloud-white py-3 px-6 rounded-2xl font-display font-bold text-sm shadow-sticker-lime hover:bg-royal-purple/90"
+            href={targetUrl}
+            className="w-full inline-flex items-center justify-center space-x-2 bg-royal-purple hover:bg-royal-purple/90 text-cloud-white py-3.5 px-6 rounded-2xl font-display font-bold text-sm shadow-sticker-lime transition-all"
           >
-            <span>Continue to Discord Invite</span>
+            <span>Continue to Discord Server Selector</span>
             <ExternalLink className="w-4 h-4 text-toxic-lime" />
           </a>
+
+          <div className="p-3 rounded-xl bg-midnight-bg border border-panel-navy-light text-[11px] font-mono text-cloud-white/70 flex items-center justify-center space-x-2">
+            <ShieldCheck className="w-4 h-4 text-toxic-lime flex-shrink-0" />
+            <span>Requires Manage Server permission on your target Discord server.</span>
+          </div>
         </div>
       </div>
     </div>
