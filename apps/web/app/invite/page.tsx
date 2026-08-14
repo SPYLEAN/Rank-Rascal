@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { Sparkles, ExternalLink, ShieldCheck, AlertCircle } from "lucide-react";
 
-export default function InviteRedirectPage() {
+function InviteContent() {
   const searchParams = useSearchParams();
   const isMissingId = searchParams.get("status") === "missing_id";
   const [directUrl, setDirectUrl] = useState<string | null>(null);
@@ -85,5 +85,13 @@ export default function InviteRedirectPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function InviteRedirectPage() {
+  return (
+    <Suspense fallback={<div className="py-20 text-center text-cloud-white font-mono">Loading portal...</div>}>
+      <InviteContent />
+    </Suspense>
   );
 }
