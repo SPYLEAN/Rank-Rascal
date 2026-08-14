@@ -1,0 +1,36 @@
+{
+  "name": "rank-rascal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A Roblox-first Discord social game that turns public achievements into certified server brain rot.",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "start:prod": "node dist/src/index.js",
+    "build": "tsc && npm run build --workspace=apps/web",
+    "build:bot": "tsc",
+    "build:web": "npm run build --workspace=apps/web",
+    "check": "tsc --noEmit && npm run check --workspace=apps/web",
+    "check:bot": "tsc --noEmit",
+    "check:web": "npm run check --workspace=apps/web",
+    "register": "tsx src/register-commands.ts",
+    "preflight": "tsx scripts/preflight.ts",
+    "test": "node --import tsx --test test/**/*.test.ts"
+  },
+  "workspaces": [
+    "apps/web"
+  ],
+  "dependencies": {
+    "discord.js": "^14.19.3",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=22.5"
+  }
+}

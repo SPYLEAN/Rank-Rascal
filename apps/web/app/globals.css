@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-fredoka: 'Fredoka', cursive, sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-space-mono: 'Space Mono', monospace;
+}
+
+body {
+  background-color: #121526;
+  color: #F8F8FF;
+  font-family: var(--font-inter);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #121526;
+}
+::-webkit-scrollbar-thumb {
+  background: #7A4DFF;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B7FF36;
+}
+
+/* Custom utilities */
+.glow-purple {
+  box-shadow: 0 0 30px rgba(122, 77, 255, 0.35);
+}
+
+.glow-lime {
+  box-shadow: 0 0 30px rgba(183, 255, 54, 0.35);
+}
+
+.glow-pink {
+  box-shadow: 0 0 30px rgba(255, 79, 163, 0.35);
+}
+
+.border-sticker {
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
+}
+
+.border-sticker-lime {
+  border: 2px solid #B7FF36;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.border-sticker-purple {
+  border: 2px solid #7A4DFF;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.border-sticker-pink {
+  border: 2px solid #FF4FA3;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.rot-tilt-left {
+  transform: rotate(-1.5deg);
+}
+
+.rot-tilt-right {
+  transform: rotate(1.5deg);
+}
+
+/* Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
