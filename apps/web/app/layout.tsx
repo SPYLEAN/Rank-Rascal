@@ -38,10 +38,10 @@ export const metadata: Metadata = {
     siteName: "Rank Rascal",
     images: [
       {
-        url: "/brand/logo-lockup.png",
+        url: "/brand/website-art/razz-community-clubhouse-banner.png",
         width: 1200,
         height: 630,
-        alt: "Rank Rascal — Roblox-First Discord Bot",
+        alt: "Rank Rascal — Play games. Flex achievements. Collect chaos.",
       },
     ],
     locale: "en_US",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Rank Rascal — Roblox Discord Gaming Identity Bot",
     description: "Play games. Flex achievements. Collect chaos.",
-    images: ["/brand/logo-lockup.png"],
+    images: ["/brand/website-art/razz-community-clubhouse-banner.png"],
   },
   robots: {
     index: true,
