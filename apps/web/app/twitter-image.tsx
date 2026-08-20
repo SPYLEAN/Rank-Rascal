@@ -107,7 +107,7 @@ export default async function Image() {
                 fontWeight: 800,
               }}
             >
-              Add to Discord →
+              Add to Discord (Coming Soon) →
             </div>
           </div>
         </div>

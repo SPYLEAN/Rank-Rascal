@@ -34,7 +34,7 @@ export const ClosingCTA: React.FC = () => {
             className="inline-flex items-center space-x-3 bg-royal-purple hover:bg-royal-purple/90 text-cloud-white px-8 py-4 rounded-2xl font-display font-bold text-base transition-all shadow-sticker-lime hover:translate-x-[2px] hover:translate-y-[2px]"
           >
             <Sparkles className="w-5 h-5 text-toxic-lime" />
-            <span>Add Rank Rascal</span>
+            <span>Add Rank Rascal (Coming Soon)</span>
           </a>
         </div>
       </div>

@@ -72,7 +72,7 @@ export default function RewardsPage() {
               className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-royal-purple text-cloud-white px-6 py-3.5 rounded-2xl font-display font-bold text-sm hover:bg-royal-purple/90 shadow-sticker-lime"
             >
               <Sparkles className="w-4 h-4 text-toxic-lime" />
-              <span>Add to Discord</span>
+              <span>Add to Discord (Coming Soon)</span>
             </a>
           </div>
         </div>

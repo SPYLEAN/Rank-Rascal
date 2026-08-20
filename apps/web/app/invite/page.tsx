@@ -45,7 +45,7 @@ function InviteContent() {
             <span>DISCORD BOT INSTALLATION</span>
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-cloud-white uppercase">
-            Add Rank Rascal to Discord
+            Add Rank Rascal to Discord (Coming Soon)
           </h1>
           <p className="text-xs text-muted-text font-mono leading-relaxed max-w-sm mx-auto">
             Opening Discord&apos;s official Bot Authorization portal so you can select the server you wish to add Rank Rascal to.

@@ -67,7 +67,7 @@ export default function SupportPage() {
             rel="noopener noreferrer"
             className="inline-block px-4 py-2 rounded-xl bg-royal-purple text-cloud-white font-mono text-xs font-semibold hover:bg-royal-purple/90"
           >
-            Add Rank Rascal Bot →
+            Add Rank Rascal Bot (Coming Soon) →
           </a>
         </div>
       </div>

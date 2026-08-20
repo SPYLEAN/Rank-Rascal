@@ -83,7 +83,7 @@ export const Navbar: React.FC = () => {
             className="inline-flex items-center space-x-2 bg-royal-purple hover:bg-royal-purple/90 text-cloud-white px-5 py-2.5 rounded-xl font-display font-semibold text-sm transition-all shadow-sticker-lime hover:translate-x-[2px] hover:translate-y-[2px]"
           >
             <Sparkles className="w-4 h-4 text-toxic-lime" />
-            <span>Add to Discord</span>
+            <span>Add to Discord (Coming Soon)</span>
           </a>
         </div>
 
@@ -150,7 +150,7 @@ export const Navbar: React.FC = () => {
               className="w-full flex items-center justify-center space-x-2 bg-royal-purple text-cloud-white py-3 rounded-xl font-display font-semibold"
             >
               <Sparkles className="w-4 h-4 text-toxic-lime" />
-              <span>Add to Discord</span>
+              <span>Add to Discord (Coming Soon)</span>
             </a>
           </div>
         </div>

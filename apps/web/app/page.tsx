@@ -62,7 +62,7 @@ export default function HomePage() {
                 className="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-royal-purple hover:bg-royal-purple/90 text-cloud-white px-8 py-4 rounded-2xl font-display font-bold text-base sm:text-lg transition-all shadow-sticker-lime hover:translate-x-[2px] hover:translate-y-[2px]"
               >
                 <Sparkles className="w-5 h-5 text-toxic-lime" />
-                <span>Add to Discord</span>
+                <span>Add to Discord (Coming Soon)</span>
               </a>
 
               <Link
@@ -338,7 +338,7 @@ export default function HomePage() {
                 className="inline-flex items-center space-x-3 bg-royal-purple hover:bg-royal-purple/90 text-cloud-white px-9 py-4 rounded-2xl font-display font-bold text-base sm:text-lg transition-all shadow-sticker-lime hover:translate-x-[2px] hover:translate-y-[2px]"
               >
                 <Sparkles className="w-5 h-5 text-toxic-lime" />
-                <span>Add Rank Rascal</span>
+                <span>Add Rank Rascal (Coming Soon)</span>
               </a>
             </div>
           </div>
