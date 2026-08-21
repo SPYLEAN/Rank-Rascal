@@ -11,3 +11,5 @@ coverage/
 .next/
 apps/web/.next/
 *.tsbuildinfo
+
+.vercel/
