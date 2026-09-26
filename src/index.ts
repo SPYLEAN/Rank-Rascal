@@ -2,7 +2,7 @@ import { Client, Events, GatewayIntentBits } from "discord.js";
 import { handleCommand } from "./commands.js";
 import { config } from "./config.js";
 import { closeDatabase, initializeDatabase } from "./db.js";
-import { userFacingMessage } from "./errors.js";
+import { UserError, logError, userFacingMessage } from "./errors.js";
 import { startProfileRefreshJob } from "./jobs.js";
 import { checkCommandRate, rateLimitMessage } from "./ratelimit.js";
 import { startWebServer } from "./web.js";
@@ -34,14 +34,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
   } catch (error) {
     // Only UserError messages are shown to members; everything else is logged and hidden.
     const message = userFacingMessage(error);
-    if (error instanceof Error && error.name !== "UserError") {
-      console.error(`Command /${interaction.commandName} failed`, error);
-    }
+    if (!(error instanceof UserError)) logError(`Command /${interaction.commandName} failed`, error);
     await respond(message);
   }
 });
 
-process.on("unhandledRejection", (error) => console.error("Unhandled rejection", error));
+process.on("unhandledRejection", (error) => logError("Unhandled rejection", error));
 
 const databaseEngine = await initializeDatabase();
 console.log(`Rank Rascal database ready (${databaseEngine}).`);

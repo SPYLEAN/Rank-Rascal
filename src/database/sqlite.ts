@@ -90,6 +90,13 @@ export class SqliteStore implements DatabaseStore {
         this.db.prepare("DELETE FROM user_badges WHERE guild_id = ? AND discord_user_id = ?").run(guildId, discordUserId);
         this.db.prepare("DELETE FROM quest_completions WHERE guild_id = ? AND discord_user_id = ?").run(guildId, discordUserId);
       }
+      if (verified) {
+        // OAuth proves current control of this Roblox account, so verified linking is a transfer:
+        // any previous verified holder in this server is released (badges and quests cascade).
+        this.db.prepare(
+          "DELETE FROM profiles WHERE guild_id = ? AND roblox_user_id = ? AND verified = 1 AND discord_user_id <> ?",
+        ).run(guildId, profile.id, discordUserId);
+      }
       this.db.prepare(`
         INSERT INTO profiles (
           guild_id, discord_user_id, roblox_user_id, username, display_name,
@@ -115,7 +122,7 @@ export class SqliteStore implements DatabaseStore {
     } catch (error) {
       this.db.exec("ROLLBACK");
       if (error instanceof Error && error.message.includes("UNIQUE constraint failed")) {
-        throw new UserError("That Roblox account is already verified by another member of this server. If it is yours, ask them to run `/unlink-roblox` first.");
+        throw new UserError("Someone else just verified that Roblox account in this server. Please try again.");
       }
       throw error;
     }

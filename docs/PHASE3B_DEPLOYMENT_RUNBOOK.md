@@ -59,6 +59,7 @@ Approve spending first: an always-on service needs a paid Railway plan or remain
    | `REQUIRE_POSTGRES` | `true` |
    | `PUBLIC_BASE_URL` | `https://api.rankrascal.lol` |
    | `PORT` | `3000` |
+   | `TRUSTED_PROXY_HOPS` | `1` (Railway's edge). Raise only if you put another proxy such as Cloudflare in front of `api.rankrascal.lol` |
    | `ROBLOX_OAUTH_CLIENT_ID` | From the Roblox Creator Dashboard |
    | `ROBLOX_OAUTH_CLIENT_SECRET` | From the Roblox Creator Dashboard |
    | `APP_SECRET` | New random value: run `openssl rand -hex 32` locally and paste it straight into Railway |
@@ -85,6 +86,16 @@ select name, checksum, applied_at from schema_migrations order by name;   -- exp
 select table_name from information_schema.tables where table_schema = 'public' order by 1;
 -- expect: guild_settings, oauth_states, profiles, quest_completions, schema_migrations, user_badges
 ```
+
+### Before the first start against an existing database
+
+The worker applies migration `002_unique_verified_roblox_account.sql` on startup. It fails (and the worker crash-loops) if a server already has two verified profiles for the same Roblox account. A brand-new Neon database has none. If you reuse a database that already has data, run this first in the Neon SQL editor and resolve any rows it returns:
+
+```sql
+select guild_id, roblox_user_id, count(*) from profiles where verified group by 1, 2 having count(*) > 1;
+```
+
+Never edit a migration file after it has been applied.
 
 ## 4. 🛑 DNS for `api.rankrascal.lol`
 
@@ -124,6 +135,7 @@ https://api.rankrascal.lol/oauth/roblox/callback
 - `https://api.rankrascal.lol/privacy` and `/terms` render; `/` renders.
 - `https://api.rankrascal.lol/oauth/roblox/callback` with no parameters shows the "Verification failed" page (400), proving the route is live.
 - Railway → **Redeploy**, then `/health` again: still `postgres`.
+- Rate-limit client key: confirm the callback is limited per visitor rather than per proxy. Two different networks must each be able to load `/oauth/roblox/callback` after a third has hit the limit. If you see everyone limited together, adjust `TRUSTED_PROXY_HOPS`.
 - Discord Developer Portal → General Information: Interactions Endpoint URL is **blank**.
 - Vercel: `NEXT_PUBLIC_INVITE_ENABLED` is `false`.
 

@@ -44,12 +44,14 @@ test("PostgreSQL adapter migrates and preserves the core profile lifecycle", {
     assert.equal(await unlinkProfile(guildId, discordUserId), true);
     assert.equal(await getProfile(guildId, discordUserId), null);
 
-    // Only one member may hold a verified link to a Roblox account per server.
+    // Verified linking transfers: only one member holds a verified link to a Roblox account per server.
     await saveProfile(guildId, discordUserId, profile, true);
-    await assert.rejects(saveProfile(guildId, `${discordUserId}-other`, profile, true), /already verified/);
-    assert.equal(await getProfile(guildId, `${discordUserId}-other`), null);
     await saveProfile(guildId, `${discordUserId}-preview`, profile, false);
-    assert.equal(await unlinkProfile(guildId, discordUserId), true);
+    await saveProfile(guildId, `${discordUserId}-other`, profile, true);
+    assert.equal(await getProfile(guildId, discordUserId), null, "previous verified holder is released");
+    assert.equal((await getProfile(guildId, `${discordUserId}-other`))?.verified, true);
+    assert.equal((await getProfile(guildId, `${discordUserId}-preview`))?.verified, false);
+    assert.equal(await unlinkProfile(guildId, `${discordUserId}-other`), true);
     assert.equal(await unlinkProfile(guildId, `${discordUserId}-preview`), true);
   } finally {
     await closeDatabase();

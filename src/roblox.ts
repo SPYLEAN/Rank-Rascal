@@ -22,7 +22,12 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
     console.error("Roblox API returned", response.status, new URL(url).pathname);
     throw new UserError(ROBLOX_UNAVAILABLE);
   }
-  return response.json() as Promise<T>;
+  try {
+    return await response.json() as T;
+  } catch {
+    console.error("Roblox API returned an unreadable body", new URL(url).pathname);
+    throw new UserError(ROBLOX_UNAVAILABLE);
+  }
 }
 
 export async function resolveUsername(username: string): Promise<number | null> {
@@ -54,7 +59,11 @@ async function getBadgeCount(userId: number): Promise<number> {
   return count;
 }
 
-export async function getRobloxProfile(userId: number): Promise<RobloxProfile> {
+/**
+ * `fallbackBadgeCount` is used when the badge list cannot be fetched, so a transient
+ * Roblox failure never overwrites a known count with 0.
+ */
+export async function getRobloxProfile(userId: number, fallbackBadgeCount = 0): Promise<RobloxProfile> {
   const [user, avatar, badgeCount] = await Promise.all([
     request<{
       id: number;
@@ -67,7 +76,7 @@ export async function getRobloxProfile(userId: number): Promise<RobloxProfile> {
     request<{ data: Array<{ imageUrl: string; state: string }> }>(
       `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=420x420&format=Png&isCircular=false`,
     ),
-    getBadgeCount(userId).catch(() => 0),
+    getBadgeCount(userId).catch(() => fallbackBadgeCount),
   ]);
 
   return {

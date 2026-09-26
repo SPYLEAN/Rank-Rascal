@@ -46,7 +46,7 @@ Record **PASS / FAIL / BLOCKED** and evidence for each.
 | 22 | Repository and screenshots | No secrets in Git, logs, screenshots, or client bundles |
 | 23 | Rate limits: A runs `/preview-roblox` four times within a minute; someone spams any command more than 10 times in 20 s | Extra attempts get "Slow down, Rascal. Try again in Ns." and nothing else breaks |
 | 24 | Error hygiene: with Roblox unreachable or a bad username, run `/preview-roblox` | Friendly message ("Roblox is not answering right now…" or spelling hint); never a raw error, status code, or stack trace |
-| 25 | Two members try to verify the same Roblox account in one server | The second is refused with a clear message; previews never appear in `/yapping-order` |
+| 25 | Two Discord accounts verify the same Roblox account in one server (test accounts only) | Verified linking is a transfer: the second account becomes the verified holder and the first loses its Rotfile, badges and quests. Previews never appear in `/yapping-order` |
 
 ## Multi-day observation (Tests 14c)
 

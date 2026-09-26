@@ -50,16 +50,43 @@ test("expensive commands get a tighter per-user budget", () => {
   assert.match(rateLimitMessage(fourth.retryAfterMs), /^Slow down, Rascal\. Try again in \d+s\.$/);
 });
 
-test("a Roblox account can be verified by only one member per server", async () => {
+test("verified linking transfers a Roblox account; only one verified holder per server", async () => {
   await saveProfile("guild-1", "discord-a", roblox(500, "OwnerA"), true);
-  await assert.rejects(
-    saveProfile("guild-1", "discord-b", roblox(500, "OwnerA"), true),
-    (error: unknown) => error instanceof UserError && /already verified/.test(error.message),
-  );
-  assert.equal(await getProfile("guild-1", "discord-b"), null, "failed claim leaves no profile behind");
-  // Same account in a different server is fine, and unverified previews are unaffected.
-  await saveProfile("guild-2", "discord-b", roblox(500, "OwnerA"), true);
-  await saveProfile("guild-1", "discord-c", roblox(500, "OwnerA"), false);
+  await saveProfile("guild-1", "discord-c", roblox(500, "OwnerA"), false); // preview never conflicts
+  // The real owner re-verifies from a new Discord account: the old holder is released.
+  await saveProfile("guild-1", "discord-b", roblox(500, "OwnerA"), true);
+  assert.equal(await getProfile("guild-1", "discord-a"), null, "previous verified holder is released");
+  assert.equal((await getProfile("guild-1", "discord-b"))?.verified, true);
+  assert.equal((await getProfile("guild-1", "discord-c"))?.verified, false, "previews are untouched");
+  // Other servers are independent.
+  await saveProfile("guild-2", "discord-a", roblox(500, "OwnerA"), true);
+  assert.equal((await getProfile("guild-1", "discord-b"))?.verified, true);
+});
+
+test("transferring a verified account clears the previous holder's badges and quests", async () => {
+  const { recordVerifiedQuest } = await import("../src/badges.js");
+  const { countQuestCompletions } = await import("../src/db.js");
+  await saveProfile("guild-4", "old-holder", roblox(700, "SharedAccount"), true);
+  await recordVerifiedQuest("guild-4", "old-holder", "rotfile_checkin");
+  assert.equal(await countQuestCompletions("guild-4", "old-holder"), 1);
+  await saveProfile("guild-4", "new-holder", roblox(700, "SharedAccount"), true);
+  assert.equal(await countQuestCompletions("guild-4", "old-holder"), 0);
+  assert.equal(await countQuestCompletions("guild-4", "new-holder"), 0, "progress is not transferred");
+});
+
+test("client key uses the Nth X-Forwarded-For entry from the right", async () => {
+  const { clientKey } = await import("../src/web.js");
+  const request = (forwarded: string | undefined, remote = "10.0.0.9") => ({
+    headers: forwarded === undefined ? {} : { "x-forwarded-for": forwarded },
+    socket: { remoteAddress: remote },
+  }) as never;
+  assert.equal(clientKey(request("203.0.113.5, 198.51.100.7"), 1), "198.51.100.7");
+  assert.equal(clientKey(request("203.0.113.5, 198.51.100.7"), 2), "203.0.113.5");
+  assert.equal(clientKey(request("spoofed, 198.51.100.7"), 1), "198.51.100.7", "left entries are ignored");
+  assert.equal(clientKey(request(undefined), 1), "10.0.0.9", "no header falls back to the socket");
+  assert.equal(clientKey(request("198.51.100.7"), 0), "10.0.0.9", "0 hops ignores the header");
+  assert.equal(clientKey(request("2001:db8:1:2:aaaa:bbbb:cccc:dddd"), 1), "2001:db8:1:2", "IPv6 collapses to /64");
+  assert.ok(clientKey(request("x".repeat(500)), 1).length <= 64);
 });
 
 test("the Yapping Order lists verified profiles only", async () => {

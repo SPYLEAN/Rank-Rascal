@@ -29,12 +29,16 @@ function send(response: ServerResponse, status: number, body: string | Buffer, c
   response.end(body);
 }
 
-// The last X-Forwarded-For entry is the one appended by the trusted hosting proxy.
-function clientKey(request: IncomingMessage): string {
+// Take the Nth X-Forwarded-For entry from the right, where N is the number of trusted
+// proxies (TRUSTED_PROXY_HOPS). Entries further left are client-supplied and ignored.
+export function clientKey(request: Pick<IncomingMessage, "headers" | "socket">, hops = config.trustedProxyHops): string {
   const forwarded = request.headers["x-forwarded-for"];
   const value = Array.isArray(forwarded) ? forwarded.join(",") : forwarded;
-  const last = value?.split(",").pop()?.trim();
-  return last || request.socket.remoteAddress || "unknown";
+  const entries = (value ?? "").split(",").map((entry) => entry.trim()).filter(Boolean);
+  const picked = hops > 0 && entries.length >= hops ? entries[entries.length - hops] : undefined;
+  const address = (picked ?? request.socket.remoteAddress ?? "unknown").slice(0, 64);
+  // Collapse IPv6 addresses to their /64 so one client cannot rotate through a whole prefix.
+  return address.includes(":") && !address.includes(".") ? address.split(":").slice(0, 4).join(":") : address;
 }
 
 const callbackLimiter = new RateLimiter(15, 60_000);

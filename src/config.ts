@@ -17,6 +17,8 @@ export const config = {
   databasePoolMax: Math.min(20, Math.max(1, Number(process.env.DATABASE_POOL_MAX) || 10)),
   publicBaseUrl: (process.env.PUBLIC_BASE_URL?.trim() || "http://localhost:3000").replace(/\/$/, ""),
   port: Number(process.env.PORT || 3000),
+  // Number of trusted reverse proxies in front of the worker (Railway edge = 1).
+  trustedProxyHops: Math.min(5, Math.max(0, Math.trunc(Number(process.env.TRUSTED_PROXY_HOPS ?? 1)) || 0)),
   appSecret: () => required("APP_SECRET"),
   robloxClientId: () => required("ROBLOX_OAUTH_CLIENT_ID"),
   robloxClientSecret: () => required("ROBLOX_OAUTH_CLIENT_SECRET"),
