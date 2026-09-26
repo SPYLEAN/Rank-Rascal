@@ -1,5 +1,7 @@
 # Rank Rascal Bot Production Deployment
 
+> Step-by-step for Neon + Railway + `api.rankrascal.lol`, including the steps that need the owner, is in `docs/PHASE3B_DEPLOYMENT_RUNBOOK.md`. Use Neon's **direct** (non-pooler) connection string: the migration runner uses a session-level advisory lock that PgBouncer transaction pooling does not support. With `REQUIRE_POSTGRES=true` the worker refuses to start without `DATABASE_URL`.
+
 ## Production shape
 
 - `https://rankrascal.lol` remains the Vercel website.

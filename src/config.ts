@@ -11,6 +11,7 @@ export const config = {
   discordClientId: () => required("DISCORD_CLIENT_ID"),
   discordGuildId: process.env.DISCORD_GUILD_ID?.trim(),
   databaseUrl: process.env.DATABASE_URL?.trim(),
+  requirePostgres: process.env.REQUIRE_POSTGRES?.trim() === "true",
   databasePath: process.env.DATABASE_PATH?.trim() || "./data/rank-rascal.db",
   databaseSsl: process.env.DATABASE_SSL?.trim() !== "false",
   databasePoolMax: Math.min(20, Math.max(1, Number(process.env.DATABASE_POOL_MAX) || 10)),

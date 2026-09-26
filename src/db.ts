@@ -12,6 +12,9 @@ async function createStore(): Promise<DatabaseStore> {
     await database.migrate();
     return database;
   }
+  if (config.requirePostgres) {
+    throw new Error("REQUIRE_POSTGRES=true but DATABASE_URL is not set; refusing to fall back to SQLite.");
+  }
   return new SqliteStore(config.databasePath);
 }
 
