@@ -81,7 +81,7 @@ Expected: `200` and `{"ok":true,"database":"postgres"}`. Optionally remove the g
 In the Neon SQL editor, confirm the migration ran:
 
 ```sql
-select name from schema_migrations;   -- expect 001_initial.sql
+select name, checksum, applied_at from schema_migrations order by name;   -- expect one row: 001_initial.sql
 select table_name from information_schema.tables where table_schema = 'public' order by 1;
 -- expect: guild_settings, oauth_states, profiles, quest_completions, schema_migrations, user_badges
 ```
