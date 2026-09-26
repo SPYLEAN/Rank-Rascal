@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  verify:
+    name: Check, test and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install (clean)
+        run: npm ci
+
+      - name: Asset and type checks
+        run: npm run check
+
+      - name: Unit tests (SQLite)
+        run: npm test
+
+      - name: Build bot and website
+        run: npm run build
+
+  postgres:
+    name: PostgreSQL integration test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: rankrascal_test
+          POSTGRES_USER: rankrascal
+          # Throwaway credential for a container that exists only for this job.
+          POSTGRES_PASSWORD: ci-only-not-a-secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U rankrascal -d rankrascal_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://rankrascal:ci-only-not-a-secret@localhost:5432/rankrascal_test
+      DATABASE_SSL: "false"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run tests against PostgreSQL
+        run: |
+          npm test 2>&1 | tee test-output.txt
+          # The integration test must actually run, not be skipped.
+          grep -q "^ℹ skipped 0" test-output.txt
+
+  docker:
+    name: Worker image builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build root Dockerfile (no push)
+        run: docker build --tag rank-rascal-worker:ci .

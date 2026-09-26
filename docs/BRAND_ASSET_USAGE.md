@@ -26,10 +26,17 @@ Complete catalog of production assets used across the Rank Rascal web applicatio
 | `rascal-lol.png` | 256x256 | Transparent | All Routes | `CommandCard.tsx`, Rails | `""` (Decorative) | Decorative | Yes |
 | `rascal-cooked.png` | 256x256 | Transparent | All Routes | Error states, Rails | `""` (Decorative) | Decorative | Yes |
 | `rascal-loading.png` | 256x256 | Transparent | All Routes | Loading indicators, Rails | `""` (Decorative) | Decorative | Yes |
-| `razz-why-different.png` | 1536x1024 | Transparent | `/` (Homepage) | `VisualStorySection.tsx` | `Razz connects verified profiles, badges, rivalries, rankings and privacy controls.` | Meaningful | Yes |
-| `razz-reward-machine.png` | 1536x1024 | Transparent | `/rewards`, Homepage | `VisualStorySection.tsx` | `Razz turns a machine that produces collectible badges and quest tickets.` | Meaningful | Yes |
-| `razz-privacy-guardian.png` | 1024x1536 | Transparent | `/verify`, `/privacy`, Homepage | `VisualStorySection.tsx` | `Razz protects a verified profile with a privacy shield and key.` | Meaningful | Yes |
-| `razz-rulebook.png` | 1086x1448 | Transparent | `/safety`, `/terms` | `IllustratedPageHero.tsx` | `Razz carefully reads a giant rulebook.` | Meaningful | Yes |
+| `razz-why-different.png` | 1536x1024 | Transparent | Not placed yet (reserved for the homepage "why different" section) | — | `Razz connects verified profiles, badges, rivalries, rankings and privacy controls.` | Meaningful | Yes |
+| `razz-reward-machine.png` | 1536x1024 | Transparent | `/rewards`, Homepage | `app/rewards/page.tsx`, `app/page.tsx` (inline) | `Razz turns a machine that produces collectible badges and quest tickets.` | Meaningful | Yes |
+| `razz-privacy-guardian.png` | 1024x1536 | Transparent | `/verify`, Homepage | `app/verify/page.tsx`, `app/page.tsx` (inline) | `Razz protects a verified profile with a privacy shield and key.` | Meaningful | Yes |
+| `razz-rulebook.png` | 1086x1448 | Transparent | `/safety`, `/terms` | `app/safety/page.tsx`, `app/terms/page.tsx` (inline) | `Razz carefully reads a giant rulebook.` | Meaningful | Yes |
 | `razz-tactical-coming-soon-banner.png` | 1672x941 | Opaque (16:9) | `/games`, Homepage | `GameRoadmapPanel.tsx` | `Razz leads an original neon tactical squad through a training arena.` | Meaningful | Yes |
 | `razz-battle-royale-coming-soon-banner.png` | 1672x941 | Opaque (16:9) | `/games`, Homepage | `GameRoadmapPanel.tsx` | `Razz glides toward a colorful floating-island competition.` | Meaningful | Yes |
 | `razz-community-clubhouse-banner.png` | 1672x941 | Opaque (16:9) | `/` (Homepage CTA) | `ClosingCTA.tsx` | `Razz hosts a joyful digital clubhouse filled with profiles, badges and reactions.` | Meaningful | Yes |
+
+## Publishing rules
+
+- Only files listed above may ship in `apps/web/public/brand/`.
+- Contact sheets, `PROMPTS.md`, `README.md`, and individual loading frames (other than `razz-load-01.png`, the static fallback) stay in the source `brand/` folder and are never published.
+- `npm run verify-assets` fails the build if an internal-only file appears under `public/brand/` or if a manifest path has the wrong casing.
+- Component names above were audited against the code on 2026-09-26; update this table when an asset moves.

@@ -22,7 +22,6 @@ export const BRAND_ASSETS = {
     badgePresent: "/brand/poses/razz-badge-present.png",
     detective: "/brand/poses/razz-detective.png",
     celebrate: "/brand/poses/razz-celebrate.png",
-    contact: "/brand/poses/razz-poses-contact.png",
     loadStatic: "/brand/animation/razz-load-01.png",
   },
 

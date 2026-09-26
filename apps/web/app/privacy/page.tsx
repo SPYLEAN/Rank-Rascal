@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ShieldCheck, Lock, Trash2, EyeOff, AlertTriangle } from "lucide-react";
 
 export default function PrivacyPage() {
-  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "support@rankrascal.com";
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
   const hasSupportEmail = Boolean(process.env.NEXT_PUBLIC_SUPPORT_EMAIL);
 
   return (
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
         <div className="p-4 rounded-2xl bg-alert-red/10 border border-alert-red/40 text-xs font-mono text-cloud-white flex items-center space-x-3">
           <AlertTriangle className="w-5 h-5 text-alert-red flex-shrink-0" />
           <span>
-            <strong>Deployment Warning:</strong> <code className="text-toxic-lime font-bold">NEXT_PUBLIC_SUPPORT_EMAIL</code> is currently unset in this environment.
+            <strong>Support mailbox not open yet.</strong> Until it opens, use <code className="text-toxic-lime font-bold">/unlink-roblox</code> and <code className="text-toxic-lime font-bold">/witness-protection</code> in Discord to control your data.
           </span>
         </div>
       )}
@@ -109,7 +109,7 @@ export default function PrivacyPage() {
             For privacy inquiries, manual data export, or deletion requests, contact our privacy team:
           </p>
           <p className="text-xs font-mono text-toxic-lime">
-            Email: <a href={`mailto:${supportEmail}`} className="underline">{supportEmail}</a>
+            Email: {supportEmail ? <a href={`mailto:${supportEmail}`} className="underline">{supportEmail}</a> : "not available yet"}
           </p>
         </section>
       </div>

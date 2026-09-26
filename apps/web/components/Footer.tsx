@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { ShieldCheck, Heart, AlertTriangle } from "lucide-react";
+import { ShieldCheck, Heart } from "lucide-react";
 
 export const Footer: React.FC = () => {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
@@ -119,15 +119,9 @@ export const Footer: React.FC = () => {
                 </a>
               </p>
             ) : (
-              <div className="bg-alert-red/10 border border-alert-red/40 rounded-xl p-3 text-xs text-cloud-white space-y-1">
-                <div className="flex items-center space-x-1.5 text-alert-red font-semibold">
-                  <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-                  <span>Deployment Warning</span>
-                </div>
-                <p className="text-cloud-white/80">
-                  <code className="font-mono text-toxic-lime">NEXT_PUBLIC_SUPPORT_EMAIL</code> is unset in this build environment.
-                </p>
-              </div>
+              <p className="text-xs text-cloud-white/80">
+                Support mailbox opening soon. Meanwhile, use <code className="font-mono text-toxic-lime">/unlink-roblox</code> and <code className="font-mono text-toxic-lime">/witness-protection</code> in Discord to control your data.
+              </p>
             )}
             <p className="mt-4 text-xs text-muted-text/70">
               For security or data deletion requests, follow the steps on our{" "}

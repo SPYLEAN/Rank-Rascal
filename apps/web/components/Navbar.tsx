@@ -8,8 +8,8 @@ import { Menu, X, Shield, Sparkles, Gamepad2, Award, Terminal, LayoutDashboard }
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const discordInviteUrl =
-    process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL || "/invite";
+  // Always route through /invite, which stays closed until NEXT_PUBLIC_INVITE_ENABLED=true.
+  const discordInviteUrl = "/invite";
 
   return (
     <header className="sticky top-0 z-50 bg-[#121526]/90 backdrop-blur-md border-b border-panel-navy-light/60">

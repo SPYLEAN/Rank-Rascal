@@ -13,3 +13,5 @@ apps/web/.next/
 *.tsbuildinfo
 
 .vercel/
+
+.claude/settings.local.json

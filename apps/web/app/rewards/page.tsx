@@ -21,8 +21,8 @@ import {
 
 export default function RewardsPage() {
   const [selectedBadge, setSelectedBadge] = useState<CanonicalBadge | null>(null);
-  const discordInviteUrl =
-    process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL || "/invite";
+  // Always route through /invite, which stays closed until NEXT_PUBLIC_INVITE_ENABLED=true.
+  const discordInviteUrl = "/invite";
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">

@@ -4,8 +4,8 @@ import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { Sparkles } from "lucide-react";
 
 export const ClosingCTA: React.FC = () => {
-  const discordInviteUrl =
-    process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL || "/invite";
+  // Always route through /invite, which stays closed until NEXT_PUBLIC_INVITE_ENABLED=true.
+  const discordInviteUrl = "/invite";
 
   return (
     <div className="relative rounded-3xl overflow-hidden border-sticker-lime glow-lime min-h-[380px] flex items-center justify-center text-center p-8 sm:p-14">

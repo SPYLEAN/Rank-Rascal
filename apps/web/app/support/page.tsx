@@ -3,9 +3,8 @@ import { RazzMascot } from "@/components/RazzMascot";
 import { HelpCircle, Mail, MessageSquare, ShieldCheck, Terminal, AlertTriangle } from "lucide-react";
 
 export default function SupportPage() {
-  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "support@rankrascal.com";
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
   const hasSupportEmail = Boolean(process.env.NEXT_PUBLIC_SUPPORT_EMAIL);
-  const discordInviteUrl = process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL || "/invite";
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
@@ -28,7 +27,7 @@ export default function SupportPage() {
         <div className="p-4 rounded-2xl bg-alert-red/10 border border-alert-red/40 text-xs font-mono text-cloud-white flex items-center space-x-3 max-w-2xl mx-auto">
           <AlertTriangle className="w-5 h-5 text-alert-red flex-shrink-0" />
           <span>
-            <strong>Deployment Warning:</strong> <code className="text-toxic-lime font-bold">NEXT_PUBLIC_SUPPORT_EMAIL</code> is currently unset in this environment.
+            <strong>Support mailbox not open yet.</strong> Until it opens, use <code className="text-toxic-lime font-bold">/unlink-roblox</code> and <code className="text-toxic-lime font-bold">/witness-protection</code> in Discord to control your data.
           </span>
         </div>
       )}
@@ -44,12 +43,18 @@ export default function SupportPage() {
           <p className="text-xs text-muted-text leading-relaxed">
             For account inquiries, data deletion requests, or technical assistance:
           </p>
-          <a
-            href={`mailto:${supportEmail}`}
-            className="inline-block px-4 py-2 rounded-xl bg-midnight-bg border border-panel-navy-light text-xs font-mono text-toxic-lime font-semibold hover:border-toxic-lime"
-          >
-            {supportEmail}
-          </a>
+          {supportEmail ? (
+            <a
+              href={`mailto:${supportEmail}`}
+              className="inline-block px-4 py-2 rounded-xl bg-midnight-bg border border-panel-navy-light text-xs font-mono text-toxic-lime font-semibold hover:border-toxic-lime"
+            >
+              {supportEmail}
+            </a>
+          ) : (
+            <span className="inline-block px-4 py-2 rounded-xl bg-midnight-bg border border-panel-navy-light text-xs font-mono text-muted-text">
+              Mailbox opening soon
+            </span>
+          )}
         </div>
 
         {/* Discord Support Community */}
@@ -62,9 +67,7 @@ export default function SupportPage() {
             Get help from community members or invite Rank Rascal directly into your server:
           </p>
           <a
-            href={discordInviteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/invite"
             className="inline-block px-4 py-2 rounded-xl bg-royal-purple text-cloud-white font-mono text-xs font-semibold hover:bg-royal-purple/90"
           >
             Add Rank Rascal Bot (Coming Soon) →

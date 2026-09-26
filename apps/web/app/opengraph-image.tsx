@@ -11,7 +11,7 @@ export const size = {
 export const contentType = "image/png";
 
 export default async function Image() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rankrascal.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rankrascal.lol";
 
   return new ImageResponse(
     (

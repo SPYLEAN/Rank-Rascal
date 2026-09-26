@@ -25,27 +25,27 @@ const COMMANDS_DATA: CommandCardProps[] = [
   },
   {
     name: "/rotfile",
-    syntax: "/rotfile [user:<discord_user>]",
+    syntax: "/rotfile [player:<discord_user>]",
     description: "Displays a verified Roblox identity card showing avatar, public badge milestones, account age era, and Rascal Rep.",
     category: "Humor & Flex",
     privacyIndicator: "Witness Protection Aware",
-    example: "/rotfile user:@BloxLegend",
+    example: "/rotfile player:@BloxLegend",
   },
   {
     name: "/dripcheck",
-    syntax: "/dripcheck [user:<discord_user>]",
+    syntax: "/dripcheck [player:<discord_user>]",
     description: "Evaluates an avatar's outfit heat using deterministic, safe humor algorithms.",
     category: "Humor & Flex",
     privacyIndicator: "Witness Protection Aware",
-    example: "/dripcheck user:@NoobSlayer",
+    example: "/dripcheck player:@NoobSlayer",
   },
   {
     name: "/fraudcheck",
-    syntax: "/fraudcheck target:<discord_user>",
+    syntax: "/fraudcheck opponent:<discord_user>",
     description: "Compares your public badge count against a server rival in a friendly head-to-head comparison.",
     category: "Leaderboards",
     privacyIndicator: "Witness Protection Aware",
-    example: "/fraudcheck target:@ChaosKing",
+    example: "/fraudcheck opponent:@ChaosKing",
   },
   {
     name: "/yapping-order",
@@ -57,11 +57,11 @@ const COMMANDS_DATA: CommandCardProps[] = [
   },
   {
     name: "/badges",
-    syntax: "/badges [player:<roblox_username>]",
+    syntax: "/badges [player:<discord_user>]",
     description: "Displays earned and available illustrated reward badges (Quest Crusader, Drip Monarch, Veteran Noob) for yourself or another player.",
     category: "Humor & Flex",
     privacyIndicator: "Witness Protection Aware",
-    example: "/badges player:Builderman",
+    example: "/badges player:@BloxLegend",
   },
   {
     name: "/quests",
@@ -73,11 +73,11 @@ const COMMANDS_DATA: CommandCardProps[] = [
   },
   {
     name: "/witness-protection",
-    syntax: "/witness-protection enabled:<true|false>",
+    syntax: "/witness-protection public:<true|false>",
     description: "Toggles your profile visibility on public server leaderboards and discovery commands.",
     category: "Privacy & Config",
     privacyIndicator: "Ephemeral / Private",
-    example: "/witness-protection enabled:true",
+    example: "/witness-protection public:false",
   },
   {
     name: "/unlink-roblox",
@@ -89,12 +89,12 @@ const COMMANDS_DATA: CommandCardProps[] = [
   },
   {
     name: "/rascal-config",
-    syntax: "/rascal-config [announcements:<bool>] [humor:<1-3>]",
+    syntax: "/rascal-config [announcements:<bool>] [humor-level:<1-3>]",
     description: "Configures server-wide humor intensity (1-3) and public announcement channels.",
     category: "Privacy & Config",
     permissions: "Manage Server Only",
     privacyIndicator: "Ephemeral / Private",
-    example: "/rascal-config humor:2 announcements:true",
+    example: "/rascal-config humor-level:2 announcements:true",
   },
 ];
 

@@ -26,7 +26,8 @@ import {
 } from "lucide-react";
 
 export default function HomePage() {
-  const discordInviteUrl = process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL || "/invite";
+  // Always route through /invite, which stays closed until NEXT_PUBLIC_INVITE_ENABLED=true.
+  const discordInviteUrl = "/invite";
 
   return (
     <div className="space-y-20 sm:space-y-32 pb-20 overflow-x-hidden">
