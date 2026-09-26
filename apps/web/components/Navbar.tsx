@@ -36,7 +36,7 @@ export const Navbar: React.FC = () => {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden lg:flex items-center space-x-8">
           <Link
             href="/commands"
             className="flex items-center space-x-2 text-cloud-white/90 hover:text-toxic-lime text-sm font-medium transition-colors"
@@ -75,7 +75,7 @@ export const Navbar: React.FC = () => {
         </nav>
 
         {/* CTA Button */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center space-x-4">
           <a
             href={discordInviteUrl}
             target="_blank"
@@ -88,7 +88,7 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Mobile menu toggle */}
-        <div className="md:hidden flex items-center">
+        <div className="lg:hidden flex items-center">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg bg-panel-navy text-cloud-white focus:outline-none focus:ring-2 focus:ring-toxic-lime"
@@ -101,7 +101,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-panel-navy border-b border-panel-navy-light px-4 pt-2 pb-6 space-y-3">
+        <div className="lg:hidden bg-panel-navy border-b border-panel-navy-light px-4 pt-2 pb-6 space-y-3">
           <Link
             href="/commands"
             onClick={() => setMobileMenuOpen(false)}

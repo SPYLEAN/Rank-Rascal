@@ -1,6 +1,7 @@
 import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
+import { UserError } from "../errors.js";
 import type { BadgeId, EarnedBadge, LinkedProfile, QuestId, RobloxProfile } from "../types.js";
 import {
   type DatabaseStore,
@@ -74,6 +75,8 @@ export class SqliteStore implements DatabaseStore {
       );
       CREATE INDEX IF NOT EXISTS quest_completions_user_idx
         ON quest_completions (guild_id, discord_user_id, completed_at);
+      CREATE UNIQUE INDEX IF NOT EXISTS profiles_verified_roblox_uidx
+        ON profiles (guild_id, roblox_user_id) WHERE verified = 1;
     `);
   }
 
@@ -111,6 +114,9 @@ export class SqliteStore implements DatabaseStore {
       this.db.exec("COMMIT");
     } catch (error) {
       this.db.exec("ROLLBACK");
+      if (error instanceof Error && error.message.includes("UNIQUE constraint failed")) {
+        throw new UserError("That Roblox account is already verified by another member of this server. If it is yours, ask them to run `/unlink-roblox` first.");
+      }
       throw error;
     }
   }
@@ -165,7 +171,7 @@ export class SqliteStore implements DatabaseStore {
 
   async listPublicProfiles(guildId: string): Promise<LinkedProfile[]> {
     const rows = this.db.prepare(`
-      SELECT * FROM profiles WHERE guild_id = ? AND public_profile = 1
+      SELECT * FROM profiles WHERE guild_id = ? AND public_profile = 1 AND verified = 1
       ORDER BY rascal_rep DESC, badge_count DESC LIMIT 10
     `).all(guildId) as Record<string, unknown>[];
     return rows.map(rowToProfile);

@@ -1,10 +1,27 @@
+import { UserError } from "./errors.js";
 import type { RobloxProfile } from "./types.js";
+
+const REQUEST_TIMEOUT_MS = 8_000;
+const ROBLOX_UNAVAILABLE = "Roblox is not answering right now. Try again in a moment.";
 
 const headers = { "User-Agent": "RankRascal/0.1 (Discord bot prototype)" };
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, { ...init, headers: { ...headers, ...init?.headers } });
-  if (!response.ok) throw new Error(`Roblox API returned ${response.status}`);
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...init,
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      headers: { ...headers, ...init?.headers },
+    });
+  } catch (error) {
+    console.error("Roblox API request failed", new URL(url).pathname, error instanceof Error ? error.name : "unknown");
+    throw new UserError(ROBLOX_UNAVAILABLE);
+  }
+  if (!response.ok) {
+    console.error("Roblox API returned", response.status, new URL(url).pathname);
+    throw new UserError(ROBLOX_UNAVAILABLE);
+  }
   return response.json() as Promise<T>;
 }
 

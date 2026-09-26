@@ -33,7 +33,7 @@ export default function LinkedRolesPage() {
               Linked Roles Are Cooking 🍳
             </h2>
             <p className="text-xs text-muted-text font-mono max-w-lg mx-auto leading-relaxed">
-              Discord Linked Roles integration is intentionally disabled behind <code className="text-toxic-lime">NEXT_PUBLIC_LINKED_ROLES_ENABLED=false</code> until Discord OAuth2 user token storage, <code className="text-toxic-lime">role_connections.write</code> metadata registration, and automated role connection updates are fully implemented and tested.
+              Discord Linked Roles integration is intentionally disabled behind <code className="text-toxic-lime break-all">NEXT_PUBLIC_LINKED_ROLES_ENABLED=false</code> until Discord OAuth2 user token storage, <code className="text-toxic-lime break-all">role_connections.write</code> metadata registration, and automated role connection updates are fully implemented and tested.
             </p>
           </div>
 
@@ -43,7 +43,7 @@ export default function LinkedRolesPage() {
               <span>Prerequisites for Live Release:</span>
             </div>
             <ul className="space-y-1 pl-5 list-disc text-muted-text text-[11px]">
-              <li>Discord OAuth2 flow with <code className="text-cloud-white">role_connections.write</code> scope</li>
+              <li>Discord OAuth2 flow with <code className="text-cloud-white break-all">role_connections.write</code> scope</li>
               <li>Secure encrypted token storage for refresh tokens</li>
               <li>Discord Developer Portal Application Role Connection Metadata registration</li>
               <li>Production endpoint for pushed metadata sync</li>

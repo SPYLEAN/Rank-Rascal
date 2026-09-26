@@ -42,7 +42,7 @@ const COMMANDS_DATA: CommandCardProps[] = [
   {
     name: "/fraudcheck",
     syntax: "/fraudcheck opponent:<discord_user>",
-    description: "Compares your public badge count against a server rival in a friendly head-to-head comparison.",
+    description: "Compares public badge counts between two verified players in a friendly head-to-head. Both players must have finished /link-roblox.",
     category: "Leaderboards",
     privacyIndicator: "Witness Protection Aware",
     example: "/fraudcheck opponent:@ChaosKing",
@@ -50,7 +50,7 @@ const COMMANDS_DATA: CommandCardProps[] = [
   {
     name: "/yapping-order",
     syntax: "/yapping-order",
-    description: "Ranks top server members by Rascal Rep and public badge milestones.",
+    description: "Ranks top verified server members by Rascal Rep and public badge milestones. Unverified previews never appear.",
     category: "Leaderboards",
     privacyIndicator: "Witness Protection Aware",
     example: "/yapping-order",

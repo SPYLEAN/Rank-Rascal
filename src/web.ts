@@ -1,9 +1,11 @@
-import { createServer, type ServerResponse } from "node:http";
+import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { config } from "./config.js";
 import { databaseHealth } from "./db.js";
+import { UserError, userFacingMessage } from "./errors.js";
 import { completeRobloxAuthorization } from "./oauth.js";
+import { RateLimiter } from "./ratelimit.js";
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>'"]/g, (character) => ({
@@ -27,49 +29,85 @@ function send(response: ServerResponse, status: number, body: string | Buffer, c
   response.end(body);
 }
 
+// The last X-Forwarded-For entry is the one appended by the trusted hosting proxy.
+function clientKey(request: IncomingMessage): string {
+  const forwarded = request.headers["x-forwarded-for"];
+  const value = Array.isArray(forwarded) ? forwarded.join(",") : forwarded;
+  const last = value?.split(",").pop()?.trim();
+  return last || request.socket.remoteAddress || "unknown";
+}
+
+const callbackLimiter = new RateLimiter(15, 60_000);
+const pageLimiter = new RateLimiter(120, 60_000);
+
+function limited(response: ServerResponse, retryAfterMs: number): void {
+  response.writeHead(429, {
+    "Content-Type": "text/plain; charset=utf-8",
+    "Retry-After": String(Math.max(1, Math.ceil(retryAfterMs / 1000))),
+    "X-Content-Type-Options": "nosniff",
+  });
+  response.end("Too many requests. Please slow down.");
+}
+
 export function startWebServer() {
   const server = createServer(async (request, response) => {
-    const url = new URL(request.url || "/", config.publicBaseUrl);
-    if (request.method !== "GET") return send(response, 405, "Method not allowed", "text/plain");
-    if (url.pathname === "/brand/poses/razz-celebrate.png") {
-      try {
-        const image = await readFile(resolve("brand", "poses", "razz-celebrate.png"));
-        return send(response, 200, image, "image/png");
-      } catch {
-        return send(response, 404, "Not found", "text/plain");
-      }
+    try {
+      await handleRequest(request, response);
+    } catch (error) {
+      console.error("Web request failed", error instanceof Error ? error.name : "unknown");
+      if (!response.headersSent) send(response, 500, "Something went wrong.", "text/plain");
+      else response.end();
     }
-    if (url.pathname === "/health") {
-      const health = await databaseHealth();
-      return send(
-        response,
-        health.ok ? 200 : 503,
-        JSON.stringify({ ok: health.ok, database: health.engine }),
-        "application/json",
-      );
-    }
-    if (url.pathname === "/") return send(response, 200, page("Home", `<span class="stamp">CERTIFIED BRAIN ROT</span><h1>Rank Rascal</h1><p>Your Roblox stats have officially rotted.</p><p>Link a verified Roblox identity from the <code>/link-roblox</code> command, build a Rotfile, survive Drip Inspection, and enter the Yapping Order.</p><a class="button" href="/privacy">Privacy</a>`));
-    if (url.pathname === "/privacy") return send(response, 200, page("Privacy", `<h1>Privacy without the yapping</h1><ul><li>We store Discord and Roblox user IDs, public profile snapshots, privacy choices, and game scores.</li><li>Roblox OAuth tokens are discarded after identity verification.</li><li>We never request or store Roblox passwords.</li><li>Use <code>/unlink-roblox</code> to delete your server-specific profile.</li><li>Use Witness Protection to leave public comparisons.</li></ul><p>Server operators must provide a real support contact before public launch.</p>`));
-    if (url.pathname === "/terms") return send(response, 200, page("Terms", `<h1>Terms of Rascalry</h1><p>Rank Rascal is for Discord users aged 13 or older, subject to local minimum-age rules. Do not use it to bully, impersonate, gamble, expose private information, or violate Roblox or Discord rules.</p><p>Stats may be delayed or unavailable. Rascal Rep is entertainment, not an official skill rating.</p>`));
-    if (url.pathname === "/oauth/roblox/callback") {
-      try {
-        const error = url.searchParams.get("error");
-        if (error) throw new Error("Roblox verification was cancelled.");
-        const result = await completeRobloxAuthorization(
-          url.searchParams.get("code") || "",
-          url.searchParams.get("state") || "",
-        );
-        const badgeNotice = result.awardedBadges.length > 0
-          ? `<p>🏆 Badge unlocked: <strong>${result.awardedBadges.map(escapeHtml).join(", ")}</strong></p>`
-          : "";
-        return send(response, 200, page("Verified", `<div style="text-align:center;margin-bottom:16px;"><img src="/brand/poses/razz-celebrate.png" alt="Razz Celebrating" style="width:160px;height:160px;object-fit:contain;" /></div><span class="stamp">IDENTITY VERIFIED</span><h1>Welcome, ${escapeHtml(result.displayName)}!</h1><p><strong>@${escapeHtml(result.username)}</strong> is connected. Return to Discord and run <code>/rotfile</code>.</p>${badgeNotice}`));
-      } catch (error) {
-        const message = error instanceof Error ? error.message : "Verification failed.";
-        return send(response, 400, page("Verification failed", `<h1>The Rascal dropped the paperwork.</h1><p>${escapeHtml(message)}</p><p>Return to Discord and generate a new link.</p>`));
-      }
-    }
-    return send(response, 404, page("Not found", "<h1>404</h1><p>This page entered Witness Protection.</p>"));
   });
   server.listen(config.port, () => console.log(`Rank Rascal web service listening on :${config.port}`));
   return server;
+}
+
+async function handleRequest(request: IncomingMessage, response: ServerResponse): Promise<void> {
+  const url = new URL(request.url || "/", config.publicBaseUrl);
+  if (request.method !== "GET") return send(response, 405, "Method not allowed", "text/plain");
+  if (url.pathname !== "/health") {
+    const isCallback = url.pathname === "/oauth/roblox/callback";
+    const decision = (isCallback ? callbackLimiter : pageLimiter).check(clientKey(request));
+    if (!decision.allowed) return limited(response, decision.retryAfterMs);
+  }
+  if (url.pathname === "/brand/poses/razz-celebrate.png") {
+    try {
+      const image = await readFile(resolve("brand", "poses", "razz-celebrate.png"));
+      return send(response, 200, image, "image/png");
+    } catch {
+      return send(response, 404, "Not found", "text/plain");
+    }
+  }
+  if (url.pathname === "/health") {
+    const health = await databaseHealth();
+    return send(
+      response,
+      health.ok ? 200 : 503,
+      JSON.stringify({ ok: health.ok, database: health.engine }),
+      "application/json",
+    );
+  }
+  if (url.pathname === "/") return send(response, 200, page("Home", `<span class="stamp">CERTIFIED BRAIN ROT</span><h1>Rank Rascal</h1><p>Your Roblox stats have officially rotted.</p><p>Link a verified Roblox identity from the <code>/link-roblox</code> command, build a Rotfile, survive Drip Inspection, and enter the Yapping Order.</p><a class="button" href="/privacy">Privacy</a>`));
+  if (url.pathname === "/privacy") return send(response, 200, page("Privacy", `<h1>Privacy without the yapping</h1><ul><li>We store Discord and Roblox user IDs, public profile snapshots, privacy choices, and game scores.</li><li>Roblox OAuth tokens are discarded after identity verification.</li><li>We never request or store Roblox passwords.</li><li>Use <code>/unlink-roblox</code> to delete your server-specific profile.</li><li>Use Witness Protection to leave public comparisons.</li></ul><p>Server operators must provide a real support contact before public launch.</p>`));
+  if (url.pathname === "/terms") return send(response, 200, page("Terms", `<h1>Terms of Rascalry</h1><p>Rank Rascal is for Discord users aged 13 or older, subject to local minimum-age rules. Do not use it to bully, impersonate, gamble, expose private information, or violate Roblox or Discord rules.</p><p>Stats may be delayed or unavailable. Rascal Rep is entertainment, not an official skill rating.</p>`));
+  if (url.pathname === "/oauth/roblox/callback") {
+    try {
+      const error = url.searchParams.get("error");
+      if (error) throw new UserError("Roblox verification was cancelled.");
+      const result = await completeRobloxAuthorization(
+        url.searchParams.get("code") || "",
+        url.searchParams.get("state") || "",
+      );
+      const badgeNotice = result.awardedBadges.length > 0
+        ? `<p>🏆 Badge unlocked: <strong>${result.awardedBadges.map(escapeHtml).join(", ")}</strong></p>`
+        : "";
+      return send(response, 200, page("Verified", `<div style="text-align:center;margin-bottom:16px;"><img src="/brand/poses/razz-celebrate.png" alt="Razz Celebrating" style="width:160px;height:160px;object-fit:contain;" /></div><span class="stamp">IDENTITY VERIFIED</span><h1>Welcome, ${escapeHtml(result.displayName)}!</h1><p><strong>@${escapeHtml(result.username)}</strong> is connected. Return to Discord and run <code>/rotfile</code>.</p>${badgeNotice}`));
+    } catch (error) {
+      if (!(error instanceof UserError)) console.error("OAuth callback failed", error instanceof Error ? error.name : "unknown");
+      const message = userFacingMessage(error);
+      return send(response, 400, page("Verification failed", `<h1>The Rascal dropped the paperwork.</h1><p>${escapeHtml(message)}</p><p>Return to Discord and generate a new link.</p>`));
+    }
+  }
+  return send(response, 404, page("Not found", "<h1>404</h1><p>This page entered Witness Protection.</p>"));
 }
