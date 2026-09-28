@@ -15,8 +15,12 @@ export const Footer: React.FC = () => (
         <div>
           <h2 className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-cloud-white">World archive</h2>
           <ul className="mt-4 space-y-3 text-sm">
+            <li><Link href="/#explore-stickerwood" className="hover:text-toxic-lime">World Atlas</Link></li>
+            <li><Link href="/#heroes" className="hover:text-toxic-lime">Heroes</Link></li>
+            <li><Link href="/#quests" className="hover:text-toxic-lime">Quest Journal</Link></li>
             <li><Link href="/game" className="hover:text-toxic-lime">The Game</Link></li>
             <li><Link href="/devlog" className="hover:text-toxic-lime">Development Log</Link></li>
+            <li><Link href="/community#guild" className="hover:text-toxic-lime">Founders Guild</Link></li>
             <li><Link href="/community" className="hover:text-toxic-lime">Community Hub</Link></li>
             <li><a href={process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://discord.gg/gkneGrpzAn"} target="_blank" rel="noopener noreferrer" className="hover:text-toxic-lime font-semibold text-toxic-lime">Discord Community ↗</a></li>
             <li><Link href="/status" className="hover:text-toxic-lime">Project Status</Link></li>

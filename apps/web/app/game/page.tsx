@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Crown, Eye, ScanLine, Swords, Users } from "lucide-react";
+import { ArrowDown, ArrowRight, Crown, Eye, Map as MapIcon, ScanLine, Swords, Users } from "lucide-react";
 import { SusInvestigationTerminal } from "@/components/SusInvestigationTerminal";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 import {
@@ -11,6 +11,7 @@ import {
   PLAYER_ROLES,
   STORY_FOUNDATION,
   STORY_THEMES,
+  WORLD_LOCATIONS,
 } from "@/lib/game-content";
 
 export const metadata: Metadata = {
@@ -115,6 +116,41 @@ export default function GamePage() {
       <section className="border-y border-panel-navy-light bg-panel-navy/30 py-24 lg:py-36">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-12"><div className="lg:col-span-4"><p className="section-kicker">The squad</p><h2 className="section-title">Six heroes. Six ways to interrogate the same world.</h2><p className="section-lede">Heroes change how players fight and what kinds of evidence they can expose. No hero owns the answer; the complete theory requires perspectives to overlap. Try the full selector on the <Link href="/#heroes" className="text-toxic-lime hover:underline">homepage</Link>.</p></div><div className="lg:col-span-8"><div className="border-t border-cloud-white/10">{PLAYER_ROLES.map((role, index) => <article key={role.name} className="border-b border-cloud-white/10 py-8"><div className="flex items-baseline gap-5"><span className="font-mono text-xs text-hot-pink">0{index + 1}</span><h3 className="font-display text-3xl font-bold uppercase text-cloud-white">{role.name}</h3></div><dl className="mt-6 grid gap-5 text-sm leading-7 md:grid-cols-3"><div><dt className="archive-meta">Combat</dt><dd className="mt-2 text-muted-text">{role.combat}</dd></div><div><dt className="archive-meta">Field craft</dt><dd className="mt-2 text-muted-text">{role.field}</dd></div><div><dt className="archive-meta">Inner conflict</dt><dd className="mt-2 text-cloud-white/78">{role.tension}</dd></div></dl></article>)}</div></div></div>
+        </div>
+      </section>
+
+      <section className="border-y border-panel-navy-light bg-[#080b15] py-24 lg:py-36">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-4">
+              <p className="section-kicker">The realm</p>
+              <h2 className="section-title">Eleven places, not four dioramas.</h2>
+              <p className="section-lede">Episode 1's four districts are shipping content. The other seven are concept and planned work, authored to the same tone. Open the interactive version—with dossiers, mysteries and concept art—on the <Link href="/#explore-stickerwood" className="text-toxic-lime hover:underline">homepage atlas</Link>.</p>
+              <Link href="/#explore-stickerwood" className="action-secondary mt-6"><MapIcon className="h-4 w-4" aria-hidden="true" />Open the full atlas</Link>
+            </div>
+            <div className="lg:col-span-8">
+              <div className="grid gap-px border border-cloud-white/10 bg-cloud-white/10 sm:grid-cols-2 lg:grid-cols-3">
+                {WORLD_LOCATIONS.map((loc) => (
+                  <div key={loc.number} className="bg-[#0d1022] p-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-[10px] font-bold text-hot-pink">{loc.number}</span>
+                      <span className={`rounded-full border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wide ${
+                        loc.status === "in-development"
+                          ? "border-toxic-lime/60 bg-toxic-lime/10 text-toxic-lime"
+                          : loc.status === "concept"
+                          ? "border-hot-pink/60 bg-hot-pink/10 text-hot-pink"
+                          : "border-royal-purple/60 bg-royal-purple/15 text-cloud-white/80"
+                      }`}>
+                        {loc.status === "in-development" ? "Shipping" : loc.status === "concept" ? "Concept" : "Planned"}
+                      </span>
+                    </div>
+                    <p className="mt-2 font-display text-base font-bold text-cloud-white">{loc.name}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-muted-text">{loc.tagline}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
