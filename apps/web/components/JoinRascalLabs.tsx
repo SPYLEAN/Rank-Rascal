@@ -12,7 +12,7 @@ export function JoinRascalLabs() {
 
   return (
     <section id="join-rascal-labs" aria-labelledby="join-title" className="chapter flex min-h-[90svh] scroll-mt-20 items-end">
-      <div className="chapter-art">
+      <div className="chapter-art" style={{ position: "absolute", inset: 0 }}>
         <Image
           src={BRAND_ASSETS.game.foundersGuildWorkshop}
           alt="Razz and the builders of Rascal Labs at work in a sunlit Stickerwood workshop"

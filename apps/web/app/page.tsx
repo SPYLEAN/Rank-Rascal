@@ -12,7 +12,7 @@ import { JoinRascalLabs } from "@/components/JoinRascalLabs";
 
 /**
  * The homepage is one continuous journey through Stickerwood:
- *  01 cinematic hero → 02 enter Stickerwood → 03 why the world lies → 04 choose your hero →
+ *  01 cinematic hero → 02 understand the game in Stickerwood → 03 why the world lies → 04 choose your hero →
  *  05 investigate a Fraud → 06 explore the realm (+ quests) → 07 meet King Wrongway →
  *  08 what lies beyond → 09 follow development → 10 join Rascal Labs.
  * Warm light carries it; darkness builds toward King Wrongway and lifts again at the end.

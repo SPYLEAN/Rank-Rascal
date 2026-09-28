@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Rascal Realms: Crownfall — The World Lies",
     description:
-      "A cinematic co-op action-adventure mystery for Roblox, now in pre-production.",
+      "Explore a storybook kingdom with 1–4 players, expose impossible rules and survive as reality corrects itself.",
     url: siteUrl,
     siteName: "Rascal Realms: Crownfall",
     images: [
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Rascal Realms: Crownfall — The World Lies",
-    description: "A cinematic co-op action-adventure mystery for Roblox, now in pre-production.",
+    description: "Explore a storybook kingdom with 1–4 players, expose impossible rules and survive as reality corrects itself.",
     images: ["/brand/game/stickerwood-key-art-v1.png"],
   },
   robots: {

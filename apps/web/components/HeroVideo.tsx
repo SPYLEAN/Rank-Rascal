@@ -159,7 +159,14 @@ export function HeroVideo() {
           setVisible(true);
           setPlaying(true);
         }}
-        onPause={() => setPlaying(false)}
+        onPause={() => {
+          setPlaying(false);
+          // The poster is the reliable visual fallback. Never leave a paused transition
+          // frame covering it when autoplay is refused, the tab is hidden or playback stalls.
+          setVisible(false);
+        }}
+        onStalled={() => setVisible(false)}
+        onError={() => setVisible(false)}
       />
       <button
         type="button"

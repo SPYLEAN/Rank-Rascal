@@ -89,7 +89,7 @@ export function FraudInvestigation() {
 
   return (
     <section id="investigate" aria-labelledby="investigate-title" className="chapter scroll-mt-20">
-      <div className="chapter-art">
+      <div className="chapter-art" style={{ position: "absolute", inset: 0 }}>
         <Image
           src={BRAND_ASSETS.media.signpost}
           alt="A carved wooden signpost on a forest path, pointing toward a sunlit castle road while footprints lead the other way"

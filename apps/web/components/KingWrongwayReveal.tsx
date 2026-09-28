@@ -38,7 +38,7 @@ export function KingWrongwayReveal() {
       aria-labelledby="wrongway-title"
       className="chapter flex min-h-[110svh] scroll-mt-20 items-center bg-[linear-gradient(180deg,#121526_0%,#0a0710_30%,#050308_100%)]"
     >
-      <div className="chapter-art">
+      <div className="chapter-art" style={{ position: "absolute", inset: 0 }}>
         <Image
           src={BRAND_ASSETS.locations.kingWrongwayCitadel}
           alt="King Wrongway's citadel: dark spires beneath a violet storm, reached only by broken bridges"

@@ -79,7 +79,7 @@ export function HeroSelector() {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      <div className="chapter-art">
+      <div className="chapter-art" style={{ position: "absolute", inset: 0 }}>
         {previousScene && previousScene !== scene ? (
           <Image src={BRAND_ASSETS.locations[previousScene]} alt="" fill sizes="100vw" className="object-cover" aria-hidden="true" />
         ) : null}

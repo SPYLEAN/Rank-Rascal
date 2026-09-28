@@ -7,11 +7,11 @@ import React, { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: "/#world-lies", label: "The Story" },
+  { href: "/#enter-stickerwood", label: "The Game" },
+  { href: "/#world-lies", label: "Story" },
   { href: "/#heroes", label: "Heroes" },
   { href: "/#investigate", label: "Investigate" },
   { href: "/#explore-stickerwood", label: "World" },
-  { href: "/devlog", label: "Devlog" },
   { href: "/community", label: "Community" },
 ] as const;
 
@@ -56,7 +56,7 @@ export const Navbar: React.FC = () => {
         </nav>
 
         <Link href="/game" className="hidden rounded-full bg-antique-gold px-5 py-2.5 text-sm font-bold text-ink-plum transition hover:bg-paper-cream lg:inline-flex">
-          Enter the Realm
+          Explore Crownfall
         </Link>
 
         <button
@@ -92,7 +92,7 @@ export const Navbar: React.FC = () => {
             onClick={() => setMobileMenuOpen(false)}
             className="mt-5 flex min-h-12 items-center justify-center rounded-full bg-antique-gold px-4 font-bold text-ink-plum"
           >
-            Enter the Realm
+            Explore Crownfall
           </Link>
         </nav>
       ) : null}

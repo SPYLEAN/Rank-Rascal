@@ -23,7 +23,7 @@ export function CinematicHero() {
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-28 sm:px-8 sm:pb-20 lg:pb-24">
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E8C877] hero-shadow">
-            A Roblox game · in pre-production
+            A Roblox co-op action-mystery · in pre-production
           </p>
 
           <h1 id="hero-title" className="mt-4 font-display uppercase text-cloud-white hero-shadow">
@@ -33,13 +33,13 @@ export function CinematicHero() {
             </span>
           </h1>
 
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-cloud-white/90 hero-shadow sm:text-xl">
-            A cinematic co-op Roblox RPG where The World Lies.
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-cloud-white/90 hero-shadow sm:text-xl">
+            Explore a storybook kingdom with 1–4 players. Read the evidence, expose impossible rules, then survive as reality corrects itself.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a href="#enter-stickerwood" className="action-primary group min-h-[56px] px-7 text-base">
-              Enter the Realm
+              Discover the game
               <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true" />
             </a>
             <TeaserPlayer className="action-secondary min-h-[56px] bg-[#0b0912]/45 px-7 text-base backdrop-blur-sm">

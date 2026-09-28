@@ -51,7 +51,7 @@ export function FractureStory() {
 
   return (
     <section id="world-lies" aria-labelledby="world-lies-title" className="chapter flex min-h-[92svh] scroll-mt-20 items-center bg-void">
-      <div className="chapter-art">
+      <div className="chapter-art" style={{ position: "absolute", inset: 0 }}>
         <Image
           src={BRAND_ASSETS.game.fractureBeneathStickerwood}
           alt="Stickerwood splitting open to reveal a buried kingdom and purple Crown corruption beneath the realm"
