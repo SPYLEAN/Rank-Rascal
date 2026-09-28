@@ -19,6 +19,7 @@ import { FractureStory } from "@/components/FractureStory";
 import { HeroSelector } from "@/components/HeroSelector";
 import { WorldAtlas } from "@/components/WorldAtlas";
 import { SusInvestigationTerminal } from "@/components/SusInvestigationTerminal";
+import { GameplayLoop } from "@/components/GameplayLoop";
 import { QuestJournal } from "@/components/QuestJournal";
 import { KingWrongwayReveal } from "@/components/KingWrongwayReveal";
 import { FutureRealmsTeaser } from "@/components/FutureRealmsTeaser";
@@ -97,6 +98,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <GameplayLoop />
 
       <QuestJournal />
 

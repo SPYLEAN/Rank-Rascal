@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "A Roblox-first Discord social game that turns public achievements into certified server brain rot.",
+  "description": "Rascal Realms: Crownfall — a cinematic co-op Roblox action-adventure mystery (apps/web). Includes the paused Rank Rascal Discord bot (src), preserved for rollback.",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
