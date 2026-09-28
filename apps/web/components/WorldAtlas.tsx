@@ -174,14 +174,20 @@ export function WorldAtlas() {
                 </div>
               ) : null}
 
-              <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="grid gap-4 text-xs sm:grid-cols-2">
                 <div>
                   <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-text"><Sparkles className="h-3 w-3" aria-hidden="true" />Quest styles</span>
                   <p className="mt-1 font-semibold text-cloud-white">{location.questStyles}</p>
                 </div>
                 <div>
                   <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-text"><Users className="h-3 w-3" aria-hidden="true" />Notable</span>
-                  <p className="mt-1 font-semibold text-cloud-white">{location.notableCharacters[0] ?? "Unknown"}</p>
+                  <ul className="mt-1 space-y-0.5">
+                    {location.notableCharacters.length > 0
+                      ? location.notableCharacters.map((name) => (
+                          <li key={name} className="font-semibold text-cloud-white">{name}</li>
+                        ))
+                      : <li className="font-semibold text-cloud-white">Unknown</li>}
+                  </ul>
                 </div>
               </div>
             </div>
