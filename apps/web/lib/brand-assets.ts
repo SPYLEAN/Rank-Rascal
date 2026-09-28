@@ -74,6 +74,18 @@ export const BRAND_ASSETS = {
     fractureBeneathStickerwood: "/brand/game/fracture-beneath-stickerwood-v1.png",
   },
 
+  // World location environment art (2025-09-28 pre-production pass).
+  locations: {
+    stickerwoodHeartwood: "/brand/game/locations/stickerwood-heartwood-v1.png",
+    mysteryForest: "/brand/game/locations/mystery-forest-v1.png",
+    ancientTree: "/brand/game/locations/ancient-tree-v1.png",
+    rascalPlazaRealm: "/brand/game/locations/rascal-plaza-realm-v1.png",
+    hiddenCove: "/brand/game/locations/hidden-cove-v1.png",
+    glitchGrove: "/brand/game/locations/glitch-grove-v1.png",
+    kingWrongwayCitadel: "/brand/game/locations/king-wrongway-citadel-v1.png",
+    skyBridges: "/brand/game/locations/sky-bridges-v1.png",
+  },
+
   // Game & Community Banners
   banners: {
     welcome: "/brand/banners/welcome-banner.png",

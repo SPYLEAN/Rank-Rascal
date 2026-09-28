@@ -244,6 +244,7 @@ export const WORLD_LOCATIONS = [
     status: "in-development" as LoreStatus,
     hotspot: { x: 20, y: 66 },
     insignia: "royalCrown",
+    image: null,
   },
   {
     number: "02",
@@ -259,6 +260,7 @@ export const WORLD_LOCATIONS = [
     status: "concept" as LoreStatus,
     hotspot: { x: 34, y: 48 },
     insignia: "razzMedallion",
+    image: "stickerwoodHeartwood",
   },
   {
     number: "03",
@@ -274,6 +276,7 @@ export const WORLD_LOCATIONS = [
     status: "in-development" as LoreStatus,
     hotspot: { x: 48, y: 34 },
     insignia: "evidenceCamera",
+    image: "mysteryForest",
   },
   {
     number: "04",
@@ -289,6 +292,7 @@ export const WORLD_LOCATIONS = [
     status: "concept" as LoreStatus,
     hotspot: { x: 58, y: 45 },
     insignia: "crystalSigil",
+    image: "ancientTree",
   },
   {
     number: "05",
@@ -304,6 +308,7 @@ export const WORLD_LOCATIONS = [
     status: "in-development" as LoreStatus,
     hotspot: { x: 68, y: 40 },
     insignia: "qaController",
+    image: "glitchGrove",
   },
   {
     number: "06",
@@ -319,6 +324,7 @@ export const WORLD_LOCATIONS = [
     status: "planned" as LoreStatus,
     hotspot: { x: 30, y: 58 },
     insignia: "qaController",
+    image: "rascalPlazaRealm",
   },
   {
     number: "07",
@@ -334,6 +340,7 @@ export const WORLD_LOCATIONS = [
     status: "planned" as LoreStatus,
     hotspot: { x: 42, y: 62 },
     insignia: "evidenceCamera",
+    image: null,
   },
   {
     number: "08",
@@ -348,6 +355,7 @@ export const WORLD_LOCATIONS = [
     status: "planned" as LoreStatus,
     hotspot: { x: 14, y: 40 },
     insignia: "razzMedallion",
+    image: "hiddenCove",
   },
   {
     number: "09",
@@ -363,6 +371,7 @@ export const WORLD_LOCATIONS = [
     status: "in-development" as LoreStatus,
     hotspot: { x: 84, y: 26 },
     insignia: "crownEyeShield",
+    image: null,
   },
   {
     number: "10",
@@ -378,6 +387,7 @@ export const WORLD_LOCATIONS = [
     status: "concept" as LoreStatus,
     hotspot: { x: 76, y: 32 },
     insignia: "crystalSigil",
+    image: "skyBridges",
   },
   {
     number: "11",
@@ -393,6 +403,7 @@ export const WORLD_LOCATIONS = [
     status: "planned" as LoreStatus,
     hotspot: { x: 92, y: 16 },
     insignia: "crownEyeShield",
+    image: "kingWrongwayCitadel",
   },
 ] as const;
 

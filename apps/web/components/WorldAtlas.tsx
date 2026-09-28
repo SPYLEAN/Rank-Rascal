@@ -14,6 +14,7 @@ const STATUS_LABEL: Record<LoreStatus, { label: string; className: string }> = {
 };
 
 type InsigniaKey = keyof typeof BRAND_ASSETS.insignias;
+type LocationImageKey = keyof typeof BRAND_ASSETS.locations;
 
 export function WorldAtlas() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -98,8 +99,23 @@ export function WorldAtlas() {
           </div>
 
           {/* Dossier */}
-          <aside className="flex flex-col justify-between rounded-2xl border-2 border-royal-purple/50 bg-gradient-to-b from-[#141836] via-[#101328] to-[#121528] p-6 lg:col-span-4 shadow-xl">
-            <div className="space-y-5">
+          <aside className="flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-royal-purple/50 bg-gradient-to-b from-[#141836] via-[#101328] to-[#121528] shadow-xl lg:col-span-4">
+            {location.image ? (
+              <div className="relative -mx-6 -mt-6 mb-1 h-36 overflow-hidden border-b border-royal-purple/40 sm:h-44">
+                <Image
+                  src={BRAND_ASSETS.locations[location.image as LocationImageKey]}
+                  alt={`Concept illustration of ${location.name}`}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 32vw"
+                  className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#101328] via-transparent to-transparent" />
+                <span className="absolute bottom-2 right-2 rounded-full border border-cloud-white/15 bg-midnight-bg/80 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wide text-cloud-white/60">
+                  Concept art
+                </span>
+              </div>
+            ) : null}
+            <div className={`space-y-5 p-6 ${location.image ? "pt-0" : ""}`}>
               <div className="flex items-center justify-between gap-3 border-b border-royal-purple/40 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border-2 border-toxic-lime bg-royal-purple/30 p-1 shadow-md">
@@ -170,7 +186,7 @@ export function WorldAtlas() {
               </div>
             </div>
 
-            <div className="mt-6 border-t border-cloud-white/10 pt-4">
+            <div className="border-t border-cloud-white/10 px-6 pb-6 pt-4">
               <Link href="/game#premise" className="action-primary w-full justify-center font-mono text-xs uppercase tracking-wider font-bold">
                 <span>Open the world dossier</span>
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />

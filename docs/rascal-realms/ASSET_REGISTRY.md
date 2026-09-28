@@ -2,7 +2,29 @@
 
 Audit of every visual asset in the two untracked source trees, classified **CANON**, **APPROVED** (already published to `apps/web/public/brand/` and in active use), **SUPPORTING** (usable reference, not currently promoted), **LEGACY** (superseded, preserved for history only), **RETIRED** (explicitly discarded — fox-era), or **UNUSED** (present, not referenced anywhere, not recommended for promotion as-is).
 
-**Decision for this pass**: no new binary assets were copied into `apps/web/public/brand/`. Every new website section (hero selector, quest journal, progression/economy, King Wrongway reveal, Beyond Stickerwood teaser) is built with typography, color, and existing published art — because none of the six heroes (including the four already "in development" ones) has any portrait art published today, and the reference pack's own manifest labels almost everything outside the single canonical Razz reference as CONCEPT/tone-anchor, not production-ready. Promoting a partial set of raw, unoptimized images now would create an inconsistency (2 heroes illustrated, 4 not) and risk violating the "never present concept art as finished Roblox/3D art" rule. This registry catalogues what exists so a future, dedicated art-integration pass can select and optimize deliberately.
+**Decision, Phase 1**: no new binary assets were copied into `apps/web/public/brand/`. Every new website section was built with typography, color, and existing published art, and this registry catalogued what existed for a future dedicated art-integration pass to select from deliberately.
+
+**Decision, Phase 2 (this update)**: that follow-up pass happened. Two categories were reviewed by actually opening the files:
+
+- **The 6 named hero files** in `03_PLAYABLE_HEROES/` (`crown_knight_guardian_of_rascal_realms.png` and 5 siblings) were opened and rejected for promotion. They are baked "trading card" composites — full-page infographics with an anime-human character style (not the canon's "expressive Roblox proportions"), a different Rascal Realms logo treatment burned into the pixels, and hero stat text (weapon names, powers, reward currencies) that directly conflicts with `HEROES.md` (e.g. the card says Crown Knight's weapon is "Relic Sword & Royal Shield" and rewards are "Crown Shards, bounty gold, and fortress loot"; the card economy terms elsewhere include "Arcane Dust" and "knowledge sigils," neither of which exist in `GAMEPLAY.md`'s economy). These stay **SUPPORTING** — direction reference only, not promotable without a full art + copy reconciliation pass. The hero selector remains typographic/color-driven.
+- **The 10 unlabeled `key locations/` files** were opened and are, by contrast, clean painted environment illustrations with no baked text or UI — genuinely usable. 8 of the 10 were promoted (see below); the other 2 were close duplicates/less distinct compositions of already-covered locations and were left unpromoted.
+
+## Newly promoted — APPROVED (this update)
+
+Optimized via the same convention as the existing `game/` art (full-size PNGs served through `next/image`'s runtime optimizer, matching the ~2.5–3.4MB size class already established by `stickerwood-key-art-v1.png` and siblings). Copied with clean production filenames (no raw `ChatGPT Image...` names) to `apps/web/public/brand/game/locations/`, referenced via `BRAND_ASSETS.locations` in `brand-assets.ts`, and wired to `WORLD_LOCATIONS[].image` in `game-content.ts`, rendered as a banner in each location's `WorldAtlas` dossier card:
+
+| File | Location | Source |
+|---|---|---|
+| `stickerwood-heartwood-v1.png` | Stickerwood (the Heartwood) | `key locations/...-2.png` |
+| `mystery-forest-v1.png` | Mystery Forest | `key locations/...-3.png` |
+| `ancient-tree-v1.png` | Ancient Tree | `key locations/...-4.png` |
+| `rascal-plaza-realm-v1.png` | Rascal Plaza (in-fiction) | `key locations/...-5.png` |
+| `hidden-cove-v1.png` | Hidden Cove | `key locations/...-6.png` |
+| `glitch-grove-v1.png` | Glitch Grove | `key locations/...-7.png` |
+| `king-wrongway-citadel-v1.png` | King Wrongway Citadel | `key locations/...-8.png` |
+| `sky-bridges-v1.png` | Sky Bridges | `key locations/...-9.png` |
+
+Not promoted: `key locations/...-1.png` and `...-10.png` (sweeping wide-angle realm shots covering the same territory as the 8 above, kept as SUPPORTING reference; no location was left without a strong candidate that needed them). Starting Village, Crown Ruins, and River Path intentionally have no new dedicated location photo — the first two already read clearly through existing approved art and copy, and no candidate in this batch specifically fit a river/waterway location.
 
 ## Already published and in active use — APPROVED
 
