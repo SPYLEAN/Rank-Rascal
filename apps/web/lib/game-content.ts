@@ -165,6 +165,8 @@ export const PLAYER_ROLES = [
     mysterySpecialty: "Reading royal seals and authority markings for forgeries.",
     questAffinity: "Story, Guild Missions",
     accent: "#D5A84B",
+    role: "Front-line protector",
+    scene: "ancientTree",
     status: "in-development" as LoreStatus,
   },
   {
@@ -177,6 +179,8 @@ export const PLAYER_ROLES = [
     mysterySpecialty: "Reading Crown corruption code fragments other heroes can't see.",
     questAffinity: "Mysteries, Hidden Quests",
     accent: "#6B31A8",
+    role: "Corruption caster",
+    scene: "glitchGrove",
     status: "in-development" as LoreStatus,
   },
   {
@@ -189,6 +193,8 @@ export const PLAYER_ROLES = [
     mysterySpecialty: "Physical continuity—prints, broken fibers, wind, disturbed surfaces.",
     questAffinity: "Bounties",
     accent: "#41633B",
+    role: "Tracker and marksman",
+    scene: "mysteryForest",
     status: "in-development" as LoreStatus,
   },
   {
@@ -201,6 +207,8 @@ export const PLAYER_ROLES = [
     mysterySpecialty: "Testing rules by breaking their assumptions.",
     questAffinity: "Hidden Quests, Bounties",
     accent: "#E632A9",
+    role: "Rule-breaking skirmisher",
+    scene: "rascalPlazaRealm",
     status: "in-development" as LoreStatus,
   },
   {
@@ -213,6 +221,8 @@ export const PLAYER_ROLES = [
     mysterySpecialty: "Erased histories, conflicting written records, contradictory Crown edicts.",
     questAffinity: "Story, Guild Missions",
     accent: "#F3E5C8",
+    role: "Truth-reading scholar",
+    scene: "stickerwoodHeartwood",
     status: "concept" as LoreStatus,
   },
   {
@@ -225,6 +235,8 @@ export const PLAYER_ROLES = [
     mysterySpecialty: "Hidden discoveries, secret passages, environmental puzzle mechanisms.",
     questAffinity: "Hidden Quests, Bounties",
     accent: "#B9F227",
+    role: "Explorer and gadgeteer",
+    scene: "hiddenCove",
     status: "concept" as LoreStatus,
   },
 ] as const;

@@ -38,7 +38,7 @@ export function CinematicHero() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="#world-lies" className="action-primary group min-h-[56px] px-7 text-base">
+            <a href="#enter-stickerwood" className="action-primary group min-h-[56px] px-7 text-base">
               Enter the Realm
               <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true" />
             </a>

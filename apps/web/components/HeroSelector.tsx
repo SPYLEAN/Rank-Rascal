@@ -1,131 +1,177 @@
 "use client";
 
-import { useEffect, useRef, useState, type TouchEvent } from "react";
-import { ChevronLeft, ChevronRight, Compass, Crosshair, Search, Swords } from "lucide-react";
-import { PLAYER_ROLES, type LoreStatus } from "@/lib/game-content";
+import { useId, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { PLAYER_ROLES, WORLD_LOCATIONS, type LoreStatus } from "@/lib/game-content";
 
-const STATUS_LABEL: Record<LoreStatus, string> = {
+type SceneKey = keyof typeof BRAND_ASSETS.locations;
+
+const STATUS: Record<LoreStatus, string> = {
   "in-development": "In development",
   concept: "Concept",
   planned: "Planned",
 };
 
+/** Canon accents are for light and atmosphere; these lighter variants keep text at ≥4.5:1. */
+const READABLE_ACCENT: Record<string, string> = {
+  "#6B31A8": "#B99BFF",
+  "#41633B": "#9CC98A",
+  "#E632A9": "#FF7CC8",
+};
+
+function sceneName(scene: SceneKey): string {
+  return WORLD_LOCATIONS.find((location) => location.image === scene)?.name ?? "Stickerwood";
+}
+
+/**
+ * Chapter 04 — one hero owns the screen. Each hero stands on their own ground (a concept-art
+ * location that suits them), with the scene, accent light and copy changing together.
+ * No character renders are shown or implied: none exist yet.
+ */
 export function HeroSelector() {
   const [index, setIndex] = useState(0);
+  const [previous, setPrevious] = useState<number | null>(null);
   const touchStart = useRef<number | null>(null);
+  const baseId = useId();
   const hero = PLAYER_ROLES[index];
+  const count = PLAYER_ROLES.length;
 
-  const go = (delta: number) => {
-    setIndex((current) => (current + delta + PLAYER_ROLES.length) % PLAYER_ROLES.length);
+  const select = (next: number, focusTab = false) => {
+    const wrapped = (next + count) % count;
+    if (wrapped === index) return;
+    setPrevious(index);
+    setIndex(wrapped);
+    if (focusTab) document.getElementById(`${baseId}-tab-${wrapped}`)?.focus();
   };
 
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "ArrowRight") go(1);
-      if (event.key === "ArrowLeft") go(-1);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  const onTabKey = (event: KeyboardEvent<HTMLDivElement>) => {
+    const target =
+      event.key === "ArrowRight" ? index + 1
+      : event.key === "ArrowLeft" ? index - 1
+      : event.key === "Home" ? 0
+      : event.key === "End" ? count - 1
+      : null;
+    if (target === null) return;
+    event.preventDefault();
+    select(target, true);
+  };
 
-  const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+  const onTouchStart = (event: TouchEvent) => {
     touchStart.current = event.touches[0]?.clientX ?? null;
   };
-  const onTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+  const onTouchEnd = (event: TouchEvent) => {
     if (touchStart.current === null) return;
-    const delta = event.changedTouches[0]?.clientX - touchStart.current;
-    if (Math.abs(delta) > 40) go(delta < 0 ? 1 : -1);
+    const delta = (event.changedTouches[0]?.clientX ?? touchStart.current) - touchStart.current;
+    if (Math.abs(delta) > 50) select(index + (delta < 0 ? 1 : -1));
     touchStart.current = null;
   };
 
+  const scene = hero.scene as SceneKey;
+  const previousScene = previous === null ? null : (PLAYER_ROLES[previous].scene as SceneKey);
+
   return (
-    <section id="heroes" className="scroll-mt-20 border-y border-panel-navy-light bg-[#0b0e1c] py-20 lg:py-28" aria-labelledby="heroes-title">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <p className="section-kicker">Six heroes, one squad</p>
-          <h2 id="heroes-title" className="section-title">No hero owns the whole truth.</h2>
-          <p className="section-lede">Every hero reads a different kind of evidence. Squads of up to four mix and match to build a complete case. Arrow keys, swipe, or the rail below—your pick.</p>
+    <section
+      id="heroes"
+      aria-labelledby="heroes-title"
+      className="chapter flex min-h-[92svh] scroll-mt-20 flex-col justify-end"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      <div className="chapter-art">
+        {previousScene && previousScene !== scene ? (
+          <Image src={BRAND_ASSETS.locations[previousScene]} alt="" fill sizes="100vw" className="object-cover" aria-hidden="true" />
+        ) : null}
+        <Image
+          key={scene}
+          src={BRAND_ASSETS.locations[scene]}
+          alt=""
+          fill
+          sizes="100vw"
+          className="scene-in object-cover"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 transition-[background] duration-700"
+          style={{
+            background: `radial-gradient(circle at 18% 70%, ${hero.accent}33 0%, transparent 45%), linear-gradient(90deg, rgba(13,11,20,.92) 0%, rgba(13,11,20,.7) 42%, rgba(13,11,20,.25) 78%)`,
+          }}
+        />
+      </div>
+      <div className="fade-edges" />
+
+      <div className="mx-auto w-full max-w-7xl px-5 pb-16 pt-36 sm:px-8 lg:pb-20">
+        <p className="section-kicker">04 · Choose your hero</p>
+        <h2 id="heroes-title" className="sr-only">Choose your hero</h2>
+
+        <div id={`${baseId}-panel`} role="tabpanel" aria-labelledby={`${baseId}-tab-${index}`} className="mt-6 max-w-3xl">
+          <p key={`${hero.name}-role`} className="scene-in text-sm font-semibold uppercase tracking-[0.2em]" style={{ color: READABLE_ACCENT[hero.accent] ?? hero.accent }}>
+            {hero.role}
+          </p>
+          <h3 key={hero.name} className="scene-in mt-3 font-display text-[clamp(3.25rem,10vw,8.5rem)] font-extrabold uppercase leading-[.85] tracking-[-0.04em] text-cloud-white">
+            {hero.name}
+          </h3>
+          <p className="mt-4 text-lg text-paper-cream/90">
+            <span className="mr-2 text-xs font-semibold uppercase tracking-[0.2em] text-antique-gold">Weapon</span>
+            {hero.weapon}
+          </p>
+
+          <dl className="mt-8 grid gap-6 text-base sm:grid-cols-3">
+            <div>
+              <dt className="section-kicker">Powers</dt>
+              <dd className="mt-2 space-y-1 text-cloud-white/90">
+                {hero.powers.map((power) => <span key={power} className="block">{power}</span>)}
+              </dd>
+            </div>
+            <div>
+              <dt className="section-kicker">Reads</dt>
+              <dd className="mt-2 text-cloud-white/85">{hero.mysterySpecialty}</dd>
+            </div>
+            <div>
+              <dt className="section-kicker">Drawn to</dt>
+              <dd className="mt-2 text-cloud-white/85">{hero.questAffinity}</dd>
+            </div>
+          </dl>
+
+          <p className="mt-8 max-w-xl text-base italic leading-relaxed text-cloud-white/70">{hero.tension}</p>
         </div>
 
-        <div
-          className="relative mt-12 overflow-hidden rounded-2xl border-2 p-8 shadow-2xl transition-colors duration-500 sm:p-12"
-          style={{
-            borderColor: `${hero.accent}66`,
-            background: `radial-gradient(circle at 15% 20%, ${hero.accent}22, #0d1022 60%)`,
-          }}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          role="group"
-          aria-roledescription="carousel"
-          aria-label="Hero selector"
-        >
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            aria-label="Previous hero"
-            className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-cloud-white/20 bg-midnight-bg/70 text-cloud-white transition hover:border-toxic-lime hover:text-toxic-lime"
-          >
-            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            aria-label="Next hero"
-            className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-cloud-white/20 bg-midnight-bg/70 text-cloud-white transition hover:border-toxic-lime hover:text-toxic-lime"
-          >
-            <ChevronRight className="h-5 w-5" aria-hidden="true" />
-          </button>
-
-          <div key={hero.name} className="mx-auto max-w-3xl text-center">
-            <span
-              className="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em]"
-              style={{ borderColor: `${hero.accent}80`, color: hero.accent }}
-            >
-              Hero {index + 1} of {PLAYER_ROLES.length} · {STATUS_LABEL[hero.status]}
-            </span>
-            <h3 className="mt-4 font-display text-4xl font-extrabold uppercase text-cloud-white sm:text-6xl">{hero.name}</h3>
-            <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-cloud-white/60">{hero.weapon}</p>
-
-            <div className="mt-8 grid gap-6 text-left sm:grid-cols-3">
-              <div className="rounded-xl border border-cloud-white/10 bg-midnight-bg/50 p-4">
-                <span className="flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-cloud-white/50"><Swords className="h-3.5 w-3.5" aria-hidden="true" />Powers</span>
-                <ul className="mt-2 space-y-1 text-sm text-cloud-white/90">
-                  {hero.powers.map((power) => <li key={power}>{power}</li>)}
-                </ul>
-              </div>
-              <div className="rounded-xl border border-cloud-white/10 bg-midnight-bg/50 p-4">
-                <span className="flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-cloud-white/50"><Search className="h-3.5 w-3.5" aria-hidden="true" />Mystery specialty</span>
-                <p className="mt-2 text-sm leading-relaxed text-cloud-white/90">{hero.mysterySpecialty}</p>
-              </div>
-              <div className="rounded-xl border border-cloud-white/10 bg-midnight-bg/50 p-4">
-                <span className="flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-cloud-white/50"><Compass className="h-3.5 w-3.5" aria-hidden="true" />Quest affinity</span>
-                <p className="mt-2 text-sm leading-relaxed text-cloud-white/90">{hero.questAffinity}</p>
-              </div>
-            </div>
-
-            <p className="mx-auto mt-6 max-w-2xl text-sm italic leading-relaxed text-cloud-white/70">
-              <Crosshair className="mr-1.5 inline h-3.5 w-3.5" aria-hidden="true" />
-              {hero.tension}
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-cloud-white/15 pt-6">
+          <div role="tablist" aria-label="Heroes" className="flex flex-wrap gap-x-6 gap-y-1" onKeyDown={onTabKey}>
+            {PLAYER_ROLES.map((role, i) => (
+              <button
+                key={role.name}
+                id={`${baseId}-tab-${i}`}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                aria-controls={`${baseId}-panel`}
+                tabIndex={i === index ? 0 : -1}
+                onClick={() => select(i)}
+                className={`min-h-11 border-b-2 text-sm font-semibold transition ${
+                  i === index ? "border-antique-gold text-cloud-white" : "border-transparent text-cloud-white/55 hover:text-cloud-white"
+                }`}
+              >
+                {role.name}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-4">
+            <p className="hidden text-xs text-cloud-white/55 md:block">
+              {STATUS[hero.status]} · Scene: {sceneName(scene)}, concept art
             </p>
+            <button type="button" onClick={() => select(index - 1)} aria-label="Previous hero" className="flex h-11 w-11 items-center justify-center rounded-full border border-cloud-white/30 text-cloud-white transition hover:border-antique-gold">
+              <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <button type="button" onClick={() => select(index + 1)} aria-label="Next hero" className="flex h-11 w-11 items-center justify-center rounded-full border border-cloud-white/30 text-cloud-white transition hover:border-antique-gold">
+              <ChevronRight className="h-5 w-5" aria-hidden="true" />
+            </button>
           </div>
         </div>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-2" role="tablist" aria-label="Choose a hero">
-          {PLAYER_ROLES.map((role, i) => (
-            <button
-              key={role.name}
-              type="button"
-              role="tab"
-              aria-selected={i === index}
-              onClick={() => setIndex(i)}
-              className={`rounded-full border px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-wider transition ${
-                i === index ? "border-toxic-lime bg-toxic-lime text-midnight-bg" : "border-cloud-white/20 text-cloud-white/70 hover:border-toxic-lime hover:text-toxic-lime"
-              }`}
-            >
-              {role.name}
-            </button>
-          ))}
-        </div>
+        <p className="mt-3 text-xs text-cloud-white/55 md:hidden">
+          {STATUS[hero.status]} · Scene: {sceneName(scene)}, concept art
+        </p>
       </div>
     </section>
   );

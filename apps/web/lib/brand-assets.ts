@@ -98,6 +98,8 @@ export const BRAND_ASSETS = {
     teaserWebm: "/media/rascal-realms-crownfall-teaser.webm",
     teaserMp4: "/media/rascal-realms-crownfall-teaser.mp4",
     teaserPoster: "/media/rascal-realms-crownfall-teaser-poster.webp",
+    // Teaser still at 10.7 s (forest path + signpost): backdrop for "Investigate a Fraud".
+    signpost: "/media/rascal-realms-crownfall-signpost.webp",
   },
 
   // Game & Community Banners

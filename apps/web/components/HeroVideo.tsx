@@ -86,6 +86,11 @@ export function HeroVideo() {
     };
     const onTeaserClose = () => {
       g.teaserOpen = false;
+      // Opening a top-layer dialog can make some browsers report the page behind it as
+      // non-intersecting. Recheck the hero directly so closing the teaser never leaves the
+      // loop paused on a dark transition frame.
+      const rect = container.getBoundingClientRect();
+      g.offscreen = rect.bottom <= 0 || rect.top >= window.innerHeight;
       attempt();
     };
     const observer = new IntersectionObserver(([entry]) => {

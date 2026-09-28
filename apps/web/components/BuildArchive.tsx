@@ -1,71 +1,58 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, CircleDashed, LockKeyhole, RadioTower } from "lucide-react";
-import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { ArrowRight } from "lucide-react";
 import { DEVLOG_ENTRIES } from "@/lib/game-content";
 
-const ENTRY_VISUALS = [
-  BRAND_ASSETS.game.stickerwoodKeyArt,
-  BRAND_ASSETS.mascotDefault,
-  BRAND_ASSETS.game.worldLiesUi,
+const STAGES = [
+  { label: "Visual language", state: "Locked", done: true, current: false },
+  { label: "World prototype", state: "Being built now", done: false, current: true },
+  { label: "Private playtest", state: "Not open yet", done: false, current: false },
+  { label: "Launch", state: "Unannounced", done: false, current: false },
 ] as const;
 
-const PIPELINE = [
-  { label: "Visual language", state: "Locked", active: false },
-  { label: "World prototype", state: "Assembling", active: true },
-  { label: "Private playtest", state: "Not opened", active: false },
-  { label: "Launch", state: "Unannounced", active: false },
-] as const;
-
+/** Chapter 09 — the honest production record. No percentages, no dates dressed as promises. */
 export function BuildArchive() {
   return (
-    <section id="build-in-public" className="build-archive scroll-mt-24 border-y border-panel-navy-light" aria-labelledby="build-archive-title">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="build-archive-heading">
-          <div className="max-w-3xl">
-            <p className="section-kicker">Build in public</p>
-            <h2 id="build-archive-title" className="section-title">Watch the realm become real.</h2>
-            <p className="section-lede">No invented percentages and no launch date disguised as a promise. Every record shows what changed, what is still concept work and what must survive player testing.</p>
-          </div>
-          <div className="build-live-signal"><RadioTower className="h-5 w-5 text-toxic-lime" aria-hidden="true" /><div><span>Current production signal</span><strong>WORLD PROTOTYPE // ASSEMBLING</strong></div></div>
-        </div>
+    <section id="build-in-public" aria-labelledby="build-title" className="scroll-mt-20 py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <p className="section-kicker">09 · Follow development</p>
+        <h2 id="build-title" className="chapter-title mt-4">Built in public.</h2>
+        <p className="chapter-lede">Concept art is direction. A prototype is evidence. Only a tested build earns the word final.</p>
 
-        <div className="build-pipeline" aria-label="Production stages">
-          {PIPELINE.map((stage, index) => (
-            <div key={stage.label} className={stage.active ? "is-current" : ""}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div><strong>{stage.label}</strong><small>{stage.state}</small></div>
-              {index === 0 ? <Check className="h-4 w-4" aria-hidden="true" /> : stage.active ? <CircleDashed className="h-4 w-4 animate-spin motion-reduce:animate-none" aria-hidden="true" /> : <LockKeyhole className="h-4 w-4" aria-hidden="true" />}
-            </div>
-          ))}
-        </div>
-
-        <div className="build-card-grid">
-          {DEVLOG_ENTRIES.map((entry, index) => (
-            <Link key={entry.slug} href={`/devlog#${entry.slug}`} className={`build-card build-card-${index + 1}`}>
-              <Image
-                src={ENTRY_VISUALS[index]}
-                alt=""
-                fill
-                sizes={index === 0 ? "(max-width: 1024px) 100vw, 58vw" : "(max-width: 1024px) 100vw, 38vw"}
-                className={index === 1 ? "object-contain object-right-bottom" : "object-cover"}
+        <ol className="mt-12 grid gap-6 border-t border-cloud-white/15 pt-6 sm:grid-cols-4" aria-label="Production stages">
+          {STAGES.map((stage) => (
+            <li key={stage.label} className="flex items-start gap-3">
+              <span
+                className={`mt-1.5 h-3 w-3 flex-none rounded-full ${
+                  stage.done ? "bg-antique-gold" : stage.current ? "border-2 border-antique-gold" : "border border-cloud-white/35"
+                }`}
+                aria-hidden="true"
               />
-              <div className="build-card-shade" />
-              <div className="build-card-scan" aria-hidden="true" />
-              <div className="build-card-copy">
-                <div className="flex items-center justify-between gap-4"><span>{String(index + 1).padStart(2, "0")} // {entry.status}</span><time>{entry.date}</time></div>
-                <h3>{entry.title}</h3>
-                <p>{entry.summary}</p>
-                <strong>Open production record <ArrowRight className="h-4 w-4" aria-hidden="true" /></strong>
+              <div>
+                <p className={`font-display font-bold ${stage.done || stage.current ? "text-cloud-white" : "text-cloud-white/60"}`}>{stage.label}</p>
+                <p className="text-sm text-cloud-white/60">{stage.state}</p>
               </div>
-            </Link>
+            </li>
           ))}
-        </div>
+        </ol>
 
-        <div className="build-archive-footer">
-          <p><span>ARCHIVE RULE</span> Concept art is direction. A prototype is evidence. Only a tested build earns the word final.</p>
-          <Link href="/devlog">Enter the complete production record <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-        </div>
+        <ul className="mt-16 divide-y divide-cloud-white/10 border-y border-cloud-white/10">
+          {DEVLOG_ENTRIES.map((entry) => (
+            <li key={entry.slug}>
+              <Link href={`/devlog#${entry.slug}`} className="group grid gap-2 py-7 sm:grid-cols-[12rem_1fr_auto] sm:items-baseline sm:gap-8">
+                <span className="text-sm text-cloud-white/55">{entry.date}</span>
+                <span>
+                  <span className="block font-display text-xl font-bold text-cloud-white transition group-hover:text-antique-gold">{entry.title}</span>
+                  <span className="mt-1 block text-cloud-white/70">{entry.summary}</span>
+                </span>
+                <ArrowRight className="hidden h-5 w-5 text-antique-gold transition group-hover:translate-x-1 sm:block" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <Link href="/devlog" className="text-link mt-8">
+          Read the full development log <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
       </div>
     </section>
   );

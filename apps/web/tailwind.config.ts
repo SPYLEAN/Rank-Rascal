@@ -19,6 +19,19 @@ const config: Config = {
         "panel-navy-light": "#232847",
         "cloud-white": "#F8F8FF",
         "muted-text": "#AEB4DC",
+        // Stickerwood palette (docs/rascal-realms/ART_DIRECTION.md). Warm tones carry the
+        // journey; violet/magenta/lime are reserved for corruption, lies and Razz.
+        "paper-cream": "#F3E5C8",
+        "antique-gold": "#D5A84B",
+        "ink-plum": "#1B1426",
+        forest: "#41633B",
+        moss: "#76954D",
+        wood: "#7B4E2D",
+        sky: "#79B8D8",
+        "crown-violet": "#6B31A8",
+        "hot-magenta": "#E632A9",
+        "signal-lime": "#B9F227",
+        void: "#160E21",
       },
       fontFamily: {
         display: ["var(--font-sora)", "Sora", "sans-serif"],

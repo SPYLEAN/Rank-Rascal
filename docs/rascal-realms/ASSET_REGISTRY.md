@@ -40,6 +40,7 @@ The teaser video is the site's central cinematic asset. Full details: `TEASER_ST
 | `rascal-realms-crownfall-poster.webp` / `-poster-mobile.webp` | Hero LCP image and video fallback; the Crownfall intro's fracture reveal (`PageLoadingOverlay.tsx`) |
 | `rascal-realms-crownfall-teaser.{webm,mp4}` (1920×1080, 30.5 s, audio) | "Watch the full teaser" theater player (`TeaserPlayer.tsx`), fetched only on first open |
 | `rascal-realms-crownfall-teaser-poster.webp` (title card) | Theater player poster, fetched only on first open |
+| `rascal-realms-crownfall-signpost.webp` (1920×1080 still at 10.7 s) | Backdrop for the homepage's playable "The Sign That Lied" investigation (`FraudInvestigation.tsx`) |
 
 Production status: **CONCEPT**. The teaser is pre-production cinematic art. Every place it plays is labelled "not in-game footage", and no part of it is presented as Roblox gameplay.
 

@@ -2,233 +2,151 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Eye, Footprints, MapPin, ShieldAlert, Sparkles, Users } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { WORLD_LOCATIONS, type LoreStatus } from "@/lib/game-content";
 
-const STATUS_LABEL: Record<LoreStatus, { label: string; className: string }> = {
-  "in-development": { label: "In development", className: "border-toxic-lime/60 bg-toxic-lime/10 text-toxic-lime" },
-  concept: { label: "Concept", className: "border-hot-pink/60 bg-hot-pink/10 text-hot-pink" },
-  planned: { label: "Planned", className: "border-royal-purple/60 bg-royal-purple/15 text-cloud-white/80" },
+const STATUS: Record<LoreStatus, string> = {
+  "in-development": "In development",
+  concept: "Concept",
+  planned: "Planned",
 };
 
-type InsigniaKey = keyof typeof BRAND_ASSETS.insignias;
 type LocationImageKey = keyof typeof BRAND_ASSETS.locations;
 
+/**
+ * Chapter 06 — the illustrated map dominates. Choosing a place moves a soft spotlight onto it
+ * (the rest of the realm dims) and opens its dossier below. The numbered list mirrors the map
+ * for keyboard and small-screen use.
+ */
 export function WorldAtlas() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const location = WORLD_LOCATIONS[activeIndex];
-  const status = STATUS_LABEL[location.status];
+  const [active, setActive] = useState(0);
+  const location = WORLD_LOCATIONS[active];
+  // The spotlight layer is 300% of the stage; translate it so its centre sits on the hotspot.
+  const spot = `translate(${(location.hotspot.x - 150) / 3}%, ${(location.hotspot.y - 150) / 3}%)`;
 
   return (
-    <section
-      id="explore-stickerwood"
-      className="atlas-section scroll-mt-20 border-y-2 border-royal-purple/30 bg-[#090b16] py-20 lg:py-32"
-      aria-labelledby="atlas-title"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 rounded-full border border-toxic-lime bg-toxic-lime/10 px-4 py-1.5 font-mono text-xs font-bold uppercase tracking-[0.2em] text-toxic-lime">
-              <MapPin className="h-3.5 w-3.5 text-hot-pink" aria-hidden="true" />
-              Rascal Realms Atlas · Episode 01
-            </div>
-            <h2 id="atlas-title" className="font-display text-4xl font-extrabold uppercase tracking-tight text-cloud-white sm:text-5xl lg:text-6xl">
-              Eleven places. <span className="text-toxic-lime [text-shadow:0_0_30px_rgba(183,255,54,.35)]">One realm that keeps arguing with itself.</span>
-            </h2>
-            <p className="text-base sm:text-lg leading-relaxed text-cloud-white/80">
-              Stickerwood is one connected world, not a level-select menu. Every route, shadow and physical clue can carry across borders. Click a place on the map to open its dossier.
-            </p>
-          </div>
-        </div>
+    <section id="explore-stickerwood" aria-labelledby="atlas-title" className="scroll-mt-20 py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <p className="section-kicker">06 · Explore the realm</p>
+        <h2 id="atlas-title" className="chapter-title mt-4 max-w-4xl">Eleven places. One argument.</h2>
+        <p className="chapter-lede">Stickerwood is one connected world, not a level-select screen. Choose a place to see what it&apos;s hiding.</p>
+      </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-stretch">
-          {/* Map viewport */}
-          <div className="relative min-h-[440px] overflow-hidden rounded-2xl border-2 border-royal-purple/60 bg-[#070914] shadow-2xl lg:col-span-8">
-            <Image
-              src={BRAND_ASSETS.game.stickerwoodKeyArt}
-              alt="Illustrated concept atlas of Stickerwood, spanning eleven locations from Starting Village to King Wrongway Citadel"
-              fill
-              sizes="(max-width: 1024px) 100vw, 68vw"
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#080a16] via-transparent to-[#080a16]/50 pointer-events-none" />
-
-            {WORLD_LOCATIONS.map((item, index) => {
-              const isActive = activeIndex === index;
-              return (
-                <button
-                  key={item.number}
-                  type="button"
-                  aria-pressed={isActive}
-                  aria-label={`Open the ${item.name} dossier`}
-                  onClick={() => setActiveIndex(index)}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 group transition-transform ${
-                    isActive ? "scale-110 z-30" : "hover:scale-105 z-20"
-                  }`}
-                  style={{ left: `${item.hotspot.x}%`, top: `${item.hotspot.y}%` }}
-                >
-                  <div className="relative flex flex-col items-center">
-                    <div
-                      className={`flex h-9 w-9 items-center justify-center rounded-full border-2 transition-all ${
-                        isActive
-                          ? "border-toxic-lime bg-toxic-lime/30 shadow-[0_0_25px_#B7FF36]"
-                          : "border-royal-purple bg-midnight-bg/85 hover:border-hot-pink"
-                      }`}
-                    >
-                      <span className="font-mono text-[11px] font-black text-cloud-white">{item.number}</span>
-                    </div>
-                    <span
-                      className={`mt-1 hidden rounded border px-1.5 py-0.5 font-mono text-[9px] font-bold tracking-wide sm:block ${
-                        isActive
-                          ? "border-toxic-lime bg-toxic-lime text-midnight-bg"
-                          : "border-cloud-white/20 bg-midnight-bg/85 text-cloud-white/80 group-hover:text-toxic-lime"
-                      }`}
-                    >
-                      {item.name}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-
-            <p className="absolute bottom-3 left-3 right-3 rounded-lg border border-cloud-white/10 bg-midnight-bg/80 px-3 py-1.5 text-center font-mono text-[10px] text-cloud-white/60 backdrop-blur-sm sm:text-left">
-              Illustrated concept atlas — exact in-game geography is still in production.
-            </p>
-          </div>
-
-          {/* Dossier */}
-          <aside className="flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-royal-purple/50 bg-gradient-to-b from-[#141836] via-[#101328] to-[#121528] shadow-xl lg:col-span-4">
-            {location.image ? (
-              <div className="relative -mx-6 -mt-6 mb-1 h-36 overflow-hidden border-b border-royal-purple/40 sm:h-44">
-                <Image
-                  src={BRAND_ASSETS.locations[location.image as LocationImageKey]}
-                  alt={`Concept illustration of ${location.name}`}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 32vw"
-                  className="object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#101328] via-transparent to-transparent" />
-                <span className="absolute bottom-2 right-2 rounded-full border border-cloud-white/15 bg-midnight-bg/80 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wide text-cloud-white/60">
-                  Concept art
-                </span>
-              </div>
-            ) : null}
-            <div className={`space-y-5 p-6 ${location.image ? "pt-0" : ""}`}>
-              <div className="flex items-center justify-between gap-3 border-b border-royal-purple/40 pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border-2 border-toxic-lime bg-royal-purple/30 p-1 shadow-md">
-                    <Image
-                      src={BRAND_ASSETS.insignias[location.insignia as InsigniaKey]}
-                      alt=""
-                      width={48}
-                      height={48}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-hot-pink">Location {location.number}</span>
-                    <h3 className="font-display text-2xl font-extrabold text-cloud-white">{location.name}</h3>
-                  </div>
-                </div>
-                <span className={`shrink-0 rounded-full border px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wide ${status.className}`}>
-                  {status.label}
-                </span>
-              </div>
-
-              <p className="font-mono text-xs font-semibold italic text-toxic-lime">&ldquo;{location.tagline}&rdquo;</p>
-              <p className="text-sm leading-relaxed text-cloud-white/85">{location.description}</p>
-
-              <div>
-                <span className="mb-2 flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-hot-pink">
-                  <Eye className="h-3.5 w-3.5 text-toxic-lime" aria-hidden="true" />
-                  Mysteries
-                </span>
-                <ul className="space-y-1.5 text-xs text-cloud-white/80">
-                  {location.mysteries.map((item) => (
-                    <li key={item} className="flex gap-2"><span className="text-toxic-lime">·</span><span>{item}</span></li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="rounded-xl border border-royal-purple/30 bg-[#0a0c1a] p-3.5 text-xs">
-                <span className="mb-1 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-hot-pink">
-                  <ShieldAlert className="h-3.5 w-3.5" aria-hidden="true" />
-                  Threats
-                </span>
-                <p className="font-semibold text-cloud-white">{location.threats}</p>
-              </div>
-
-              {location.discoveries.length > 0 ? (
-                <div>
-                  <span className="mb-2 flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-hot-pink">
-                    <Footprints className="h-3.5 w-3.5 text-toxic-lime" aria-hidden="true" />
-                    Discoveries
-                  </span>
-                  <ul className="space-y-1.5 text-xs text-cloud-white/80">
-                    {location.discoveries.map((item) => (
-                      <li key={item} className="flex gap-2"><span className="text-toxic-lime">·</span><span>{item}</span></li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-
-              <div className="grid gap-4 text-xs sm:grid-cols-2">
-                <div>
-                  <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-text"><Sparkles className="h-3 w-3" aria-hidden="true" />Quest styles</span>
-                  <p className="mt-1 font-semibold text-cloud-white">{location.questStyles}</p>
-                </div>
-                <div>
-                  <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-text"><Users className="h-3 w-3" aria-hidden="true" />Notable</span>
-                  <ul className="mt-1 space-y-0.5">
-                    {location.notableCharacters.length > 0
-                      ? location.notableCharacters.map((name) => (
-                          <li key={name} className="font-semibold text-cloud-white">{name}</li>
-                        ))
-                      : <li className="font-semibold text-cloud-white">Unknown</li>}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t border-cloud-white/10 px-6 pb-6 pt-4">
-              <Link href="/game#premise" className="action-primary w-full justify-center font-mono text-xs uppercase tracking-wider font-bold">
-                <span>Open the world dossier</span>
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            </div>
-          </aside>
-        </div>
-
-        {/* Location rail */}
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mx-auto mt-12 max-w-[92rem] sm:px-8">
+        <div className="relative aspect-[1672/941] w-full overflow-hidden sm:rounded-sm">
+          <Image
+            src={BRAND_ASSETS.game.stickerwoodKeyArt}
+            alt="Illustrated concept map of Stickerwood, from Starting Village up to King Wrongway Citadel"
+            fill
+            sizes="(max-width: 1500px) 100vw, 1472px"
+            className="object-cover"
+          />
+          <div className="atlas-spotlight" style={{ transform: spot }} aria-hidden="true" />
           {WORLD_LOCATIONS.map((item, index) => {
-            const isActive = activeIndex === index;
+            const on = index === active;
             return (
               <button
                 key={item.number}
                 type="button"
-                aria-pressed={isActive}
-                onClick={() => setActiveIndex(index)}
-                className={`flex items-center gap-3 rounded-xl border-2 p-3 text-left transition-all ${
-                  isActive
-                    ? "border-toxic-lime bg-[#181d3c] shadow-[0_0_20px_rgba(183,255,54,0.3)]"
-                    : "border-royal-purple/40 bg-[#0d1022] hover:border-royal-purple hover:bg-[#141836]"
-                }`}
+                onClick={() => setActive(index)}
+                aria-pressed={on}
+                aria-label={`${item.number}: ${item.name}`}
+                className="group absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+                style={{ left: `${item.hotspot.x}%`, top: `${item.hotspot.y}%` }}
               >
-                <div className="relative h-9 w-9 flex-shrink-0 overflow-hidden rounded-lg border border-toxic-lime/50 p-0.5">
-                  <Image src={BRAND_ASSETS.insignias[item.insignia as InsigniaKey]} alt="" width={36} height={36} className="object-contain" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold text-hot-pink">
-                    <span>{item.number}</span>
-                  </div>
-                  <p className="truncate font-display text-sm font-bold text-cloud-white">{item.name}</p>
-                </div>
+                <span
+                  className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-[11px] font-bold transition sm:h-9 sm:w-9 sm:text-xs ${
+                    on
+                      ? "scale-110 border-paper-cream bg-antique-gold text-ink-plum shadow-[0_0_24px_rgba(213,168,75,.7)]"
+                      : "border-paper-cream/80 bg-ink-plum/75 text-paper-cream group-hover:scale-110 group-hover:bg-ink-plum group-focus-visible:scale-110"
+                  }`}
+                >
+                  {item.number}
+                </span>
+                <span
+                  className={`pointer-events-none mt-1 hidden whitespace-nowrap rounded-sm bg-ink-plum/85 px-2 py-0.5 text-xs font-semibold text-paper-cream transition lg:block ${
+                    on ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
+                  }`}
+                  aria-hidden="true"
+                >
+                  {item.name}
+                </span>
               </button>
             );
           })}
+          <p className="absolute bottom-2 right-3 text-[10px] text-paper-cream/70">Concept map · final geography in production</p>
+        </div>
+
+        <ol className="no-scrollbar flex gap-1 overflow-x-auto px-5 pt-4 sm:px-0" aria-label="All eleven locations">
+          {WORLD_LOCATIONS.map((item, index) => (
+            <li key={item.number} className="flex-none">
+              <button
+                type="button"
+                onClick={() => setActive(index)}
+                aria-pressed={index === active}
+                className={`min-h-11 whitespace-nowrap border-b-2 px-3 text-sm transition ${
+                  index === active ? "border-antique-gold font-semibold text-cloud-white" : "border-transparent text-cloud-white/60 hover:text-cloud-white"
+                }`}
+              >
+                <span className="mr-1.5 text-cloud-white/40">{item.number}</span>
+                {item.name}
+              </button>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div className="mx-auto mt-12 grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]" aria-live="polite">
+        {location.image ? (
+          <div key={location.image} className="scene-in relative aspect-[16/9] overflow-hidden rounded-sm">
+            <Image
+              src={BRAND_ASSETS.locations[location.image as LocationImageKey]}
+              alt={`Concept illustration of ${location.name}`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 45vw"
+              className="object-cover"
+            />
+            <p className="absolute bottom-2 left-3 text-[10px] text-paper-cream/80">Concept art</p>
+          </div>
+        ) : (
+          <div className="hidden lg:block" />
+        )}
+
+        <div>
+          <p className="text-sm text-cloud-white/55">
+            Location {location.number} · {STATUS[location.status]}
+          </p>
+          <h3 className="mt-2 font-display text-3xl font-extrabold text-cloud-white sm:text-4xl">{location.name}</h3>
+          <p className="mt-1 text-lg italic text-paper-cream/85">{location.tagline}</p>
+          <p className="mt-4 leading-relaxed text-cloud-white/80">{location.description}</p>
+
+          <dl className="mt-6 grid gap-x-8 gap-y-5 text-sm sm:grid-cols-2">
+            <div>
+              <dt className="section-kicker">Mysteries</dt>
+              <dd className="mt-1.5 space-y-1 text-cloud-white/80">
+                {location.mysteries.map((item) => <span key={item} className="block">{item}</span>)}
+              </dd>
+            </div>
+            <div>
+              <dt className="section-kicker">Threat</dt>
+              <dd className="mt-1.5 text-cloud-white/80">{location.threats}</dd>
+            </div>
+            <div>
+              <dt className="section-kicker">Found here</dt>
+              <dd className="mt-1.5 space-y-1 text-cloud-white/80">
+                {location.discoveries.length > 0
+                  ? location.discoveries.map((item) => <span key={item} className="block">{item}</span>)
+                  : <span className="block">Nothing yet. It&apos;s sealed.</span>}
+              </dd>
+            </div>
+            <div>
+              <dt className="section-kicker">Who you&apos;ll meet</dt>
+              <dd className="mt-1.5 space-y-1 text-cloud-white/80">
+                {location.notableCharacters.map((name) => <span key={name} className="block">{name}</span>)}
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-5 text-sm text-cloud-white/55">Quest styles: {location.questStyles}</p>
         </div>
       </div>
     </section>

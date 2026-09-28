@@ -1,18 +1,31 @@
-import { Lock } from "lucide-react";
-import { FUTURE_REALMS_TEASER } from "@/lib/game-content";
+import Image from "next/image";
+import { BRAND_ASSETS } from "@/lib/brand-assets";
 
+/**
+ * Chapter 08 — distant, incomplete glimpses. The art is deliberately torn, blurred and dim:
+ * future realms are planned, unnamed and undated, and the page says so.
+ */
 export function FutureRealmsTeaser() {
   return (
-    <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24" aria-labelledby="future-realms-title">
-      <div className="relative overflow-hidden rounded-2xl border border-royal-purple/40 bg-gradient-to-br from-[#12081f] via-[#0b0e1c] to-[#0b0e1c] px-7 py-14 text-center sm:px-14">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(107,49,168,.35),transparent_60%)]" />
-        <div className="relative">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border-2 border-royal-purple/60 bg-midnight-bg/70">
-            <Lock className="h-6 w-6 text-royal-purple" aria-hidden="true" />
-          </div>
-          <p className="mt-5 font-mono text-[11px] font-bold uppercase tracking-[0.24em] text-royal-purple">Planned · sealed for now</p>
-          <h2 id="future-realms-title" className="mt-3 font-display text-3xl font-extrabold uppercase text-cloud-white sm:text-4xl">{FUTURE_REALMS_TEASER.title}</h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-cloud-white/70">{FUTURE_REALMS_TEASER.copy}</p>
+    <section id="beyond" aria-labelledby="beyond-title" className="relative bg-[linear-gradient(180deg,#050308_0%,#050308_55%,#121526_100%)] py-28 lg:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="relative h-56 overflow-hidden sm:h-72 [clip-path:polygon(0_12%,6%_4%,14%_10%,23%_2%,34%_9%,46%_3%,57%_11%,68%_4%,79%_10%,90%_2%,100%_8%,100%_90%,92%_97%,81%_91%,70%_99%,58%_92%,47%_98%,35%_91%,24%_97%,12%_90%,0_96%)]" aria-hidden="true">
+          <Image
+            src={BRAND_ASSETS.locations.skyBridges}
+            alt=""
+            fill
+            sizes="100vw"
+            className="scale-110 object-cover object-[center_35%] opacity-60 blur-[6px] saturate-[.7]"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,#050308_0%,rgba(5,3,8,0)_25%,rgba(5,3,8,0)_75%,#050308_100%)]" />
+        </div>
+
+        <div className="mx-auto mt-14 max-w-2xl text-center">
+          <p className="section-kicker">08 · What lies beyond · Planned</p>
+          <h2 id="beyond-title" className="chapter-title mt-4">Stickerwood is only the first realm.</h2>
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-cloud-white/70">
+            Past the Citadel, the map runs out on purpose. More realms are planned. We won&apos;t name them or put dates on them until they&apos;re real.
+          </p>
         </div>
       </div>
     </section>
