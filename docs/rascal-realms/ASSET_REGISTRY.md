@@ -26,6 +26,23 @@ Optimized via the same convention as the existing `game/` art (full-size PNGs se
 
 Not promoted: `key locations/...-1.png` and `...-10.png` (sweeping wide-angle realm shots covering the same territory as the 8 above, kept as SUPPORTING reference; no location was left without a strong candidate that needed them). Starting Village, Crown Ruins, and River Path intentionally have no new dedicated location photo — the first two already read clearly through existing approved art and copy, and no candidate in this batch specifically fit a river/waterway location.
 
+## Crownfall teaser — master SUPPORTING (not shipped), derivatives APPROVED
+
+The teaser video is the site's central cinematic asset. Full details: `TEASER_STORYBOARD.md` (shots, focal points, flashing and loop analysis) and `TEASER_EXPORT_SPEC.md` (encode settings, sizes, delivery rules).
+
+- **Master — SUPPORTING, never shipped:** `Rascal_Realms_Crownfall_Teaser_Master.mp4`, 29.1 MB, 1920×1080, 30.5 s, H.264 + AAC. Preserved untouched in `all assets graphic/video/` (gitignored); original upload at `C:\Users\tanvi\Downloads\`. SHA-256 `7b0007a9…664a37`; both copies match. It is **not** in `apps/web/public/`.
+- **Derivatives — APPROVED, in `apps/web/public/media/`**, referenced only through `BRAND_ASSETS.media` (so `npm run verify-assets` checks they exist):
+
+| File | Website usage |
+|---|---|
+| `rascal-realms-crownfall-hero.{webm,mp4}` (1920×964, 6.7 s loop, no audio) | Homepage hero background, landscape viewports (`HeroVideo.tsx`) |
+| `rascal-realms-crownfall-hero-mobile.{webm,mp4}` (542×964) | Homepage hero background, portrait viewports |
+| `rascal-realms-crownfall-poster.webp` / `-poster-mobile.webp` | Hero LCP image and video fallback; the Crownfall intro's fracture reveal (`PageLoadingOverlay.tsx`) |
+| `rascal-realms-crownfall-teaser.{webm,mp4}` (1920×1080, 30.5 s, audio) | "Watch the full teaser" theater player (`TeaserPlayer.tsx`), fetched only on first open |
+| `rascal-realms-crownfall-teaser-poster.webp` (title card) | Theater player poster, fetched only on first open |
+
+Production status: **CONCEPT**. The teaser is pre-production cinematic art. Every place it plays is labelled "not in-game footage", and no part of it is presented as Roblox gameplay.
+
 ## Already published and in active use — APPROVED
 
 Everything under `apps/web/public/brand/` today (verified against `apps/web/lib/brand-assets.ts`): logos/icons, 4 Razz poses, 6 Discord emoji + 6 full-res emoji (hardcoded in preview components), loading animation (webp/gif, 2 speeds, `razz-load-01.png` static fallback), 3 canonical badges (+256px Discord variants), 7 website-art illustrations, 6 `game/` pre-production illustrations (`stickerwood-key-art`, `world-lies-ui`, `stickerwood-enemies-boss` — includes King Wrongway — `founders-guild-workshop`, `qa-truth-lab`, `fracture-beneath-stickerwood`), 3 banners (including `rascal-plaza-banner.png`), 6 badge/insignia icons. All comply with the "no contact sheets/prompts/raw generations" publishing rule already.

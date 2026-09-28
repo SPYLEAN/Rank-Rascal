@@ -86,6 +86,20 @@ export const BRAND_ASSETS = {
     skyBridges: "/brand/game/locations/sky-bridges-v1.png",
   },
 
+  // Crownfall teaser derivatives. The 29 MB master never ships; see
+  // docs/rascal-realms/TEASER_EXPORT_SPEC.md and scripts/encode-teaser.sh.
+  media: {
+    heroWebm: "/media/rascal-realms-crownfall-hero.webm",
+    heroMp4: "/media/rascal-realms-crownfall-hero.mp4",
+    heroMobileWebm: "/media/rascal-realms-crownfall-hero-mobile.webm",
+    heroMobileMp4: "/media/rascal-realms-crownfall-hero-mobile.mp4",
+    poster: "/media/rascal-realms-crownfall-poster.webp",
+    posterMobile: "/media/rascal-realms-crownfall-poster-mobile.webp",
+    teaserWebm: "/media/rascal-realms-crownfall-teaser.webm",
+    teaserMp4: "/media/rascal-realms-crownfall-teaser.mp4",
+    teaserPoster: "/media/rascal-realms-crownfall-teaser-poster.webp",
+  },
+
   // Game & Community Banners
   banners: {
     welcome: "/brand/banners/welcome-banner.png",

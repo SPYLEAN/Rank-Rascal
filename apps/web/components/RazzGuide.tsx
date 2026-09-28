@@ -145,9 +145,18 @@ export function RazzGuide() {
   const nextId = useRef(2);
   const logRef = useRef<HTMLDivElement>(null);
 
+  // Never interrupt the video hero: the greeting appears only once the visitor has
+  // scrolled past the first screen.
   useEffect(() => {
-    const timer = window.setTimeout(() => setShowGreeting(true), 2200);
-    return () => window.clearTimeout(timer);
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.85) {
+        setShowGreeting(true);
+        window.removeEventListener("scroll", onScroll);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {

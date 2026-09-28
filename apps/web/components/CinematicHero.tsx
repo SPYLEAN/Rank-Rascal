@@ -1,110 +1,58 @@
-"use client";
+import { ArrowRight, Play } from "lucide-react";
+import { HeroVideo } from "@/components/HeroVideo";
+import { TeaserPlayer } from "@/components/TeaserPlayer";
 
-import type { PointerEvent as ReactPointerEvent } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowDown, ArrowRight, Sparkles, Users } from "lucide-react";
-import { BRAND_ASSETS } from "@/lib/brand-assets";
-
-const HERO_STATS = [
-  ["Status", "Pre-production"],
-  ["Episode 1", "Stickerwood"],
-  ["Target", "1–4 players"],
-  ["Platform", "Roblox"],
-] as const;
-
+/**
+ * Title-screen hero built around the Crownfall teaser.
+ *
+ * Readability is guaranteed by the scrim, not by the footage: the title sits in the
+ * lower-left on desktop and the lower third on portrait screens, both areas darkened by
+ * gradients, while every hero-loop shot keeps its focal point near the frame centre.
+ * The title and CTAs are plain server-rendered markup, so they are present even if the
+ * video (or JavaScript) never loads.
+ */
 export function CinematicHero() {
-  function moveWorld(event: ReactPointerEvent<HTMLElement>) {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
-    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
-    event.currentTarget.style.setProperty("--hero-shift-x", `${(x * -14).toFixed(2)}px`);
-    event.currentTarget.style.setProperty("--hero-shift-y", `${(y * -10).toFixed(2)}px`);
-    event.currentTarget.style.setProperty("--copy-shift-x", `${(x * 5).toFixed(2)}px`);
-    event.currentTarget.style.setProperty("--copy-shift-y", `${(y * 3).toFixed(2)}px`);
-  }
-
-  function resetWorld(event: ReactPointerEvent<HTMLElement>) {
-    event.currentTarget.style.setProperty("--hero-shift-x", "0px");
-    event.currentTarget.style.setProperty("--hero-shift-y", "0px");
-    event.currentTarget.style.setProperty("--copy-shift-x", "0px");
-    event.currentTarget.style.setProperty("--copy-shift-y", "0px");
-  }
-
   return (
     <section
-      onPointerMove={moveWorld}
-      onPointerLeave={resetWorld}
-      className="hero-world relative min-h-[860px] overflow-hidden border-b border-royal-purple/30 lg:min-h-[940px]"
+      aria-labelledby="hero-title"
+      className="relative isolate h-[calc(100svh-5rem)] min-h-[560px] overflow-hidden bg-[#0b0912]"
     >
-      <div className="hero-world-layer absolute -inset-8">
-        <Image
-          src={BRAND_ASSETS.game.stickerwoodKeyArt}
-          alt="Razz overlooks the enormous connected realm of Stickerwood as Crown corruption spreads across distant ruins"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[62%_center]"
-        />
-      </div>
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,8,17,.99)_0%,rgba(8,9,19,.93)_32%,rgba(8,9,19,.55)_59%,rgba(8,9,19,.08)_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(0deg,#121526_0%,transparent_42%)]" />
-      <div className="crown-rift absolute -right-32 -top-32 h-[560px] w-[560px] rounded-full border border-hot-pink/20 bg-royal-purple/10 blur-[2px] motion-reduce:hidden" />
-      <div className="world-grain absolute inset-0 opacity-25" />
+      <HeroVideo />
+      <div className="hero-scrim pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="pointer-events-none absolute inset-0 overflow-hidden motion-reduce:hidden" aria-hidden="true">
-        <span className="world-shard world-shard-a" />
-        <span className="world-shard world-shard-b" />
-        <span className="world-shard world-shard-c" />
-        <span className="world-orbit" />
-      </div>
+      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-28 sm:px-8 sm:pb-20 lg:pb-24">
+        <div className="max-w-2xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E8C877] hero-shadow">
+            A Roblox game · in pre-production
+          </p>
 
-      <div className="relative mx-auto flex min-h-[860px] max-w-7xl items-end px-4 pb-24 pt-32 sm:px-6 lg:min-h-[940px] lg:items-center lg:px-8 lg:pb-28 lg:pt-36">
-        <div className="hero-copy max-w-4xl space-y-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-toxic-lime/50 bg-midnight-bg/82 px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.15em] text-toxic-lime backdrop-blur-xl">
-            <Sparkles className="h-4 w-4" aria-hidden="true" />
-            Official Roblox game · world in construction
-          </div>
+          <h1 id="hero-title" className="mt-4 font-display uppercase text-cloud-white hero-shadow">
+            <span className="block text-[1.35rem] font-bold tracking-[0.2em] text-[#F3E5C8] sm:text-3xl lg:text-4xl">Rascal Realms:</span>
+            <span className="mt-1 block text-[3.4rem] font-extrabold leading-[0.88] tracking-[-0.03em] sm:text-[5.5rem] lg:text-[7rem]">
+              Crownfall
+            </span>
+          </h1>
 
-          <div className="space-y-5">
-            <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-hot-pink">Rascal Realms: Crownfall</p>
-            <h1 className="max-w-5xl font-display text-[3.65rem] font-extrabold uppercase leading-[0.86] tracking-[-0.045em] text-cloud-white sm:text-[5.8rem] lg:text-[7.35rem]">
-              The world lies.
-              <span className="mt-4 block text-toxic-lime [text-shadow:0_0_36px_rgba(183,255,54,.22)]">Your squad proves it.</span>
-            </h1>
-            <p className="max-w-2xl text-lg leading-relaxed text-cloud-white/82 sm:text-xl">
-              A cinematic co-op action-adventure mystery built for Roblox. Read the landscape, expose false rules and watch an enormous handcrafted realm rewrite itself around your decisions.
-            </p>
-          </div>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-cloud-white/90 hero-shadow sm:text-xl">
+            A cinematic co-op Roblox RPG where The World Lies.
+          </p>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href="/game" className="action-primary group min-h-[56px] px-7 py-4 text-base normal-case tracking-normal">
-              Enter Stickerwood
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="#world-lies" className="action-primary group min-h-[56px] px-7 text-base">
+              Enter the Realm
               <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true" />
-            </Link>
-            <Link href="/community#guild" className="action-secondary min-h-[56px] bg-midnight-bg/72 px-7 py-4 text-base normal-case tracking-normal backdrop-blur-xl">
-              Help build the realm
-              <Users className="h-5 w-5 text-hot-pink" aria-hidden="true" />
-            </Link>
+            </a>
+            <TeaserPlayer className="action-secondary min-h-[56px] bg-[#0b0912]/45 px-7 text-base backdrop-blur-sm">
+              <Play className="h-5 w-5" aria-hidden="true" />
+              Watch the full teaser
+            </TeaserPlayer>
           </div>
 
-          <div className="intel-corners grid max-w-3xl grid-cols-2 gap-px overflow-hidden border border-cloud-white/15 bg-cloud-white/15 shadow-2xl backdrop-blur-xl sm:grid-cols-4">
-            {HERO_STATS.map(([label, value]) => (
-              <div key={label} className="bg-midnight-bg/82 px-4 py-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-text">{label}</p>
-                <p className="mt-1 text-sm font-bold text-cloud-white">{value}</p>
-              </div>
-            ))}
-          </div>
+          <p className="mt-5 text-xs text-cloud-white/60 hero-shadow">
+            Teaser footage is pre-production cinematic art, not in-game footage.
+          </p>
         </div>
       </div>
-
-      <a href="#world-lies" className="absolute bottom-7 right-7 hidden items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-cloud-white/55 transition hover:text-toxic-lime lg:flex">
-        Descend into the lie
-        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-cloud-white/20 bg-midnight-bg/60 backdrop-blur">
-          <ArrowDown className="h-4 w-4 animate-bounce motion-reduce:animate-none" aria-hidden="true" />
-        </span>
-      </a>
     </section>
   );
 }

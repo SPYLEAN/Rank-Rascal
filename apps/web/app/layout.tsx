@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { PageLoadingOverlay } from "@/components/PageLoadingOverlay";
 import { ExperienceChrome } from "@/components/ExperienceChrome";
 import { RazzGuide } from "@/components/RazzGuide";
+import { INTRO_SEEN_SCRIPT } from "@/lib/media-preferences";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rankrascal.lol";
@@ -78,7 +79,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    // suppressHydrationWarning: INTRO_SEEN_SCRIPT may add data-intro-seen before React hydrates.
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: INTRO_SEEN_SCRIPT }} />
+      </head>
       <body className="bg-midnight-bg text-cloud-white min-h-screen flex flex-col antialiased">
         <ExperienceChrome />
         <PageLoadingOverlay />

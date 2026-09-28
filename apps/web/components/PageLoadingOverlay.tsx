@@ -1,138 +1,87 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { PORTRAIT_QUERY, markIntroDone, prefersReducedMotion } from "@/lib/media-preferences";
 
-const SEEN_KEY = "rascalRealms.introSeen";
-
-type Stage = "black" | "fracture" | "crack" | "lie" | "reveal" | "resolve" | "fadeout";
-
-function readIntroSeen(): boolean {
-  try {
-    return window.localStorage.getItem(SEEN_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-function writeIntroSeen(): void {
-  try {
-    window.localStorage.setItem(SEEN_KEY, "1");
-  } catch {
-    // Private browsing or blocked storage — the full intro will just play every visit.
-  }
-}
+/** Seconds, first visit. Returning visitors run the same beats at INTRO_SHORT_SCALE. */
+const INTRO_TOTAL_S = 3.55;
+const INTRO_SHORT_SCALE = 0.37;
 
 /**
  * The Crownfall entrance: black, a small purple fracture, the crack widening,
  * "THE WORLD LIES.", Stickerwood revealed through the break, the title resolving,
- * then a seamless fade into the homepage. No progress bar, no fake percentages,
- * no coordinates or telemetry — this is a cinematic beat, not a loading screen.
+ * then a fade into the homepage.
+ *
+ * The whole sequence is CSS keyframes that start at first paint (see `.intro` in
+ * globals.css), so it finishes on time even on a slow device or with JavaScript disabled.
+ * JavaScript only reports completion so the hero video can start on the matching frame.
+ * `prefers-reduced-motion: reduce` hides it entirely.
  */
 export const PageLoadingOverlay: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [stage, setStage] = useState<Stage>("black");
-  const [skip, setSkip] = useState(false);
-
-  const reducedMotion = useMemo(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
+  const ref = useRef<HTMLDivElement>(null);
+  const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    if (reducedMotion) {
-      writeIntroSeen();
-      setIsVisible(false);
+    const el = ref.current;
+    let timer = 0;
+    const finish = () => {
+      window.clearTimeout(timer);
+      markIntroDone();
+      setGone(true);
+    };
+    if (!el || prefersReducedMotion() || getComputedStyle(el).display === "none") {
+      finish();
       return;
     }
+    const short = document.documentElement.getAttribute("data-intro-seen") === "1";
+    const totalMs = INTRO_TOTAL_S * (short ? INTRO_SHORT_SCALE : 1) * 1000;
+    // performance.now() is time since navigation; the CSS animation started at first paint,
+    // so this is (conservatively) how long is left. Hydration may land after it already ended.
+    const remaining = totalMs - performance.now();
+    if (remaining <= 0) {
+      finish();
+      return;
+    }
+    const onEnd = (event: AnimationEvent) => {
+      if (event.animationName === "intro-out") finish();
+    };
+    el.addEventListener("animationend", onEnd);
+    timer = window.setTimeout(finish, remaining + 150);
+    return () => {
+      el.removeEventListener("animationend", onEnd);
+      window.clearTimeout(timer);
+    };
+  }, []);
 
-    const returning = readIntroSeen();
-    setSkip(returning);
-    writeIntroSeen();
-
-    // First-time visitors get the full ~3.4s sequence. Returning visitors get a
-    // short ~1s version of the same beats, never a full replay.
-    const t = returning
-      ? { fracture: 80, crack: 260, lie: 460, reveal: 640, resolve: 820, fadeStart: 1000, hide: 1300 }
-      : { fracture: 300, crack: 900, lie: 1500, reveal: 2050, resolve: 2650, fadeStart: 3150, hide: 3550 };
-
-    const timers = [
-      window.setTimeout(() => setStage("fracture"), t.fracture),
-      window.setTimeout(() => setStage("crack"), t.crack),
-      window.setTimeout(() => setStage("lie"), t.lie),
-      window.setTimeout(() => setStage("reveal"), t.reveal),
-      window.setTimeout(() => setStage("resolve"), t.resolve),
-      window.setTimeout(() => setStage("fadeout"), t.fadeStart),
-      window.setTimeout(() => setIsVisible(false), t.hide),
-    ];
-
-    return () => timers.forEach(window.clearTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reducedMotion]);
-
-  if (!isVisible) return null;
-
-  const revealed = stage === "reveal" || stage === "resolve" || stage === "fadeout";
-  const cracked = stage === "crack" || stage === "lie" || revealed;
-  const showFracture = stage !== "black";
+  if (gone) return null;
 
   return (
-    <div
-      className={`fixed inset-0 z-[70] flex items-center justify-center overflow-hidden bg-[#050308] transition-opacity duration-500 ${
-        stage === "fadeout" ? "opacity-0 pointer-events-none" : "opacity-100"
-      } ${skip ? "duration-300" : ""}`}
-      role="status"
-      aria-live="polite"
-      aria-label="Entering Rascal Realms: Crownfall"
-    >
-      {/* Stickerwood, revealed only through the fracture */}
-      <div
-        className={`absolute inset-0 transition-all ease-out ${skip ? "duration-300" : "duration-700"} ${
-          revealed ? "opacity-100" : "opacity-0"
-        }`}
-        style={{
-          clipPath: revealed
-            ? "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
-            : "polygon(48% 38%, 52% 38%, 54% 52%, 60% 58%, 50% 100%, 40% 58%, 46% 52%)",
-        }}
-        aria-hidden="true"
-      >
-        <Image
-          src={BRAND_ASSETS.game.stickerwoodKeyArt}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
+    <div ref={ref} className="intro" role="status" aria-label="Entering Rascal Realms: Crownfall">
+      {/* Stickerwood, revealed through the fracture. Same poster as the hero, so the browser
+          fetches it once and the reveal dissolves into an identical frame. */}
+      <div className="intro-reveal" aria-hidden="true">
+        <picture>
+          <source media={PORTRAIT_QUERY} srcSet={BRAND_ASSETS.media.posterMobile} />
+          {/* eslint-disable-next-line @next/next/no-img-element -- shared, pre-optimized poster */}
+          <img
+            src={BRAND_ASSETS.media.poster}
+            alt=""
+            width={1920}
+            height={964}
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+        </picture>
         <div className="absolute inset-0 bg-[#050308]/55" />
       </div>
 
-      {/* The fracture line itself, before the reveal */}
-      {showFracture && !revealed ? (
-        <div
-          aria-hidden="true"
-          className={`absolute h-[70vmin] w-[3px] origin-center bg-gradient-to-b from-transparent via-royal-purple to-transparent shadow-[0_0_30px_8px_rgba(122,77,255,0.55)] transition-transform ${
-            skip ? "duration-200" : "duration-700"
-          } ${cracked ? "scale-y-100 scale-x-[7]" : "scale-y-[0.18] scale-x-100"}`}
-        />
-      ) : null}
+      <div className="intro-crack" aria-hidden="true" />
 
-      {/* Copy */}
       <div className="relative z-10 flex flex-col items-center gap-4 px-6 text-center">
-        <p
-          className={`font-display text-3xl font-extrabold uppercase tracking-[0.08em] text-cloud-white transition-all duration-500 sm:text-5xl ${
-            stage === "lie" || revealed ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-          }`}
-        >
+        <p className="intro-lie font-display text-3xl font-extrabold uppercase tracking-[0.08em] text-cloud-white sm:text-5xl">
           The world lies.
         </p>
-        <p
-          className={`font-mono text-xs font-bold uppercase tracking-[0.3em] text-toxic-lime transition-all duration-500 sm:text-sm ${
-            stage === "resolve" || stage === "fadeout" ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-          }`}
-        >
+        <p className="intro-title text-xs font-semibold uppercase tracking-[0.3em] text-[#E8C877] sm:text-sm">
           Rascal Realms: Crownfall
         </p>
       </div>

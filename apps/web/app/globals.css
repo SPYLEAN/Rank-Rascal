@@ -101,52 +101,158 @@ main {
   transform: rotate(1.5deg);
 }
 
-.hero-world-layer {
-  transform: translate3d(var(--hero-shift-x, 0px), var(--hero-shift-y, 0px), 0) scale(1.08);
-  transition: transform 280ms cubic-bezier(.2,.7,.2,1);
-  will-change: transform;
+/* Crownfall intro -------------------------------------------------------------- */
+/* Pure CSS so it starts at first paint and ends on time without waiting for hydration.
+   Timeline (first visit, --intro-s: 1): fracture 0.3s -> crack widens 0.9s -> "THE WORLD
+   LIES." 1.5s -> Stickerwood revealed 2.05s -> title 2.65s -> fade 3.15-3.55s. */
+:root { --intro-s: 1; }
+html[data-intro-seen="1"] { --intro-s: .37; }
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #050308;
+  animation: intro-out calc(.4s * var(--intro-s)) ease calc(3.15s * var(--intro-s)) forwards;
 }
 
-.hero-copy {
-  transform: translate3d(var(--copy-shift-x, 0px), var(--copy-shift-y, 0px), 0);
-  transition: transform 280ms cubic-bezier(.2,.7,.2,1);
-  will-change: transform;
+.intro-reveal {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  clip-path: polygon(48% 38%, 52% 38%, 54% 52%, 60% 58%, 50% 100%, 40% 58%, 46% 52%);
+  animation: intro-reveal calc(.7s * var(--intro-s)) ease-out calc(2.05s * var(--intro-s)) forwards;
+}
+
+.intro-crack {
+  position: absolute;
+  width: 3px;
+  height: 70vmin;
+  opacity: 0;
+  background: linear-gradient(180deg, transparent, #7A4DFF, transparent);
+  box-shadow: 0 0 30px 8px rgba(122, 77, 255, .55);
+  animation: intro-crack calc(2.05s * var(--intro-s)) ease-out calc(.3s * var(--intro-s)) forwards;
+}
+
+.intro-lie,
+.intro-title {
+  opacity: 0;
+  transform: translateY(.5rem);
+}
+
+.intro-lie { animation: intro-rise calc(.5s * var(--intro-s)) ease calc(1.5s * var(--intro-s)) forwards; }
+.intro-title { animation: intro-rise calc(.5s * var(--intro-s)) ease calc(2.65s * var(--intro-s)) forwards; }
+
+@keyframes intro-crack {
+  0% { opacity: 0; transform: scale(1, .08); }
+  10% { opacity: 1; transform: scale(1, .18); }
+  30% { transform: scale(1, .18); }
+  62% { transform: scale(7, 1); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: scale(9, 1); }
+}
+
+@keyframes intro-reveal {
+  to {
+    opacity: 1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 52%, 100% 100%, 50% 100%, 0% 100%, 0% 52%);
+  }
+}
+
+@keyframes intro-rise { to { opacity: 1; transform: translateY(0); } }
+@keyframes intro-out { to { opacity: 0; visibility: hidden; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+}
+
+/* Cinematic video hero ------------------------------------------------------- */
+/* Poster -> video handoff: the video is transparent until its first frame renders. */
+.hero-video {
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.hero-video.is-visible {
+  opacity: 1;
+}
+
+/* Landscape: darken the lower-left title column, the top edge under the nav, and fade the
+   bottom into the page colour so the hero flows into the next chapter. The centre of the
+   frame (every hero shot's focal point) stays untouched. */
+.hero-scrim {
+  background:
+    linear-gradient(90deg, rgba(11, 9, 18, .82) 0%, rgba(11, 9, 18, .58) 30%, rgba(11, 9, 18, .16) 58%, rgba(11, 9, 18, 0) 76%),
+    linear-gradient(0deg, #121526 0%, rgba(18, 21, 38, .7) 15%, rgba(18, 21, 38, 0) 46%),
+    linear-gradient(180deg, rgba(11, 9, 18, .5) 0%, rgba(11, 9, 18, 0) 20%);
+}
+
+/* Portrait: the copy block fills the lower ~60%, so the scrim is bottom-weighted and reaches
+   high enough that the kicker never sits on bare bright water. */
+@media (max-aspect-ratio: 4/5) {
+  .hero-scrim {
+    background:
+      linear-gradient(0deg, #121526 0%, rgba(18, 21, 38, .92) 32%, rgba(18, 21, 38, .72) 52%, rgba(18, 21, 38, 0) 74%),
+      linear-gradient(180deg, rgba(11, 9, 18, .5) 0%, rgba(11, 9, 18, 0) 18%);
+  }
+}
+
+.hero-shadow {
+  text-shadow: 0 2px 24px rgba(8, 5, 14, .55), 0 1px 2px rgba(8, 5, 14, .7);
+}
+
+/* Theater-style teaser player ------------------------------------------------ */
+.teaser-dialog {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #F8F8FF;
+  overflow-y: auto;
+}
+
+/* margin:auto (not align-items:center) so tall content scrolls instead of being clipped. */
+.teaser-dialog[open] {
+  display: flex;
+}
+
+/* Solid theater black: any translucency let bright page text ghost through the controls. */
+.teaser-dialog::backdrop {
+  background: #030206;
+}
+
+.teaser-stage {
+  width: min(100%, 1280px);
+  margin: auto;
+  padding: 1rem .75rem;
+}
+
+@media (min-width: 640px) {
+  .teaser-stage { padding: 2rem 1.5rem; }
+}
+
+.teaser-seek {
+  height: 2.75rem;
+  accent-color: #D5A84B;
+  cursor: pointer;
+}
+
+.teaser-seek:focus-visible {
+  outline: 2px solid #B7FF36;
+  outline-offset: 2px;
 }
 
 .world-grain {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
-}
-
-.crown-rift {
-  box-shadow: inset 0 0 90px rgba(255, 79, 163, .2), 0 0 120px rgba(122, 77, 255, .18);
-  animation: crown-breathe 6s ease-in-out infinite alternate;
-}
-
-.world-shard {
-  position: absolute;
-  width: 42px;
-  height: 68px;
-  background: linear-gradient(145deg, rgba(255, 79, 163, .9), rgba(122, 77, 255, .2));
-  clip-path: polygon(50% 0, 100% 36%, 68% 100%, 18% 72%);
-  filter: drop-shadow(0 0 16px rgba(255, 79, 163, .45));
-  animation: shard-drift 8s ease-in-out infinite;
-}
-
-.world-shard-a { right: 13%; top: 24%; animation-delay: -2s; }
-.world-shard-b { right: 5%; top: 54%; width: 26px; height: 44px; animation-delay: -5s; }
-.world-shard-c { right: 31%; top: 13%; width: 18px; height: 32px; animation-delay: -7s; }
-
-.world-orbit {
-  position: absolute;
-  right: 12%;
-  top: 20%;
-  width: 310px;
-  height: 310px;
-  border: 1px solid rgba(255, 79, 163, .25);
-  border-radius: 999px;
-  box-shadow: 0 0 70px rgba(122, 77, 255, .14), inset 0 0 70px rgba(122, 77, 255, .1);
-  animation: orbit-warp 11s linear infinite;
 }
 
 .signal-grid {
@@ -764,22 +870,6 @@ main {
   86%, 100% { top: 92%; opacity: 0; }
 }
 
-@keyframes crown-breathe {
-  from { transform: scale(.92) rotate(-4deg); opacity: .45; }
-  to { transform: scale(1.08) rotate(5deg); opacity: .85; }
-}
-
-@keyframes shard-drift {
-  0%, 100% { transform: translate3d(0, -10px, 0) rotate(-8deg); }
-  50% { transform: translate3d(18px, 22px, 0) rotate(12deg); }
-}
-
-@keyframes orbit-warp {
-  from { transform: rotate(0deg) scaleX(1); }
-  50% { transform: rotate(180deg) scaleX(.76); }
-  to { transform: rotate(360deg) scaleX(1); }
-}
-
 @keyframes world-ticker {
   to { transform: translateX(-50%); }
 }
@@ -830,11 +920,6 @@ main {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  .hero-world-layer,
-  .hero-copy {
-    transform: none !important;
   }
 }
 
