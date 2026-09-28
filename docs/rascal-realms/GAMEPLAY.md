@@ -8,11 +8,13 @@ Enter a disputed place → Collect independent signals → Build a shared theory
 
 ## Quest journal categories — CONCEPT
 
+Kept in sync with `apps/web/lib/game-content.ts`'s `QUEST_JOURNAL` (9 entries) — treat a mismatch as a bug.
+
 - **Story** — the Episode 1 main line (`EPISODE_ONE_BEATS`). Sample: "The Safest Path" (Starting Village), "The Path Remembers" (Mystery Forest).
 - **Mysteries** — optional deduction cases tied to a single location. Sample: "The Missing Treaty Page" (Stickerwood Heartwood), "The Bridge Two Maps Disagree On" (River Path).
-- **Bounties** — short, evidence-light tasks for Bounty Gold. Sample: "The Merchant Who Remembers You Wrong" (Rascal Plaza), "The Upstream Fish" (River Path).
-- **Guild Missions** — squad-scale objectives for Guild Credits. Sample: "Chart the Ancient Tree's Hollow" (Ancient Tree).
-- **Hidden Quests** — no marker, discovered only through exploration. Sample: "The Cove That Isn't on the New Map" (Hidden Cove).
+- **Bounties** — short, evidence-light tasks for Bounty Gold. Sample: "The Merchant Who Remembers You Wrong" (Rascal Plaza).
+- **Guild Missions** — squad-scale objectives for Guild Credits. Sample: "Chart the Ancient Tree's Hollow" (Ancient Tree), "Redraw the Bridges Before They Forget" (Sky Bridges).
+- **Hidden Quests** — no marker, discovered only through exploration. Sample: "The Cove That Isn't on the New Map" (Hidden Cove), "The Ferryman's Second Logbook" (River Path).
 
 ## Progression concepts — CONCEPT
 
