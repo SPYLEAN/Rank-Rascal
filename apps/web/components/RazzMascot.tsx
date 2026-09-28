@@ -40,11 +40,11 @@ const POSE_MAP: Record<MascotPose, { src: string; defaultAlt: string }> = {
   },
   default: {
     src: "/brand/mascot.png",
-    defaultAlt: "Razz the Rank Rascal mascot",
+    defaultAlt: "Razz, the Rascal Realms: Crownfall mascot",
   },
   "app-icon": {
     src: "/brand/app-icon.png",
-    defaultAlt: "Rank Rascal App Icon",
+    defaultAlt: "Rascal Realms App Icon",
   },
 };
 
@@ -63,6 +63,7 @@ export const RazzMascot: React.FC<RazzMascotProps> = ({
         alt={alt || defaultAlt}
         width={size}
         height={size}
+        style={{ width: size, height: size }}
         className="object-contain transition-transform duration-300 hover:scale-105"
         priority={pose === "hero-point" || pose === "default"}
       />

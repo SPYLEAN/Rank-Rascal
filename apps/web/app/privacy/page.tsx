@@ -17,7 +17,7 @@ export default function PrivacyPage() {
           Rank Rascal Privacy Policy
         </h1>
         <p className="text-xs font-mono text-muted-text">
-          Effective Date: August 14, 2026 | Version 1.0
+          Effective Date: September 27, 2026 | Version 1.2
         </p>
       </div>
 
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
         <div className="p-4 rounded-2xl bg-alert-red/10 border border-alert-red/40 text-xs font-mono text-cloud-white flex items-center space-x-3">
           <AlertTriangle className="w-5 h-5 text-alert-red flex-shrink-0" />
           <span>
-            <strong>Support mailbox not open yet.</strong> Until it opens, use <code className="text-toxic-lime font-bold">/unlink-roblox</code> and <code className="text-toxic-lime font-bold">/witness-protection</code> in Discord to control your data.
+            <strong>Support mailbox not open yet.</strong> Use the <Link href="/support" className="text-toxic-lime font-bold underline">project support page</Link> for the current privacy-request path.
           </span>
         </div>
       )}
@@ -36,13 +36,15 @@ export default function PrivacyPage() {
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
           <h2 className="font-display font-bold text-xl text-cloud-white">1. Information We Collect</h2>
           <p className="text-xs text-muted-text">
-            Rank Rascal collects minimal, necessary public identifiers to provide Roblox gaming identity integration on Discord:
+            Rank Rascal collects the minimum information needed to operate the game website, review community submissions and preserve the paused Discord bot project:
           </p>
           <ul className="list-disc pl-5 text-xs font-mono text-cloud-white/80 space-y-1">
             <li><strong>Discord Account Data:</strong> Your Discord User ID, Guild (Server) ID, and channel context.</li>
             <li><strong>Roblox Identity Data:</strong> Verified Roblox User ID, Roblox username, display name, account creation timestamp, public avatar thumbnail URL, public badge count, and public profile visibility setting.</li>
             <li><strong>Rank Rascal Calculated Data:</strong> Rascal Rep score, Rotfile achievements, and server-specific preferences.</li>
             <li><strong>OAuth Processing Data:</strong> Short-lived, state-hashed authorization verifiers during PKCE verification.</li>
+            <li><strong>Community Submissions:</strong> Display name, email address, review rating and focus, feedback text, Guild track, portfolio link, availability, time zone, consent choices and submission time when you use the website forms.</li>
+            <li><strong>QA Recognition Data:</strong> A generated submission ID and the name printed on your personalized digital badge and certificate.</li>
           </ul>
         </section>
 
@@ -61,41 +63,50 @@ export default function PrivacyPage() {
             Collected data is processed strictly for:
           </p>
           <ul className="list-disc pl-5 text-xs font-mono text-cloud-white/80 space-y-1">
-            <li>Rendering Rotfile identity cards and Drip Inspections in Discord channels</li>
-            <li>Calculating server leaderboards and badge milestones</li>
-            <li>Enforcing opt-in privacy controls and server-manager configuration settings</li>
+            <li>Reviewing game feedback and responding when contact information is provided</li>
+            <li>Registering reviewers on the Founding QA Scout roster and sending their personalized badge and certificate</li>
+            <li>Evaluating voluntary Founders Guild and future playtesting participation</li>
+            <li>Moderating comments before any approved quotation is published</li>
+            <li>Preserving legacy bot privacy controls and account links while the bot project is paused</li>
           </ul>
+        </section>
+
+        <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
+          <h2 className="font-display font-bold text-xl text-cloud-white">4. Community Submission Storage</h2>
+          <p className="text-xs text-muted-text">
+            Website submissions and confirmation emails are processed through our transactional email provider and delivered to a private Rank Rascal team mailbox. A private Discord webhook may also provide a moderator-only notification copy. Submissions are not published automatically. We retain them only as long as needed for review, QA roster operations, follow-up, moderation records or team selection. Do not submit passwords, precise addresses, private Roblox account data, payment information or other sensitive personal information.
+          </p>
         </section>
 
         {/* Section 4 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">4. Deletion & /unlink-roblox Behavior</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">5. Deletion & Legacy Bot Data</h2>
           <p className="text-xs text-muted-text">
-            You hold total control over your data. Running <code className="text-toxic-lime font-mono">/unlink-roblox</code> in Discord instantly and permanently purges your stored Roblox account link, public profile references, and associated Rascal Rep from our database.
+            The Discord bot project is paused, but previously collected bot data remains subject to deletion. If the bot is available, <code className="text-toxic-lime font-mono">/unlink-roblox</code> purges the stored Roblox account link and associated profile data. You may also request deletion of bot or community-submission data through the support path listed below.
           </p>
         </section>
 
         {/* Section 5 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">5. Public Profile Visibility & Witness Protection</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">6. Public Profile Visibility & Comment Permission</h2>
           <p className="text-xs text-muted-text">
-            By default, public profiles are visible on server leaderboards. Running <code className="text-toxic-lime font-mono">/witness-protection enabled:true</code> hides your profile from server leaderboards (<code className="text-toxic-lime font-mono">/yapping-order</code>) and rival checks (<code className="text-toxic-lime font-mono">/fraudcheck</code>).
+            Legacy bot profiles retain their existing privacy setting while the bot is paused. Community comments are private by default. Checking the public-quotation box gives the team permission to quote that submission with the supplied display name, but does not guarantee publication. A human reviews every quotation first.
           </p>
         </section>
 
         {/* Section 6 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">6. Children & Discord 13+ Requirements</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">7. Age Requirement</h2>
           <p className="text-xs text-muted-text">
-            Rank Rascal is strictly intended for users aged 13 and older in compliance with Discord Terms of Service and COPPA. We do not knowingly collect data from children under 13.
+            Rank Rascal and its community forms are intended for users aged 13 and older. We do not knowingly collect data from children under 13.
           </p>
         </section>
 
         {/* Section 7 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">7. Security Controls & Third-Party Platforms</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">8. Security Controls & Third-Party Platforms</h2>
           <p className="text-xs text-muted-text">
-            Rank Rascal implements parameterized database statements, HTTPS encrypted transport, and state-hashed PKCE verifiers.
+            Rank Rascal uses HTTPS encrypted transport, input validation, rate controls and restricted server-side credentials. Transactional email is delivered through Resend; Discord may be used for private moderator notifications. Those providers process the minimum delivery data required for the service.
           </p>
           <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light text-xs font-mono text-cloud-white/80">
             <strong>Platform Disclaimer:</strong> Rank Rascal is an independent product and is not affiliated with, endorsed by or sponsored by Discord, Roblox, Epic Games or Riot Games.
@@ -104,7 +115,7 @@ export default function PrivacyPage() {
 
         {/* Section 8 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">8. User Rights & Contact Information</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">9. User Rights & Contact Information</h2>
           <p className="text-xs text-muted-text">
             For privacy inquiries, manual data export, or deletion requests, contact our privacy team:
           </p>

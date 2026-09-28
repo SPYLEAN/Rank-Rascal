@@ -61,9 +61,34 @@ export const BRAND_ASSETS = {
     rewardMachine: "/brand/website-art/razz-reward-machine.png",
     privacyGuardian: "/brand/website-art/razz-privacy-guardian.png",
     rulebook: "/brand/website-art/razz-rulebook.png",
-    tacticalBanner: "/brand/website-art/razz-tactical-coming-soon-banner.png",
-    battleRoyaleBanner: "/brand/website-art/razz-battle-royale-coming-soon-banner.png",
     communityClubhouse: "/brand/website-art/razz-community-clubhouse-banner.png",
+  },
+
+  // Rascal Realms pre-production art approved for the public game site.
+  game: {
+    stickerwoodKeyArt: "/brand/game/stickerwood-key-art-v1.png",
+    worldLiesUi: "/brand/game/world-lies-ui-v1.png",
+    stickerwoodEnemiesBoss: "/brand/game/stickerwood-enemies-boss-v1.png",
+    foundersGuildWorkshop: "/brand/game/founders-guild-workshop-v1.png",
+    qaTruthLab: "/brand/game/qa-truth-lab-v1.png",
+    fractureBeneathStickerwood: "/brand/game/fracture-beneath-stickerwood-v1.png",
+  },
+
+  // Game & Community Banners
+  banners: {
+    welcome: "/brand/banners/welcome-banner.png",
+    announcements: "/brand/banners/announcements-banner.png",
+    rascalPlaza: "/brand/banners/rascal-plaza-banner.png",
+  },
+
+  // Realm Insignias & Seals
+  insignias: {
+    razzMedallion: "/brand/badges/razz-medallion.png",
+    crystalSigil: "/brand/badges/crystal-sigil.png",
+    crownEyeShield: "/brand/badges/crown-eye-shield.png",
+    qaController: "/brand/badges/qa-controller-badge.png",
+    evidenceCamera: "/brand/badges/evidence-camera-badge.png",
+    royalCrown: "/brand/badges/royal-crown-badge.png",
   },
 } as const;
 

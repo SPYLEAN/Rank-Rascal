@@ -15,3 +15,8 @@ apps/web/.next/
 .vercel/
 
 .claude/settings.local.json
+
+# Raw pre-production art dump (source material for docs/rascal-realms/ASSET_REGISTRY.md).
+# ~200MB of unoptimized generations, contact sheets and prompt files — never committed,
+# never published. Approved assets are promoted individually into apps/web/public/brand/.
+/all assets graphic/

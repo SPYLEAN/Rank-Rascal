@@ -1,5 +1,7 @@
 # Rank Rascal
 
+> **Project direction update:** the Discord bot is paused. `rankrascal.lol` is being rebuilt as the official pre-launch home for **Rascal Realms: Crownfall**, the upcoming Roblox game. Bot code and migrations remain preserved for rollback and archival purposes, but bot installation is closed and no longer promoted by the website.
+
 > Your Roblox stats have officially rotted.
 
 Rank Rascal is a Roblox-first Discord social game for users aged 13+. It transforms verified public Roblox identity data into Rotfiles, Drip Checks, Fraud Checks, privacy-aware leaderboards, collectible badges, daily quests, and deliberately ridiculous server lore.

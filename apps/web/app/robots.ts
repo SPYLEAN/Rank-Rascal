@@ -8,7 +8,14 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard"],
+        disallow: [
+          "/dashboard",
+          "/commands",
+          "/verify",
+          "/linked-roles",
+          "/games/roblox",
+          "/api/discord",
+        ],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

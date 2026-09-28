@@ -26,7 +26,7 @@ export default function TermsPage() {
             Rank Rascal Terms of Service
           </h1>
           <p className="text-xs font-mono text-muted-text">
-            Effective Date: August 14, 2026 | Version 1.0
+            Effective Date: September 27, 2026 | Version 1.2
           </p>
         </div>
       </div>
@@ -35,7 +35,7 @@ export default function TermsPage() {
         <div className="p-4 rounded-2xl bg-alert-red/10 border border-alert-red/40 text-xs font-mono text-cloud-white flex items-center space-x-3">
           <AlertTriangle className="w-5 h-5 text-alert-red flex-shrink-0" />
           <span>
-            <strong>Support mailbox not open yet.</strong> Until it opens, use <code className="text-toxic-lime font-bold">/unlink-roblox</code> and <code className="text-toxic-lime font-bold">/witness-protection</code> in Discord to control your data.
+            <strong>Support mailbox not open yet.</strong> Use the <Link href="/support" className="text-toxic-lime font-bold underline">project support page</Link> for the current contact path.
           </span>
         </div>
       )}
@@ -49,27 +49,27 @@ export default function TermsPage() {
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-cloud-white/90">
           <li className="flex items-center space-x-2">
             <CheckCircle2 className="w-3.5 h-3.5 text-toxic-lime flex-shrink-0" />
-            <span>Compete without bullying</span>
+            <span>Explore and critique without bullying</span>
           </li>
           <li className="flex items-center space-x-2">
             <CheckCircle2 className="w-3.5 h-3.5 text-toxic-lime flex-shrink-0" />
-            <span>Flex achievements, not personal information</span>
+            <span>Share ideas, not sensitive information</span>
           </li>
           <li className="flex items-center space-x-2">
             <CheckCircle2 className="w-3.5 h-3.5 text-toxic-lime flex-shrink-0" />
-            <span>No impersonation or cheating</span>
+            <span>No impersonation, exploits or cheating</span>
           </li>
           <li className="flex items-center space-x-2">
             <CheckCircle2 className="w-3.5 h-3.5 text-toxic-lime flex-shrink-0" />
-            <span>Rivalries must remain friendly and opt-in</span>
+            <span>Label speculation and unconfirmed concepts</span>
           </li>
           <li className="flex items-center space-x-2">
             <CheckCircle2 className="w-3.5 h-3.5 text-toxic-lime flex-shrink-0" />
-            <span>Report harmful behavior</span>
+            <span>Submissions are human-reviewed</span>
           </li>
           <li className="flex items-center space-x-2">
             <CheckCircle2 className="w-3.5 h-3.5 text-toxic-lime flex-shrink-0" />
-            <span>Rank Rascal is for Discord users aged 13+</span>
+            <span>Community forms are for ages 13+</span>
           </li>
         </ul>
       </div>
@@ -80,13 +80,20 @@ export default function TermsPage() {
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
           <h2 className="font-display font-bold text-xl text-cloud-white">1. Acceptance & Age Requirements</h2>
           <p className="text-xs text-muted-text">
-            By installing, inviting, or using Rank Rascal in any Discord server, you agree to these Terms of Service. Rank Rascal is strictly intended for Discord users aged <strong>13 and older</strong>. If you are under 13, you may not access or use Rank Rascal.
+            By using rankrascal.lol, submitting feedback, applying to the Founders Guild, or using any Rank Rascal service, you agree to these Terms. Rank Rascal community services are intended for users aged <strong>13 and older</strong>. If you are under 13, you may not submit the website forms.
           </p>
         </section>
 
-        {/* Section 2 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">2. Acceptable Use & Conduct Rules</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">2. Community Feedback & Guild Applications</h2>
+          <p className="text-xs text-muted-text">
+            You keep ownership of ideas and material you submit. You grant Rank Rascal permission to review and use feedback to improve the project. We may quote a comment publicly only when you select the public-quotation option, and we may edit that quote for length or clarity without changing its meaning. A Founders Guild application does not promise acceptance, employment, compensation, ownership, early access or a staff position. We will not require unpaid custom production work solely as an application test; any real work begins only after scope, credit, ownership and compensation are agreed.
+          </p>
+        </section>
+
+        {/* Section 3 */}
+        <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
+          <h2 className="font-display font-bold text-xl text-cloud-white">3. Acceptable Use & Conduct Rules</h2>
           <p className="text-xs text-muted-text">
             Users must engage respectfully. You expressly agree NOT to:
           </p>
@@ -100,33 +107,40 @@ export default function TermsPage() {
 
         {/* Section 3 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">3. Non-Monetary Value of Digital Achievements</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">4. Non-Monetary Value of Digital Achievements</h2>
           <p className="text-xs text-muted-text">
-            Badges, Rascal Rep, Rotfiles, and Flex Cards provided by Rank Rascal are strictly digital Discord social achievements. They possess <strong>zero monetary value</strong>, cannot be converted into currency, sold, or traded.
+            Badges, certificates, QA IDs, Rascal Rep, Rotfiles and Flex Cards provided by Rank Rascal are digital recognition items. They possess <strong>zero monetary value</strong>, cannot be converted into currency, sold or traded, and do not create employment, ownership or payment rights.
+          </p>
+        </section>
+
+        <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
+          <h2 className="font-display font-bold text-xl text-cloud-white">5. Founding QA Scout Roster</h2>
+          <p className="text-xs text-muted-text">
+            A valid game review places the reviewer on the Founding QA Scout roster and may generate a personalized badge, certificate and QA ID. Roster status records an early review contribution. Invitations to playable builds are sent in cohorts and depend on build readiness, age and platform requirements, testing needs, safety capacity and applicable Roblox rules. Roster status does not guarantee a particular build, date, staff role or compensation.
           </p>
         </section>
 
         {/* Section 4 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">4. Verified Data vs. Humorous Verdicts</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">6. Concepts, Development Targets & Availability</h2>
           <p className="text-xs text-muted-text">
-            Rank Rascal displays verified public profile identifiers fetched from Roblox APIs. Drip Check verdicts and humor outputs are entertainment calculations only and should not be taken as medical, professional, or factual statements.
+            Concept art, roadmaps and development targets describe intent, not guaranteed final features or release dates. Final game content may change through implementation, testing, platform review and safety work. Legacy bot humor and verdicts are entertainment only and should not be treated as medical, professional, or factual statements.
           </p>
         </section>
 
         {/* Section 5 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">5. Service Availability & Termination</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">7. Service Availability & Termination</h2>
           <p className="text-xs text-muted-text">
-            We reserve the right to suspend or terminate bot access for servers or users violating these Terms or engaging in abusive behavior without prior notice.
+            We may pause, change or discontinue website, community, playtest or legacy bot features. The Rank Rascal Discord bot is currently paused and installation is closed.
           </p>
         </section>
 
         {/* Section 6 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">6. Third-Party Platform Disclaimers & Trademarks</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">8. Third-Party Platform Disclaimers & Trademarks</h2>
           <p className="text-xs text-muted-text">
-            Roblox is a trademark of Roblox Corporation. Discord is a trademark of Discord Inc. Fortnite is a trademark of Epic Games. VALORANT is a trademark of Riot Games.
+            Roblox is a trademark of Roblox Corporation. Discord is a trademark of Discord Inc.
           </p>
           <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light text-xs font-mono text-cloud-white/80">
             <strong>Mandatory Platform Disclaimer:</strong> Rank Rascal is an independent product and is not affiliated with, endorsed by or sponsored by Discord, Roblox, Epic Games or Riot Games.
@@ -135,7 +149,7 @@ export default function TermsPage() {
 
         {/* Section 7 */}
         <section className="p-6 rounded-2xl bg-panel-navy border border-panel-navy-light space-y-3">
-          <h2 className="font-display font-bold text-xl text-cloud-white">7. Limitation of Liability & Contact Information</h2>
+          <h2 className="font-display font-bold text-xl text-cloud-white">9. Limitation of Liability & Contact Information</h2>
           <p className="text-xs text-muted-text">
             Rank Rascal is provided &quot;as is&quot; without warranties of any kind. For questions or legal notices, contact:
           </p>

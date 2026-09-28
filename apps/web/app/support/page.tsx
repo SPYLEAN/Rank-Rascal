@@ -1,97 +1,44 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpCircle, Mail, MessageSquareText, ShieldCheck } from "lucide-react";
 import { RazzMascot } from "@/components/RazzMascot";
-import { HelpCircle, Mail, MessageSquare, ShieldCheck, Terminal, AlertTriangle } from "lucide-react";
+
+export const metadata: Metadata = { title: "Support" };
 
 export default function SupportPage() {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
-  const hasSupportEmail = Boolean(process.env.NEXT_PUBLIC_SUPPORT_EMAIL);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-      {/* Header */}
-      <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <RazzMascot pose="detective" size={160} className="mx-auto" />
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-toxic-lime/10 border border-toxic-lime/40 text-toxic-lime font-mono text-xs font-bold uppercase">
-          <HelpCircle className="w-4 h-4" />
-          <span>Support & Community Help</span>
-        </div>
-        <h1 className="font-display font-extrabold text-4xl sm:text-5xl text-cloud-white">
-          Rank Rascal Support Center
-        </h1>
-        <p className="text-muted-text text-base leading-relaxed">
-          Need help linking your Roblox profile, configuring server humor levels, or submitting feedback? We&apos;re here to help.
-        </p>
-      </div>
+    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <header className="text-center">
+        <RazzMascot pose="detective" size={180} className="mx-auto" />
+        <div className="mt-5 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.18em] text-toxic-lime"><HelpCircle className="h-4 w-4" aria-hidden="true" />Support</div>
+        <h1 className="mt-4 font-display text-5xl font-extrabold uppercase text-cloud-white sm:text-6xl">Need a human?</h1>
+        <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-text">Use the community inbox for game feedback and Guild questions. Privacy, deletion and security requests receive separate handling.</p>
+      </header>
 
-      {!hasSupportEmail && (
-        <div className="p-4 rounded-2xl bg-alert-red/10 border border-alert-red/40 text-xs font-mono text-cloud-white flex items-center space-x-3 max-w-2xl mx-auto">
-          <AlertTriangle className="w-5 h-5 text-alert-red flex-shrink-0" />
-          <span>
-            <strong>Support mailbox not open yet.</strong> Until it opens, use <code className="text-toxic-lime font-bold">/unlink-roblox</code> and <code className="text-toxic-lime font-bold">/witness-protection</code> in Discord to control your data.
-          </span>
-        </div>
-      )}
-
-      {/* Support Options */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        {/* Email Support */}
-        <div className="p-8 rounded-3xl bg-panel-navy border-sticker space-y-4 text-center sm:text-left">
-          <div className="w-12 h-12 rounded-2xl bg-royal-purple/20 border border-royal-purple/40 flex items-center justify-center text-royal-purple mx-auto sm:mx-0">
-            <Mail className="w-6 h-6" />
-          </div>
-          <h3 className="font-display font-bold text-xl text-cloud-white">Direct Email Support</h3>
-          <p className="text-xs text-muted-text leading-relaxed">
-            For account inquiries, data deletion requests, or technical assistance:
-          </p>
+      <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <article className="border-l-2 border-hot-pink bg-panel-navy p-7">
+          <MessageSquareText className="h-7 w-7 text-hot-pink" aria-hidden="true" />
+          <h2 className="mt-5 font-display text-2xl font-bold text-cloud-white">Game feedback & Guild</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-text">Share ideas, report confusing design, register playtest interest or apply to help build the project.</p>
+          <Link href="/community" className="action-primary mt-6">Open community inbox</Link>
+        </article>
+        <article className="border-l-2 border-toxic-lime bg-panel-navy p-7">
+          <Mail className="h-7 w-7 text-toxic-lime" aria-hidden="true" />
+          <h2 className="mt-5 font-display text-2xl font-bold text-cloud-white">Privacy, deletion & security</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-text">Do not include passwords or secret tokens. Provide only enough information for the team to identify your request.</p>
           {supportEmail ? (
-            <a
-              href={`mailto:${supportEmail}`}
-              className="inline-block px-4 py-2 rounded-xl bg-midnight-bg border border-panel-navy-light text-xs font-mono text-toxic-lime font-semibold hover:border-toxic-lime"
-            >
-              {supportEmail}
-            </a>
+            <a href={`mailto:${supportEmail}`} className="action-secondary mt-6 font-mono text-sm text-toxic-lime">{supportEmail}</a>
           ) : (
-            <span className="inline-block px-4 py-2 rounded-xl bg-midnight-bg border border-panel-navy-light text-xs font-mono text-muted-text">
-              Mailbox opening soon
-            </span>
+            <p className="mt-6 border-l-2 border-reward-yellow bg-reward-yellow/5 p-4 text-sm text-reward-yellow">The support mailbox is not open yet. Use the community form and start your message with “Privacy request”.</p>
           )}
-        </div>
-
-        {/* Discord Support Community */}
-        <div className="p-8 rounded-3xl bg-panel-navy border-sticker space-y-4 text-center sm:text-left">
-          <div className="w-12 h-12 rounded-2xl bg-hot-pink/20 border border-hot-pink/40 flex items-center justify-center text-hot-pink mx-auto sm:mx-0">
-            <MessageSquare className="w-6 h-6" />
-          </div>
-          <h3 className="font-display font-bold text-xl text-cloud-white">Community & Server Install</h3>
-          <p className="text-xs text-muted-text leading-relaxed">
-            Get help from community members or invite Rank Rascal directly into your server:
-          </p>
-          <a
-            href="/invite"
-            className="inline-block px-4 py-2 rounded-xl bg-royal-purple text-cloud-white font-mono text-xs font-semibold hover:bg-royal-purple/90"
-          >
-            Add Rank Rascal Bot (Coming Soon) →
-          </a>
-        </div>
+        </article>
       </div>
 
-      {/* Frequently Asked Questions */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-panel-navy border-sticker-purple space-y-6 max-w-4xl mx-auto">
-        <h2 className="font-display font-bold text-2xl text-cloud-white">Frequently Asked Questions</h2>
-        <div className="space-y-4 text-xs font-mono">
-          <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light space-y-1">
-            <h4 className="font-bold text-cloud-white">Q: Does Rank Rascal ever ask for my Roblox password?</h4>
-            <p className="text-muted-text">A: Never. Rank Rascal uses official OAuth 2.0 PKCE authentication. You log in exclusively on Roblox.com.</p>
-          </div>
-          <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light space-y-1">
-            <h4 className="font-bold text-cloud-white">Q: How do I remove my data?</h4>
-            <p className="text-muted-text">A: Run <code className="text-toxic-lime">/unlink-roblox</code> in Discord to immediately purge your linked profile from our database.</p>
-          </div>
-          <div className="p-4 rounded-xl bg-midnight-bg border border-panel-navy-light space-y-1">
-            <h4 className="font-bold text-cloud-white">Q: How do I hide my stats from server leaderboards?</h4>
-            <p className="text-muted-text">A: Run <code className="text-toxic-lime">/witness-protection enabled:true</code> to opt out of public discovery.</p>
-          </div>
-        </div>
+      <div className="mt-8 flex gap-3 border border-royal-purple/35 bg-royal-purple/5 p-5 text-sm leading-relaxed text-cloud-white/80">
+        <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-toxic-lime" aria-hidden="true" />
+        <p>The Discord bot is paused. Its installation is closed, but preserved bot data remains covered by the privacy policy and deletion process.</p>
       </div>
     </div>
   );

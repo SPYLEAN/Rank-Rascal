@@ -21,7 +21,7 @@ const config: Config = {
         "muted-text": "#AEB4DC",
       },
       fontFamily: {
-        display: ["var(--font-fredoka)", "Fredoka", "cursive", "sans-serif"],
+        display: ["var(--font-sora)", "Sora", "sans-serif"],
         sans: ["var(--font-inter)", "Inter", "sans-serif"],
         mono: ["var(--font-space-mono)", "Space Mono", "monospace"],
       },

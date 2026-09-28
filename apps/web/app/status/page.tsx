@@ -1,49 +1,29 @@
-import { Activity, Database, Globe, Server, ShieldCheck } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Activity, CheckCircle2, CircleDashed, PauseCircle } from "lucide-react";
 
-// Live monitoring is not connected yet, so this page deliberately reports no
-// service as operational. Wire it to reviewed health endpoints before changing that.
-const SERVICES = [
-  { name: "Website", detail: "Next.js site on Vercel", icon: Globe },
-  { name: "Discord Bot", detail: "Always-on Gateway worker", icon: Server },
-  { name: "Roblox Verification", detail: "OAuth callback on the worker", icon: ShieldCheck },
-  { name: "Database", detail: "Managed PostgreSQL", icon: Database },
-];
+export const metadata: Metadata = { title: "Project Status" };
+
+const ITEMS = [
+  { name: "Visual pre-production", status: "Complete", icon: CheckCircle2, color: "text-toxic-lime", detail: "Razz, Stickerwood, UI, enemies, boss and production bibles established." },
+  { name: "Roblox vertical slice", status: "In development", icon: CircleDashed, color: "text-hot-pink", detail: "Movement, combat, World Lies encounter architecture and modular environment work." },
+  { name: "Public playtesting", status: "Not open yet", icon: CircleDashed, color: "text-muted-text", detail: "Founders Guild applications can register interest before the first testing gate." },
+  { name: "Discord bot", status: "Paused", icon: PauseCircle, color: "text-reward-yellow", detail: "Bot installation and bot-first feature development are closed while focus shifts to the game." },
+] as const;
 
 export default function StatusPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-reward-yellow/10 border border-reward-yellow/40 text-reward-yellow font-mono text-xs font-bold uppercase">
-          <Activity className="w-4 h-4" />
-          <span>Static preview · not live</span>
-        </div>
-        <h1 className="font-display font-extrabold text-4xl text-cloud-white">
-          Rank Rascal System Status
-        </h1>
-        <p className="text-muted-text text-sm font-mono">
-          Live monitoring is not connected yet. Nothing on this page reflects real service health.
-        </p>
-      </div>
-
-      <div className="p-8 rounded-3xl bg-panel-navy border-sticker space-y-4 text-xs font-mono">
-        {SERVICES.map(({ name, detail, icon: Icon }) => (
-          <div
-            key={name}
-            className="flex items-center justify-between p-4 rounded-xl bg-midnight-bg border border-panel-navy-light"
-          >
-            <div className="flex items-center space-x-3">
-              <Icon className="w-5 h-5 text-muted-text" aria-hidden="true" />
-              <div>
-                <h3 className="font-bold text-cloud-white">{name}</h3>
-                <p className="text-muted-text text-[11px]">{detail}</p>
-              </div>
-            </div>
-            <span className="px-3 py-1 rounded-full bg-panel-navy-light text-muted-text font-bold border border-panel-navy-light">
-              NOT MONITORED YET
-            </span>
-          </div>
+    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <header className="text-center"><Activity className="mx-auto h-7 w-7 text-toxic-lime" aria-hidden="true" /><p className="archive-label mx-auto mt-4 w-fit">Production state index</p><h1 className="mt-5 font-display text-5xl font-extrabold uppercase text-cloud-white sm:text-6xl">Project status</h1><p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-muted-text">A truthful snapshot of what exists today. This is development status, not live-service monitoring.</p></header>
+      <div className="mt-12 border-t border-cloud-white/15">
+        {ITEMS.map(({ name, status, icon: Icon, color, detail }, index) => (
+          <article key={name} className="grid gap-4 border-b border-cloud-white/10 py-6 sm:grid-cols-[52px_1fr_auto] sm:items-center">
+            <span className="font-mono text-xs text-hot-pink">0{index + 1}</span><div className="flex gap-4"><Icon className={`mt-1 h-5 w-5 flex-none ${color}`} aria-hidden="true" /><div><h2 className="font-display text-lg font-bold text-cloud-white">{name}</h2><p className="mt-1 text-sm leading-relaxed text-muted-text">{detail}</p></div></div>
+            <span className={`font-mono text-xs font-bold uppercase tracking-wider ${color}`}>{status}</span>
+          </article>
         ))}
       </div>
+      <p className="mt-8 text-center text-sm text-muted-text">For detailed changes, read the <Link href="/devlog" className="text-toxic-lime hover:underline">development log</Link>.</p>
     </div>
   );
 }

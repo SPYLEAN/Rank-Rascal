@@ -5,18 +5,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const routes = [
     "",
-    "/commands",
-    "/games",
-    "/games/roblox",
-    "/rewards",
-    "/verify",
-    "/linked-roles",
+    "/game",
+    "/devlog",
+    "/community",
     "/safety",
     "/privacy",
     "/terms",
     "/support",
     "/status",
-    "/invite",
   ];
 
   return routes.map((route) => ({

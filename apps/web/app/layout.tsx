@@ -3,6 +3,8 @@ import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageLoadingOverlay } from "@/components/PageLoadingOverlay";
+import { ExperienceChrome } from "@/components/ExperienceChrome";
+import { RazzGuide } from "@/components/RazzGuide";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rankrascal.lol";
@@ -10,38 +12,43 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rankrascal.lol";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Rank Rascal — Roblox Discord Gaming Bot & Rotfiles",
-    template: "%s | Rank Rascal",
+    default: "Rascal Realms: Crownfall — The World Lies",
+    template: "%s | Rascal Realms: Crownfall",
   },
   description:
-    "Play games. Flex achievements. Collect chaos. Rank Rascal turns public Roblox identity into certified Discord server brain rot, Rotfiles, Drip Checks, and competitive leaderboards.",
+    "Rascal Realms: Crownfall is a cinematic co-op Roblox action-adventure mystery where the world lies and your squad has to prove it.",
   keywords: [
-    "Rank Rascal",
-    "Roblox Discord Bot",
-    "Roblox OAuth",
-    "Rotfile",
-    "Drip Check",
-    "Fraud Check",
-    "Yapping Order",
-    "Discord Social Game",
+    "Rascal Realms",
+    "Crownfall",
+    "Rascal Labs",
+    "Roblox game",
+    "Roblox co-op adventure",
+    "Roblox mystery game",
+    "Stickerwood",
+    "The World Lies",
   ],
-  authors: [{ name: "Rank Rascal Team" }],
+  authors: [{ name: "Rascal Labs" }],
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/brand/app-icon.png", type: "image/png" },
+    ],
+    shortcut: "/icon.png",
     apple: "/brand/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Rank Rascal — Play games. Flex achievements. Collect chaos.",
+    title: "Rascal Realms: Crownfall — The World Lies",
     description:
-      "Turn your Roblox stats into certified Discord server brain rot. Link Roblox, flex achievements, hunt badges, and challenge friends.",
+      "A cinematic co-op action-adventure mystery for Roblox, now in pre-production.",
     url: siteUrl,
-    siteName: "Rank Rascal",
+    siteName: "Rascal Realms: Crownfall",
     images: [
       {
-        url: "/brand/website-art/razz-community-clubhouse-banner.png",
-        width: 1200,
-        height: 630,
-        alt: "Rank Rascal — Play games. Flex achievements. Collect chaos.",
+        url: "/brand/game/stickerwood-key-art-v1.png",
+        width: 1672,
+        height: 941,
+        alt: "Razz overlooks Stickerwood and the corrupted Crown Ruins.",
       },
     ],
     locale: "en_US",
@@ -49,9 +56,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rank Rascal — Roblox Discord Gaming Identity Bot",
-    description: "Play games. Flex achievements. Collect chaos.",
-    images: ["/brand/website-art/razz-community-clubhouse-banner.png"],
+    title: "Rascal Realms: Crownfall — The World Lies",
+    description: "A cinematic co-op action-adventure mystery for Roblox, now in pre-production.",
+    images: ["/brand/game/stickerwood-key-art-v1.png"],
   },
   robots: {
     index: true,
@@ -73,7 +80,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-midnight-bg text-cloud-white min-h-screen flex flex-col antialiased">
+        <ExperienceChrome />
         <PageLoadingOverlay />
+        <RazzGuide />
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />

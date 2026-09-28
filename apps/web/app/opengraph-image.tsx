@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "Rank Rascal — Roblox-First Discord Gaming Identity Bot";
+export const alt = "Rascal Realms: Crownfall — an upcoming Roblox adventure";
 export const size = {
   width: 1200,
   height: 630,
@@ -60,7 +60,7 @@ export default async function Image() {
               letterSpacing: "1px",
             }}
           >
-            <span>✨ CERTIFIED ROBLOX GAMING BOT</span>
+            <span>UPCOMING ROBLOX ADVENTURE</span>
           </div>
 
           {/* Main Headline */}
@@ -76,9 +76,9 @@ export default async function Image() {
               letterSpacing: "-1px",
             }}
           >
-            <span>PLAY GAMES.</span>
-            <span style={{ color: "#ccff00" }}>FLEX ACHIEVEMENTS.</span>
-            <span style={{ color: "#ff2a85" }}>COLLECT CHAOS.</span>
+            <span>THE WORLD LIES.</span>
+            <span style={{ color: "#ccff00" }}>YOUR SQUAD</span>
+            <span style={{ color: "#ff2a85" }}>FINDS OUT WHY.</span>
           </div>
 
           {/* Subtitle */}
@@ -90,7 +90,7 @@ export default async function Image() {
               fontWeight: 500,
             }}
           >
-            Turn public Roblox stats into verified identity cards, Drip Checks, friendly server rivalries, and collectible badges.
+            Explore Stickerwood, expose false paths, and survive a Crown corruption that rewrites reality.
           </div>
 
           {/* Feature Badges Strip */}
@@ -113,7 +113,7 @@ export default async function Image() {
                 color: "#ccff00",
               }}
             >
-              🔒 Roblox PKCE OAuth
+              STORY-RICH CO-OP
             </div>
             <div
               style={{
@@ -126,7 +126,7 @@ export default async function Image() {
                 color: "#ff2a85",
               }}
             >
-              🔥 Rotfiles & Drip Checks
+              WORLD-LIE MYSTERIES
             </div>
             <div
               style={{
@@ -139,7 +139,7 @@ export default async function Image() {
                 color: "#a855f7",
               }}
             >
-              🏆 Server Yapping Order
+              IN DEVELOPMENT
             </div>
           </div>
         </div>
@@ -187,7 +187,7 @@ export default async function Image() {
               textAlign: "center",
             }}
           >
-            &quot;Your server just developed lore!&quot;
+            &quot;Trust the path. Question the sign.&quot;
           </div>
         </div>
       </div>

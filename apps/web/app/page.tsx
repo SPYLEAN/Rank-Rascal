@@ -1,350 +1,147 @@
-"use client";
-
-import React, { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { RazzMascot } from "@/components/RazzMascot";
-import { RotfilePreview } from "@/components/RotfilePreview";
-import { FlexCardPreview } from "@/components/FlexCardPreview";
-import { LeaderboardPreview } from "@/components/LeaderboardPreview";
-import { BadgeCard } from "@/components/BadgeCard";
-import { CANONICAL_THREE_BADGES } from "@/lib/badge-data";
-import { BRAND_ASSETS } from "@/lib/brand-assets";
+import Link from "next/link";
 import {
-  Sparkles,
-  ShieldCheck,
-  Award,
-  Terminal,
   ArrowRight,
-  Flame,
-  Clock,
-  Layers,
-  EyeOff,
-  Trophy,
-  CheckCircle2,
-  Lock,
+  BadgeCheck,
+  BookOpenCheck,
+  Crown,
+  Eye,
+  Gamepad2,
+  Hammer,
+  MessageSquareText,
+  ShieldCheck,
+  Sparkles,
+  Users,
 } from "lucide-react";
+import { CinematicHero } from "@/components/CinematicHero";
+import { BuildArchive } from "@/components/BuildArchive";
+import { FractureStory } from "@/components/FractureStory";
+import { HeroSelector } from "@/components/HeroSelector";
+import { WorldAtlas } from "@/components/WorldAtlas";
+import { SusInvestigationTerminal } from "@/components/SusInvestigationTerminal";
+import { QuestJournal } from "@/components/QuestJournal";
+import { KingWrongwayReveal } from "@/components/KingWrongwayReveal";
+import { FutureRealmsTeaser } from "@/components/FutureRealmsTeaser";
+import { CommunityPlazaSection } from "@/components/CommunityPlazaSection";
+import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { FOUNDERS_GUILD_TRACKS, GAME_PILLARS } from "@/lib/game-content";
+
+const SIGNALS = ["A WORLD THAT ARGUES BACK", "1–4 PLAYER CO-OP", "EVERY LIE LEAVES EVIDENCE", "NOW ASSEMBLING THE FOUNDERS GUILD"] as const;
 
 export default function HomePage() {
-  // Always route through /invite, which stays closed until NEXT_PUBLIC_INVITE_ENABLED=true.
-  const discordInviteUrl = "/invite";
-
   return (
-    <div className="space-y-20 sm:space-y-32 pb-20 overflow-x-hidden">
-      {/* ========================================================================= */}
-      {/* CHAPTER 1: OVERSIZED HERO (DISCORD.COM INSPIRED MASSIVE IMPACT)           */}
-      {/* ========================================================================= */}
-      <section className="relative pt-8 sm:pt-16 pb-12 sm:pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left z-10">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-toxic-lime/10 border border-toxic-lime/40 text-toxic-lime font-mono text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-4 h-4 text-toxic-lime" />
-              <span>Certified Roblox Gaming Identity Bot</span>
+    <div className="overflow-x-hidden pb-24">
+      <CinematicHero />
+
+      <div className="world-ticker border-b border-royal-purple/25 bg-hot-pink py-3 text-midnight-bg" aria-label="Game highlights">
+        <div className="world-ticker-track flex w-max items-center gap-9 whitespace-nowrap font-mono text-[11px] font-black uppercase tracking-[0.2em]">
+          {[...SIGNALS, ...SIGNALS].map((signal, index) => (
+            <span key={`${signal}-${index}`} className="flex items-center gap-9"><span>{signal}</span><Crown className="h-4 w-4" aria-hidden="true" /></span>
+          ))}
+        </div>
+      </div>
+
+      <section id="world-lies" className="reveal-up mx-auto max-w-7xl scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+        <div className="max-w-4xl">
+          <p className="section-kicker">The signature system</p>
+          <h2 className="section-title max-w-4xl">Don&apos;t follow the quest marker. Question it.</h2>
+          <p className="section-lede max-w-3xl">The World Lies turns investigation into the force that moves the adventure. Clues are physical, deductions are shared and the answer changes the level—not just a dialogue box.</p>
+        </div>
+        <div className="mt-12 border-t border-cloud-white/15">
+          {GAME_PILLARS.map((pillar, index) => {
+            const Icon = index === 0 ? Eye : index === 1 ? ShieldCheck : Crown;
+            return (
+              <article key={pillar.eyebrow} className="group grid gap-6 border-b border-cloud-white/10 py-8 sm:grid-cols-[88px_1fr_44px] sm:items-start">
+                <span className="font-mono text-sm font-bold text-hot-pink">0{index + 1}</span>
+                <div><span className="font-mono text-[11px] font-bold tracking-[0.2em] text-toxic-lime">{pillar.eyebrow}</span><h3 className="mt-2 font-display text-2xl font-bold text-cloud-white sm:text-3xl">{pillar.title}</h3><p className="mt-3 max-w-3xl text-base leading-relaxed text-muted-text">{pillar.copy}</p></div>
+                <Icon className="h-6 w-6 text-royal-purple transition group-hover:text-hot-pink" aria-hidden="true" />
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <FractureStory />
+
+      <HeroSelector />
+
+      <WorldAtlas />
+
+      <section className="reveal-up border-y border-panel-navy-light bg-[#0d1020] py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-5">
+              <p className="section-kicker">A mystery with an interface</p>
+              <h2 className="section-title">Evidence, contradictions and consequences.</h2>
+              <p className="section-lede">The journal tracks what your squad actually learned. The SUS meter shows pressure and confidence—not the correct answer. Expose a Fraud and the world visibly repairs itself.</p>
+              <ul className="mt-8 space-y-4 text-base text-cloud-white/85">
+                {["Clue sources stay visible, so deductions feel fair.", "Wrong accusations explain the failed premise without humiliating players.", "Boss phases combine combat with environmental reasoning."].map((item) => <li key={item} className="flex gap-3"><BookOpenCheck className="mt-0.5 h-5 w-5 flex-none text-toxic-lime" aria-hidden="true" /><span>{item}</span></li>)}
+              </ul>
+              <Link href="/game#world-lies" className="mt-8 inline-flex items-center gap-2 font-display font-bold text-toxic-lime hover:text-cloud-white">See the full system <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
             </div>
-
-            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold text-cloud-white tracking-tight leading-[1.05] uppercase">
-              PLAY GAMES. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-royal-purple via-toxic-lime to-hot-pink">
-                FLEX ACHIEVEMENTS.
-              </span> <br />
-              COLLECT CHAOS.
-            </h1>
-
-            <p className="text-base sm:text-lg text-muted-text max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans">
-              Rank Rascal turns your public Roblox identity into certified Discord server brain rot, Rotfiles, Drip Checks, and competitive server leaderboards.
-            </p>
-
-            {/* Oversized Touch-Friendly CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-              <a
-                href={discordInviteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-royal-purple hover:bg-royal-purple/90 text-cloud-white px-8 py-4 rounded-2xl font-display font-bold text-base sm:text-lg transition-all shadow-sticker-lime hover:translate-x-[2px] hover:translate-y-[2px]"
-              >
-                <Sparkles className="w-5 h-5 text-toxic-lime" />
-                <span>Add to Discord (Coming Soon)</span>
-              </a>
-
-              <Link
-                href="/commands"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-panel-navy hover:bg-panel-navy-light text-cloud-white border border-panel-navy-light px-7 py-4 rounded-2xl font-display font-semibold text-base sm:text-lg transition-all hover:border-toxic-lime"
-              >
-                <Terminal className="w-5 h-5 text-toxic-lime" />
-                <span>See Commands</span>
-              </Link>
+            <div className="parallax-panel lg:col-span-7">
+              <div className="intel-frame overflow-hidden border border-royal-purple/40 bg-panel-navy shadow-2xl shadow-royal-purple/15"><Image src={BRAND_ASSETS.game.worldLiesUi} alt="Pre-production interface for the SUS meter, evidence board, map and King Wrongway battle" width={1672} height={941} sizes="(max-width: 1024px) 100vw, 58vw" className="h-auto w-full" /></div>
+              <p className="mt-3 text-right font-mono text-[11px] uppercase tracking-wider text-muted-text">Pre-production target · subject to playtesting</p>
             </div>
           </div>
 
-          {/* Hero Composition: Razz Mascot + Speech Bubble + Floating Stickers */}
-          <div className="lg:col-span-5 flex justify-center relative">
-            <div className="absolute inset-0 bg-royal-purple/25 rounded-full blur-3xl -z-10 transform scale-95" />
-
-            {/* Floating Sticker 1 */}
-            <div className="absolute -top-4 -left-4 z-20 animate-bounce motion-reduce:animate-none">
-              <div className="w-12 h-12 rounded-2xl bg-midnight-bg border-2 border-toxic-lime p-1 shadow-sticker">
-                <Image src="/brand/emojis/discord/rascal-hype.png" alt="" width={44} height={44} className="object-contain" />
+          <div className="mt-20">
+            <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-toxic-lime">Interactive Terminal Simulator</p>
+                <h3 className="font-display text-2xl font-bold text-cloud-white sm:text-3xl">Operate the S.U.S. Accusation Engine</h3>
               </div>
+              <p className="font-mono text-xs text-muted-text">Live pre-production testbed</p>
             </div>
-
-            {/* Floating Sticker 2 */}
-            <div className="absolute -bottom-4 -right-4 z-20 animate-pulse motion-reduce:animate-none">
-              <div className="w-12 h-12 rounded-2xl bg-midnight-bg border-2 border-hot-pink p-1 shadow-sticker">
-                <Image src="/brand/emojis/discord/rascal-win.png" alt="" width={44} height={44} className="object-contain" />
-              </div>
-            </div>
-
-            {/* Central Mascot Box */}
-            <div className="relative p-6 sm:p-8 rounded-3xl bg-panel-navy/90 border-sticker-purple glow-purple text-center w-full max-w-sm">
-              <RazzMascot pose="hero-point" size={260} className="mx-auto" />
-              <div className="mt-3 p-3 rounded-2xl bg-midnight-bg border border-panel-navy-light font-mono text-xs text-toxic-lime">
-                &quot;Ready to inspect your server&apos;s rotted stats!&quot;
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Clean 4-Column Trust Strip */}
-        <div className="mt-12 p-4 sm:p-6 rounded-3xl bg-panel-navy border-sticker grid grid-cols-2 md:grid-cols-4 gap-4 text-center font-mono text-xs text-cloud-white">
-          <div className="p-3 rounded-2xl bg-midnight-bg border border-panel-navy-light/60 flex flex-col items-center justify-center space-y-1">
-            <ShieldCheck className="w-5 h-5 text-toxic-lime" />
-            <span className="font-bold text-cloud-white">Zero Passwords</span>
-            <span className="text-[10px] text-muted-text">Official PKCE OAuth</span>
-          </div>
-          <div className="p-3 rounded-2xl bg-midnight-bg border border-panel-navy-light/60 flex flex-col items-center justify-center space-y-1">
-            <Terminal className="w-5 h-5 text-royal-purple" />
-            <span className="font-bold text-cloud-white">11 Commands</span>
-            <span className="text-[10px] text-muted-text">Gateway Socket</span>
-          </div>
-          <div className="p-3 rounded-2xl bg-midnight-bg border border-panel-navy-light/60 flex flex-col items-center justify-center space-y-1">
-            <EyeOff className="w-5 h-5 text-hot-pink" />
-            <span className="font-bold text-cloud-white">Opt-In Privacy</span>
-            <span className="text-[10px] text-muted-text">/witness-protection</span>
-          </div>
-          <div className="p-3 rounded-2xl bg-midnight-bg border border-panel-navy-light/60 flex flex-col items-center justify-center space-y-1">
-            <Flame className="w-5 h-5 text-reward-yellow" />
-            <span className="font-bold text-cloud-white">Curated Humor</span>
-            <span className="text-[10px] text-muted-text">No Harmful Insults</span>
+            <SusInvestigationTerminal />
           </div>
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* CHAPTER 2: ALTERNATING Z-PATTERN A — "THE ROTFILE IDENTITY CARD"        */}
-      {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-14 rounded-3xl bg-panel-navy border-sticker-purple glow-purple grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Text Column */}
-          <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-toxic-lime/10 border border-toxic-lime/40 text-toxic-lime font-mono text-xs font-bold uppercase">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Verified Gaming Identity</span>
-            </div>
-            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-cloud-white uppercase leading-tight">
-              YOUR GAMING LIFE, ALL IN ONE PROFILE CARD.
-            </h2>
-            <p className="text-sm sm:text-base text-muted-text leading-relaxed font-sans">
-              No more fake clout or made-up claims. Connect your Roblox account via official OAuth 2.0 PKCE to generate your verified Rotfile identity card—featuring avatar history, account creation era, public badges, and Rascal Rep.
-            </p>
-            <ul className="space-y-3 text-xs font-mono text-cloud-white/90 text-left">
-              <li className="flex items-center space-x-2.5">
-                <CheckCircle2 className="w-4 h-4 text-toxic-lime flex-shrink-0" />
-                <span>Deterministic avatar outfit heat verdicts</span>
-              </li>
-              <li className="flex items-center space-x-2.5">
-                <CheckCircle2 className="w-4 h-4 text-toxic-lime flex-shrink-0" />
-                <span>Official Roblox OAuth 2.0 PKCE identity verification</span>
-              </li>
-              <li className="flex items-center space-x-2.5">
-                <CheckCircle2 className="w-4 h-4 text-toxic-lime flex-shrink-0" />
-                <span>Privacy-aware witness protection controls</span>
-              </li>
-            </ul>
-            <div className="pt-2">
-              <Link
-                href="/games/roblox"
-                className="inline-flex items-center space-x-2 text-toxic-lime hover:underline font-mono text-xs font-bold"
-              >
-                <span>Learn how Roblox integration works</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
+      <QuestJournal />
 
-          {/* Right Live Interactive Preview */}
-          <div className="lg:col-span-6 flex justify-center">
-            <RotfilePreview />
+      <section className="reveal-up relative min-h-[780px] overflow-hidden border-y border-royal-purple/30">
+        <Image src={BRAND_ASSETS.game.foundersGuildWorkshop} alt="Razz and the Founders Guild build the enormous handcrafted world of Stickerwood together" fill sizes="100vw" className="object-cover object-center" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,8,17,.98)_0%,rgba(7,8,17,.88)_38%,rgba(7,8,17,.28)_72%,rgba(7,8,17,.12)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,#0b0d19_0%,transparent_48%,rgba(7,8,17,.35)_100%)]" />
+        <div className="relative mx-auto flex min-h-[780px] max-w-7xl items-end px-4 py-20 sm:px-6 lg:items-center lg:px-8">
+          <div className="max-w-xl border-l-2 border-toxic-lime bg-midnight-bg/82 p-7 shadow-2xl backdrop-blur-xl sm:p-10">
+            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-hot-pink"><Hammer className="h-4 w-4" aria-hidden="true" />Now assembling</div>
+            <h2 className="mt-4 font-display text-4xl font-extrabold leading-tight text-cloud-white sm:text-6xl">The world needs more than an audience.</h2>
+            <p className="mt-5 text-lg leading-relaxed text-cloud-white/75">We are forming a focused remote team around Roblox systems, environments, characters, animation, UI/VFX, audio, story, QA and community. Show us how you think—not a generic résumé drop.</p>
+            <div className="mt-6 grid gap-px border border-cloud-white/10 bg-cloud-white/10 sm:grid-cols-2">{FOUNDERS_GUILD_TRACKS.slice(0, 6).map((track) => <span key={track.value} className="bg-midnight-bg/90 px-3 py-2.5 text-xs text-cloud-white/80">{track.label}</span>)}</div>
+            <Link href="/community#guild" className="action-primary mt-8">Find your place in the Guild <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* CHAPTER 3: ALTERNATING Z-PATTERN B — "DRIP CHECKS & FRAUD CHECKS"         */}
-      {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-14 rounded-3xl bg-panel-navy border-sticker grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Art / Interactive Demo */}
-          <div className="lg:col-span-6 order-2 lg:order-1 flex justify-center">
-            <FlexCardPreview />
-          </div>
+      <div className="reveal-up mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <p className="rounded-xl border border-dashed border-cloud-white/15 px-5 py-4 text-xs leading-relaxed text-cloud-white/55">
+          <span className="font-bold text-cloud-white/80">Two different Guilds, on purpose:</span> the Founders Guild above is a real, open contributor program. In the fiction, an in-game Guild (Guild Missions, Guild Credits) is a <span className="text-hot-pink">planned</span> feature for later in development—see the Quests section above.
+        </p>
+      </div>
 
-          {/* Right Text Column */}
-          <div className="lg:col-span-6 order-1 lg:order-2 space-y-6 text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-hot-pink/10 border border-hot-pink/40 text-hot-pink font-mono text-xs font-bold uppercase">
-              <Flame className="w-4 h-4" />
-              <span>Server Entertainment</span>
-            </div>
-            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-cloud-white uppercase leading-tight">
-              CHAOTIC AVATAR DRIP CHECKS & RIVAL COMPARISONS.
-            </h2>
-            <p className="text-sm sm:text-base text-muted-text leading-relaxed font-sans">
-              Run <code className="text-toxic-lime font-mono">/dripcheck</code> on yourself or server mates to get safe, deterministic outfit heat verdicts with certified humor. Challenge friends with <code className="text-toxic-lime font-mono">/fraudcheck</code> to compare public badge milestones head-to-head.
-            </p>
-            <div className="p-4 rounded-2xl bg-midnight-bg border border-panel-navy-light text-xs font-mono space-y-1 text-left">
-              <span className="text-hot-pink font-bold block">Safe Humor Guarantee:</span>
-              <p className="text-muted-text leading-relaxed">
-                Drip Check algorithms use safe, playful humor rules. No mean-spirited insults or harmful language ever.
-              </p>
-            </div>
+      <KingWrongwayReveal />
+
+      <FutureRealmsTeaser />
+
+      <section className="reveal-up relative min-h-[740px] overflow-hidden border-b border-panel-navy-light">
+        <Image src={BRAND_ASSETS.game.qaTruthLab} alt="Razz and Founding QA Scouts investigate false paths inside a transforming Stickerwood truth lab" fill sizes="100vw" className="object-cover object-center" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,8,17,.28)_0%,rgba(7,8,17,.25)_42%,rgba(7,8,17,.92)_72%,rgba(7,8,17,.98)_100%)]" />
+        <div className="relative mx-auto flex min-h-[740px] max-w-7xl items-end justify-end px-4 py-20 sm:px-6 lg:items-center lg:px-8">
+          <div className="max-w-xl border-r-2 border-hot-pink bg-midnight-bg/86 p-7 shadow-2xl backdrop-blur-xl sm:p-10">
+            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-toxic-lime"><BadgeCheck className="h-4 w-4" aria-hidden="true" />Founding QA Scouts</div>
+            <h2 className="mt-4 font-display text-4xl font-extrabold leading-tight text-cloud-white sm:text-5xl">Leave a real review. Get a real place in the test roster.</h2>
+            <p className="mt-5 text-lg leading-relaxed text-cloud-white/75">Every thoughtful review receives a unique QA ID, personalized digital badge and certificate by email. Build invitations follow in cohorts when the experience is playable and safe to test.</p>
+            <div className="mt-7 border-t border-cloud-white/15">{[["01", "Review"], ["02", "Get verified"], ["03", "Join QA roster"]].map(([number, label]) => <div key={number} className="grid grid-cols-[40px_1fr] border-b border-cloud-white/10 py-3"><span className="font-mono text-xs text-hot-pink">{number}</span><p className="font-display font-bold text-cloud-white">{label}</p></div>)}</div>
+            <Link href="/community#review" className="action-primary mt-8 bg-hot-pink text-cloud-white">Send your signal <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* CHAPTER 4: ALTERNATING Z-PATTERN C — "CANONICAL PRODUCTION BADGES"        */}
-      {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-14 rounded-3xl bg-panel-navy border-sticker-purple glow-purple space-y-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Left Column */}
-            <div className="lg:col-span-5 flex justify-center">
-              <Image
-                src={BRAND_ASSETS.websiteArt.rewardMachine}
-                alt="Razz produces collectible badges and quest tickets"
-                width={500}
-                height={333}
-                className="w-full h-auto max-w-md object-contain rounded-2xl"
-              />
-            </div>
+      <BuildArchive />
 
-            {/* Right Column */}
-            <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
-              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-reward-yellow/10 border border-reward-yellow/40 text-reward-yellow font-mono text-xs font-bold uppercase">
-                <Award className="w-4 h-4" />
-                <span>Collectible Badges & Quests</span>
-              </div>
-              <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-cloud-white uppercase leading-tight">
-                YOUR SERVER MOMENTS JUST DROPPED LOOT.
-              </h2>
-              <p className="text-sm sm:text-base text-muted-text leading-relaxed font-sans">
-                Unlock official high-resolution 1254px illustrated badges—Quest Crusader, Drip Monarch, and Veteran Noob. Complete daily server quests, track distinct-day Drip Checks, and collect certified server lore.
-              </p>
-              <div className="pt-1">
-                <Link
-                  href="/rewards"
-                  className="inline-flex items-center space-x-2 text-toxic-lime hover:underline font-mono text-xs font-bold"
-                >
-                  <span>Explore full badge rewards catalog</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* 3 Official Illustrated Badges Shelf */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-            {CANONICAL_THREE_BADGES.map((b) => (
-              <BadgeCard
-                key={b.id}
-                title={b.name}
-                category={b.category}
-                description={b.description}
-                rarity="Rascal"
-                isUnlocked={false}
-                statusLabel="Preview"
-                badgeImage={b.image}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* CHAPTER 5: ALTERNATING Z-PATTERN D — "PRIVACY GUARDIAN & SAFETY"          */}
-      {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-14 rounded-3xl bg-panel-navy border-sticker grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Art */}
-          <div className="lg:col-span-5 flex justify-center">
-            <Image
-              src={BRAND_ASSETS.websiteArt.privacyGuardian}
-              alt="Razz protects profile privacy with shield and key"
-              width={340}
-              height={510}
-              className="w-full h-auto max-w-xs object-contain rounded-2xl"
-            />
-          </div>
-
-          {/* Right Text Column */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-toxic-lime/10 border border-toxic-lime/40 text-toxic-lime font-mono text-xs font-bold uppercase">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Opt-In Privacy Controls</span>
-            </div>
-            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-cloud-white uppercase leading-tight">
-              VERIFIED FLEX. PRIVATE WHEN YOU WANT IT.
-            </h2>
-            <p className="text-sm sm:text-base text-muted-text leading-relaxed font-sans">
-              Roblox handles passwords exclusively via official PKCE OAuth. Rank Rascal never requests passwords, and optional <code className="text-toxic-lime font-mono">/witness-protection</code> lets you hide your profile from public server leaderboards whenever you want.
-            </p>
-            <div className="pt-2 flex flex-wrap justify-center lg:justify-start gap-4 text-xs font-mono">
-              <Link href="/verify" className="text-toxic-lime hover:underline font-semibold">
-                Verification Guide →
-              </Link>
-              <Link href="/privacy" className="text-toxic-lime hover:underline font-semibold">
-                Privacy Policy →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* CHAPTER 6: FULL-BLEED DISCORD.COM STYLE HERO BANNER CTA                   */}
-      {/* ========================================================================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden border-sticker-lime glow-lime min-h-[360px] sm:min-h-[420px] flex items-center justify-center text-center p-8 sm:p-14">
-          <Image
-            src={BRAND_ASSETS.websiteArt.communityClubhouse}
-            alt="Razz hosts a digital clubhouse filled with profiles and badges"
-            fill
-            sizes="(max-width: 1200px) 100vw, 1200px"
-            className="object-cover -z-10"
-          />
-          {/* Dark backdrop gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#121526] via-[#121526]/85 to-[#121526]/60 -z-10" />
-
-          <div className="max-w-2xl mx-auto space-y-6 z-10">
-            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-cloud-white uppercase leading-tight">
-              YOUR SERVER IS ABOUT TO GET LORE.
-            </h2>
-            <p className="text-sm sm:text-base text-muted-text leading-relaxed font-sans">
-              Build Rotfiles, hunt badges, challenge friends, and give every gaming session something worth yapping about.
-            </p>
-            <div className="pt-2">
-              <a
-                href={discordInviteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-3 bg-royal-purple hover:bg-royal-purple/90 text-cloud-white px-9 py-4 rounded-2xl font-display font-bold text-base sm:text-lg transition-all shadow-sticker-lime hover:translate-x-[2px] hover:translate-y-[2px]"
-              >
-                <Sparkles className="w-5 h-5 text-toxic-lime" />
-                <span>Add Rank Rascal (Coming Soon)</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CommunityPlazaSection />
     </div>
   );
 }

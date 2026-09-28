@@ -33,6 +33,11 @@ Complete catalog of production assets used across the Rank Rascal web applicatio
 | `razz-tactical-coming-soon-banner.png` | 1672x941 | Opaque (16:9) | `/games`, Homepage | `GameRoadmapPanel.tsx` | `Razz leads an original neon tactical squad through a training arena.` | Meaningful | Yes |
 | `razz-battle-royale-coming-soon-banner.png` | 1672x941 | Opaque (16:9) | `/games`, Homepage | `GameRoadmapPanel.tsx` | `Razz glides toward a colorful floating-island competition.` | Meaningful | Yes |
 | `razz-community-clubhouse-banner.png` | 1672x941 | Opaque (16:9) | `/` (Homepage CTA) | `ClosingCTA.tsx` | `Razz hosts a joyful digital clubhouse filled with profiles, badges and reactions.` | Meaningful | Yes |
+| `stickerwood-key-art-v1.png` | 1672x941 | Opaque (16:9) | `/`, `/game` | Homepage and game hero | `Razz overlooks Stickerwood and the distant corrupted Crown Ruins.` | Meaningful | Yes |
+| `world-lies-ui-v1.png` | 1672x941 | Opaque (16:9) | `/`, `/game` | World Lies system sections | `Pre-production interface showing evidence, SUS, map and boss information.` | Meaningful | Yes |
+| `stickerwood-enemies-boss-v1.png` | 1774x887 | Opaque | `/`, `/game` | Enemy and boss sections | `Concept lineup for Crown Sprout, Glitch Slime, Lost Sticker and King Wrongway.` | Meaningful | Yes |
+| `founders-guild-workshop-v1.png` | 1672x941 | Opaque (16:9) | `/`, `/community` | Team recruitment sections | `Razz and the Founders Guild build Stickerwood inside a monumental open-air workshop.` | Meaningful | Yes |
+| `qa-truth-lab-v1.png` | 1672x941 | Opaque (16:9) | `/`, `/community` | Review and QA sections | `Razz and QA Scouts investigate a false route at the Stickerwood Truth Lab.` | Meaningful | Yes |
 
 ## Publishing rules
 

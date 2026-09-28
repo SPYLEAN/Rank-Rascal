@@ -1,92 +1,140 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 
+const SEEN_KEY = "rascalRealms.introSeen";
+
+type Stage = "black" | "fracture" | "crack" | "lie" | "reveal" | "resolve" | "fadeout";
+
+function readIntroSeen(): boolean {
+  try {
+    return window.localStorage.getItem(SEEN_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeIntroSeen(): void {
+  try {
+    window.localStorage.setItem(SEEN_KEY, "1");
+  } catch {
+    // Private browsing or blocked storage — the full intro will just play every visit.
+  }
+}
+
+/**
+ * The Crownfall entrance: black, a small purple fracture, the crack widening,
+ * "THE WORLD LIES.", Stickerwood revealed through the break, the title resolving,
+ * then a seamless fade into the homepage. No progress bar, no fake percentages,
+ * no coordinates or telemetry — this is a cinematic beat, not a loading screen.
+ */
 export const PageLoadingOverlay: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const [isFadingOut, setIsFadingOut] = useState(false);
-  const [statusText, setStatusText] = useState("Waking up Razz...");
+  const [stage, setStage] = useState<Stage>("black");
+  const [skip, setSkip] = useState(false);
+
+  const reducedMotion = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
 
   useEffect(() => {
-    // Only run on initial site entrance / page refresh (mount once)
-    const step1 = setTimeout(() => {
-      setStatusText("Cooking your server lore...");
-    }, 900);
-
-    const step2 = setTimeout(() => {
-      setStatusText("Ready for chaos! ✨");
-    }, 1800);
-
-    const fadeStart = setTimeout(() => {
-      setIsFadingOut(true);
-    }, 2400);
-
-    const finish = setTimeout(() => {
+    if (reducedMotion) {
+      writeIntroSeen();
       setIsVisible(false);
-    }, 2700);
+      return;
+    }
 
-    return () => {
-      clearTimeout(step1);
-      clearTimeout(step2);
-      clearTimeout(fadeStart);
-      clearTimeout(finish);
-    };
-  }, []);
+    const returning = readIntroSeen();
+    setSkip(returning);
+    writeIntroSeen();
+
+    // First-time visitors get the full ~3.4s sequence. Returning visitors get a
+    // short ~1s version of the same beats, never a full replay.
+    const t = returning
+      ? { fracture: 80, crack: 260, lie: 460, reveal: 640, resolve: 820, fadeStart: 1000, hide: 1300 }
+      : { fracture: 300, crack: 900, lie: 1500, reveal: 2050, resolve: 2650, fadeStart: 3150, hide: 3550 };
+
+    const timers = [
+      window.setTimeout(() => setStage("fracture"), t.fracture),
+      window.setTimeout(() => setStage("crack"), t.crack),
+      window.setTimeout(() => setStage("lie"), t.lie),
+      window.setTimeout(() => setStage("reveal"), t.reveal),
+      window.setTimeout(() => setStage("resolve"), t.resolve),
+      window.setTimeout(() => setStage("fadeout"), t.fadeStart),
+      window.setTimeout(() => setIsVisible(false), t.hide),
+    ];
+
+    return () => timers.forEach(window.clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reducedMotion]);
 
   if (!isVisible) return null;
 
+  const revealed = stage === "reveal" || stage === "resolve" || stage === "fadeout";
+  const cracked = stage === "crack" || stage === "lie" || revealed;
+  const showFracture = stage !== "black";
+
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-[#181335] via-[#120f29] to-[#0c0a1b] text-cloud-white transition-opacity duration-300 ${
-        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
+      className={`fixed inset-0 z-[70] flex items-center justify-center overflow-hidden bg-[#050308] transition-opacity duration-500 ${
+        stage === "fadeout" ? "opacity-0 pointer-events-none" : "opacity-100"
+      } ${skip ? "duration-300" : ""}`}
       role="status"
       aria-live="polite"
-      aria-label="Site loading screen"
+      aria-label="Entering Rascal Realms: Crownfall"
     >
-      {/* Background Dotted Grid Texture */}
-      <div className="absolute inset-0 bg-[radial-gradient(#a855f7_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
+      {/* Stickerwood, revealed only through the fracture */}
+      <div
+        className={`absolute inset-0 transition-all ease-out ${skip ? "duration-300" : "duration-700"} ${
+          revealed ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          clipPath: revealed
+            ? "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
+            : "polygon(48% 38%, 52% 38%, 54% 52%, 60% 58%, 50% 100%, 40% 58%, 46% 52%)",
+        }}
+        aria-hidden="true"
+      >
+        <Image
+          src={BRAND_ASSETS.game.stickerwoodKeyArt}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[#050308]/55" />
+      </div>
 
-      <div className="relative flex flex-col items-center justify-center space-y-6 p-8 text-center z-10 max-w-sm">
-        {/* Orbit Ring & Sparkles */}
-        <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56">
-          <div className="absolute inset-1 rounded-full border-2 border-toxic-lime/40 animate-spin-slow glow-lime motion-reduce:hidden" />
-          <div className="absolute top-2 right-4 w-2.5 h-2.5 rounded-full bg-hot-pink animate-ping motion-reduce:hidden" />
-          <div className="absolute bottom-4 left-6 w-2 h-2 rounded-full bg-toxic-lime animate-pulse motion-reduce:hidden" />
+      {/* The fracture line itself, before the reveal */}
+      {showFracture && !revealed ? (
+        <div
+          aria-hidden="true"
+          className={`absolute h-[70vmin] w-[3px] origin-center bg-gradient-to-b from-transparent via-royal-purple to-transparent shadow-[0_0_30px_8px_rgba(122,77,255,0.55)] transition-transform ${
+            skip ? "duration-200" : "duration-700"
+          } ${cracked ? "scale-y-100 scale-x-[7]" : "scale-y-[0.18] scale-x-100"}`}
+        />
+      ) : null}
 
-          {/* Centered Razz Slow GIF Animation */}
-          <div className="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center">
-            <picture>
-              <source
-                media="(prefers-reduced-motion: reduce)"
-                srcSet={BRAND_ASSETS.animation.loadStatic}
-              />
-              <Image
-                src={BRAND_ASSETS.animation.loadingSlowGif}
-                alt="Razz loading animation"
-                width={160}
-                height={160}
-                className="object-contain w-full h-full"
-                priority
-                unoptimized
-              />
-            </picture>
-          </div>
-        </div>
-
-        {/* Dynamic Status Text with Smooth Expression Pacing */}
-        <div className="space-y-3 min-h-[50px] flex flex-col items-center justify-center">
-          <p className="font-display font-extrabold text-xl text-cloud-white tracking-wide uppercase transition-all duration-300">
-            {statusText}
-          </p>
-          <div className="flex items-center justify-center space-x-2" aria-hidden="true">
-            <div className="w-2.5 h-2.5 rounded-full bg-toxic-lime animate-bounce [animation-delay:-0.3s] motion-reduce:animate-none" />
-            <div className="w-2.5 h-2.5 rounded-full bg-hot-pink animate-bounce [animation-delay:-0.15s] motion-reduce:animate-none" />
-            <div className="w-2.5 h-2.5 rounded-full bg-royal-purple animate-bounce motion-reduce:animate-none" />
-          </div>
-        </div>
+      {/* Copy */}
+      <div className="relative z-10 flex flex-col items-center gap-4 px-6 text-center">
+        <p
+          className={`font-display text-3xl font-extrabold uppercase tracking-[0.08em] text-cloud-white transition-all duration-500 sm:text-5xl ${
+            stage === "lie" || revealed ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+          }`}
+        >
+          The world lies.
+        </p>
+        <p
+          className={`font-mono text-xs font-bold uppercase tracking-[0.3em] text-toxic-lime transition-all duration-500 sm:text-sm ${
+            stage === "resolve" || stage === "fadeout" ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+          }`}
+        >
+          Rascal Realms: Crownfall
+        </p>
       </div>
     </div>
   );
