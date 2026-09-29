@@ -1,15 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { SocialLinks } from "@/components/SocialLinks";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { DISCORD_URL } from "@/lib/site-config";
 
 /**
  * Chapter 10 — the journey ends in warm light, not another corrupted scene. The project is
  * real, ambitious and built openly; joining is free and promises nothing it can't keep.
  */
 export function JoinRascalLabs() {
-  const discordUrl = process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://discord.gg/gkneGrpzAn";
-
   return (
     <section id="join-rascal-labs" aria-labelledby="join-title" className="chapter flex min-h-[90svh] scroll-mt-20 items-end">
       <div className="chapter-art" style={{ position: "absolute", inset: 0 }}>
@@ -33,7 +33,7 @@ export function JoinRascalLabs() {
         </p>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a href={discordUrl} target="_blank" rel="noopener noreferrer" className="action-primary">
+          <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="action-primary">
             Join the Discord <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </a>
           <Link href="/community#review" className="action-secondary">
@@ -48,6 +48,11 @@ export function JoinRascalLabs() {
           A person reads every review and application. Joining is free, isn&apos;t a job offer and doesn&apos;t guarantee playtest access.
           The official Roblox group opens with the first private prototype.
         </p>
+
+        <div className="mt-8">
+          <h3 className="hero-shadow text-xs font-semibold uppercase tracking-[0.2em] text-antique-gold">Follow Rascal Labs</h3>
+          <SocialLinks className="mt-3" />
+        </div>
       </div>
     </section>
   );

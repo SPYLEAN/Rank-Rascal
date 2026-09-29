@@ -6,7 +6,8 @@ never shipped). Output: apps/web/public/brand/... as WebP.
 
 - Full files keep native resolution at quality 90, so hand-lettered sheet text stays sharp.
 - Thumbnails (720 px wide, quality 82) are for cards and previews; a thumbnail is only written
-  when the source is wider than 720 px.
+  when the source is wider than 720 px. The mobile homepage uses smaller thumbnails of the three
+  launch heroes (480 px) and the atlas map (960 px).
 - The nine-panel overview board ("stuff.png") is cut into one file per panel. World Lies and
   Beyond Stickerwood tiles are cut without their printed captions (the site supplies its own copy,
   and unapproved realm names stay off the site).
@@ -70,30 +71,30 @@ TILES = [
     ("stuff.png", "concepts/future-realms/realm-v", (995 + 367, 850 + 20, 995 + 482, 850 + 137)),
 ]
 
-# Cinematic (non-sheet) art used outside the archive.
+# Cinematic (non-sheet) art used outside the archive, with the thumbnail width (None: no thumbnail).
 ART = [
-    ("hero 1.png", "heroes/crown-knight"),
-    ("hero 2.png", "heroes/glitchcaster"),
-    ("hero 3.png", "heroes/shadow-ranger"),
-    ("hero 4.png", "heroes/trickster"),
-    ("hero 5.png", "heroes/lorekeeper"),
-    ("hero 6.png", "heroes/badge-scout"),
-    ("starting village.png", "game/locations/starting-village-v1"),
-    ("high ress map.png", "game/stickerwood-map-v2"),
+    ("hero 1.png", "heroes/crown-knight", 480),
+    ("hero 2.png", "heroes/glitchcaster", 480),
+    ("hero 3.png", "heroes/shadow-ranger", 480),
+    ("hero 4.png", "heroes/trickster", None),
+    ("hero 5.png", "heroes/lorekeeper", None),
+    ("hero 6.png", "heroes/badge-scout", None),
+    ("starting village.png", "game/locations/starting-village-v1", None),
+    ("high ress map.png", "game/stickerwood-map-v2", 960),
 ]
 
 
-def save(image: Image.Image, target: str, quality: int, thumb: bool) -> None:
+def save(image: Image.Image, target: str, quality: int, thumb: bool, thumb_width: int = THUMB_WIDTH) -> None:
     path = PUBLIC / f"{target}.webp"
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, "WEBP", quality=quality, method=6)
     line = f"{target}.webp {image.width}x{image.height} {path.stat().st_size // 1024}KB"
-    if thumb and image.width > THUMB_WIDTH:
-        height = round(image.height * THUMB_WIDTH / image.width)
-        small = image.resize((THUMB_WIDTH, height), Image.LANCZOS)
+    if thumb and image.width > thumb_width:
+        height = round(image.height * thumb_width / image.width)
+        small = image.resize((thumb_width, height), Image.LANCZOS)
         small_path = PUBLIC / f"{target}-thumb.webp"
         small.save(small_path, "WEBP", quality=82, method=6)
-        line += f" + thumb {THUMB_WIDTH}x{height} {small_path.stat().st_size // 1024}KB"
+        line += f" + thumb {thumb_width}x{height} {small_path.stat().st_size // 1024}KB"
     print(line)
 
 
@@ -110,8 +111,8 @@ def main() -> None:
         save(image.crop(box) if box else image, target, 90, thumb=True)
     for name, target, box in TILES:
         save(load(name).crop(box), target, 90, thumb=False)
-    for name, target in ART:
-        save(load(name), target, 86, thumb=False)
+    for name, target, thumb_width in ART:
+        save(load(name), target, 86, thumb=thumb_width is not None, thumb_width=thumb_width or THUMB_WIDTH)
 
 
 if __name__ == "__main__":

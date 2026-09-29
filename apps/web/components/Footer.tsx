@@ -2,34 +2,59 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Heart } from "lucide-react";
+import { SocialLinks } from "@/components/SocialLinks";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 
 const linkClass = "transition hover:text-antique-gold";
 
+/** Phones get one compact grid instead of the two long columns. */
+const COMPACT_LINKS = [
+  { href: "/game", label: "The game" },
+  { href: "/updates", label: "Updates" },
+  { href: "/labs", label: "Rascal Labs" },
+  { href: "/community", label: "Community" },
+  { href: "/status", label: "Status" },
+  { href: "/safety", label: "Safety" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+  { href: "/support", label: "Support" },
+] as const;
+
 /**
  * Full-contrast footer. The bottom padding on small screens keeps the credit line clear of the
- * floating Ask Razz launcher, which sits in the bottom-right corner.
+ * floating Ask Razz launcher, which sits in the bottom-right corner. On phones it collapses to
+ * the logo, the social group, one compact link grid and the legal line.
  */
 export const Footer: React.FC = () => (
-  <footer className="relative border-t border-antique-gold/25 bg-[#0c0e1a] text-cloud-white/85">
-    <div className="mx-auto max-w-7xl px-5 pb-28 pt-14 sm:px-8 sm:pb-14">
-      <div className="grid gap-10 md:grid-cols-4">
-        <div className="space-y-4 md:col-span-2">
+  <footer data-razz-clear className="relative border-t border-antique-gold/25 bg-[#0c0e1a] text-cloud-white/85">
+    <div className="mx-auto max-w-7xl px-5 pb-20 pt-8 sm:px-8 sm:pb-14 sm:pt-14">
+      <div className="grid gap-5 sm:gap-10 md:grid-cols-4">
+        <div className="space-y-3 sm:space-y-4 md:col-span-2">
           <Link href="/" className="inline-flex" aria-label="Rascal Realms: Crownfall home">
             <Image
               src={BRAND_ASSETS.titleLogo.small}
               alt="Rascal Realms: Crownfall"
               width={600}
               height={337}
-              className="h-auto w-[210px]"
+              className="h-auto w-[112px] sm:w-[210px]"
             />
           </Link>
-          <p className="max-w-md text-sm leading-relaxed">
+          <p className="hidden max-w-md text-sm leading-relaxed sm:block">
             Home of Rascal Realms: Crownfall, a story-driven co-op Roblox action RPG mystery in pre-production, built in the open by the Rascal Labs community.
           </p>
           <p className="text-sm text-paper-cream/85">13+ community · every submission is read by a person</p>
+          <SocialLinks label="Rascal Realms on social media" />
         </div>
-        <div>
+        <nav aria-label="Footer" className="sm:hidden">
+          <ul className="grid grid-cols-3 gap-x-3 text-sm">
+            {COMPACT_LINKS.map(({ href, label }) => (
+              <li key={href}>
+                <Link href={href} className={`${linkClass} flex min-h-11 items-center`}>{label}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="hidden sm:block">
           <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-antique-gold">The realm</h2>
           <ul className="mt-4 space-y-3 text-sm">
             <li><Link href="/game" className={linkClass}>The game</Link></li>
@@ -40,14 +65,9 @@ export const Footer: React.FC = () => (
             <li><Link href="/game#locations" className={linkClass}>All ten areas</Link></li>
             <li><Link href="/devlog" className={linkClass}>Development log</Link></li>
             <li><Link href="/community" className={linkClass}>Community</Link></li>
-            <li>
-              <a href={process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://discord.gg/gkneGrpzAn"} target="_blank" rel="noopener noreferrer" className={`${linkClass} font-semibold text-paper-cream`}>
-                Discord ↗
-              </a>
-            </li>
           </ul>
         </div>
-        <div>
+        <div className="hidden sm:block">
           <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-antique-gold">Project</h2>
           <ul className="mt-4 space-y-3 text-sm">
             <li><Link href="/status" className={linkClass}>Project status</Link></li>
@@ -59,7 +79,7 @@ export const Footer: React.FC = () => (
           </ul>
         </div>
       </div>
-      <div className="mt-12 flex flex-col gap-3 border-t border-cloud-white/15 pt-8 text-sm text-cloud-white/80 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-5 flex flex-col gap-2 border-t border-cloud-white/15 pt-5 text-sm text-cloud-white/80 sm:mt-12 sm:gap-3 sm:pt-8 sm:flex-row sm:items-center sm:justify-between">
         <p>Rascal Labs is an independent project and is not affiliated with or endorsed by Roblox or Discord.</p>
         <p className="flex flex-wrap items-center gap-x-1.5">
           <span>© {new Date().getFullYear()} Rascal Labs / Rank Rascal ·</span>

@@ -217,7 +217,7 @@ export default function GamePage() {
       </section>
 
       {/* Heroes */}
-      <section className="bg-[#0e1020] py-24 lg:py-32">
+      <section id="heroes" className="scroll-mt-24 bg-[#0e1020] py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-4">

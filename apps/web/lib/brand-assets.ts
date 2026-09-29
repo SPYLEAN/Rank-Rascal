@@ -81,6 +81,8 @@ export const BRAND_ASSETS = {
     fractureBeneathStickerwood: "/brand/game/fracture-beneath-stickerwood-v1.png",
     // Clean high-resolution Stickerwood map (2026-09-29), used by the world atlas. No Razz in frame.
     stickerwoodMap: "/brand/game/stickerwood-map-v2.webp",
+    // 960 px copy for the mobile homepage.
+    stickerwoodMapThumb: "/brand/game/stickerwood-map-v2-thumb.webp",
   },
 
   // Hero concept art (2026-09-29), one portrait per canon hero. Built by scripts/build-concepts.py.
@@ -91,6 +93,13 @@ export const BRAND_ASSETS = {
     trickster: "/brand/heroes/trickster.webp",
     lorekeeper: "/brand/heroes/lorekeeper.webp",
     badgeScout: "/brand/heroes/badge-scout.webp",
+  },
+
+  // 480 px portraits of the three launch heroes for the mobile homepage's hero switcher.
+  heroThumbs: {
+    crownKnight: "/brand/heroes/crown-knight-thumb.webp",
+    glitchcaster: "/brand/heroes/glitchcaster-thumb.webp",
+    shadowRanger: "/brand/heroes/shadow-ranger-thumb.webp",
   },
 
   // World location environment art (2025-09-28 pre-production pass).

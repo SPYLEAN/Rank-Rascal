@@ -7,12 +7,12 @@
  * world, never about what exists.
  */
 
-/** Shown when the drawer opens (owner copy, 2026-09-29). */
+/** Shown when the drawer opens (owner copy, 2026-09-29; no emoji since the final UX pass). */
 export const RAZZ_GREETING =
-  "Hi 👋 Welcome to Rascal Realms. Ask me anything about Crownfall, Stickerwood, the heroes, or what we're building.";
+  "Welcome to Rascal Realms. Ask me anything about Crownfall, Stickerwood, the heroes, or what we're building.";
 
-/** The small bubble beside the launcher, once per session. */
-export const RAZZ_LAUNCHER_GREETING = "Hi 👋 Curious about Crownfall? Ask me anything.";
+/** Razz's speech bubble above the launcher, once per browser session (owner copy). */
+export const RAZZ_LAUNCHER_GREETING = "Welcome to Stickerwood. Want to know what the Crown is hiding?";
 
 export type RazzAnswer = {
   id: string;

@@ -169,6 +169,7 @@ export function HeroVideo() {
         onError={() => setVisible(false)}
       />
       <button
+        data-razz-clear
         type="button"
         onClick={toggle}
         className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-cloud-white/30 bg-[#0b0912]/55 text-cloud-white backdrop-blur-sm transition hover:border-cloud-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-toxic-lime sm:right-6 sm:top-6"

@@ -170,6 +170,16 @@ html[data-intro-seen="1"] { --intro-s: .37; }
   }
 }
 
+/* Phones: the copy sits higher (the bottom of the frame is kept clear for Ask Razz's greeting),
+   so the dark band moves up behind it and the art shows through above and below. */
+@media (max-width: 639px) and (max-aspect-ratio: 4/5) {
+  .hero-scrim {
+    background:
+      linear-gradient(0deg, #121526 0%, rgba(18, 21, 38, .5) 16%, rgba(18, 21, 38, .84) 32%, rgba(18, 21, 38, .84) 64%, rgba(18, 21, 38, .35) 80%, rgba(18, 21, 38, 0) 92%),
+      linear-gradient(180deg, rgba(11, 9, 18, .5) 0%, rgba(11, 9, 18, 0) 18%);
+  }
+}
+
 .hero-shadow {
   text-shadow: 0 2px 24px rgba(8, 5, 14, .55), 0 1px 2px rgba(8, 5, 14, .7);
 }
@@ -637,6 +647,43 @@ a:focus-visible > .spylean-heart { animation: heart-beat 700ms ease; }
   border-color: var(--cream);
   background: rgba(243, 229, 200, .08);
   transform: translateY(-2px);
+}
+
+/* Phones lead the hero with the teaser, so its button takes the primary look there. */
+@media (max-width: 639px) {
+  .action-secondary.hero-cta-teaser {
+    border-color: var(--gold);
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .action-secondary.hero-cta-teaser:hover {
+    border-color: var(--cream);
+    background: var(--cream);
+  }
+}
+
+/* Ask Razz's once-a-session hello: a speech bubble whose tail points at the launcher below. */
+.razz-greeting-enter {
+  animation: razz-greeting-in 320ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.razz-greeting::after {
+  content: "";
+  position: absolute;
+  right: 1.25rem;
+  bottom: -9px;
+  width: 16px;
+  height: 16px;
+  background: var(--cream);
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg);
+}
+
+@keyframes razz-greeting-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
 }
 
 /* Simple document pages (privacy, terms, safety, support, status). */

@@ -5,6 +5,7 @@ import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { CommunityForms } from "@/components/CommunityForms";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { FOUNDERS_GUILD_TRACKS } from "@/lib/game-content";
+import { DISCORD_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Community: Founding QA & Founders Guild",
@@ -25,8 +26,6 @@ const PROMISES = [
 ] as const;
 
 export default function CommunityPage() {
-  const communityUrl = process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://discord.gg/gkneGrpzAn";
-
   return (
     <div className="overflow-x-hidden">
       <header className="chapter flex min-h-[calc(100svh-5rem)] items-end">
@@ -55,7 +54,7 @@ export default function CommunityPage() {
             <a href="#guild" className="action-secondary">
               Apply to the Guild <ArrowDown className="h-4 w-4" aria-hidden="true" />
             </a>
-            <a href={communityUrl} target="_blank" rel="noopener noreferrer" className="action-secondary">
+            <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="action-secondary">
               Join the Discord <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
           </div>

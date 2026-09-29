@@ -572,6 +572,14 @@ export const CHAPTER_ONE_ACTS = [
  * Chapter 1 (Ancient Tree onward, the Overgrown Receipt, King Wrongway) and all future systems
  * arrive in later updates. Production scope, not a promise; no date has been announced.
  */
+/** The honest production record, shown on the homepage (desktop and phone). */
+export const PRODUCTION_STAGES = [
+  { label: "Foundation", state: "Canon, scope and art direction: now", done: false, current: true },
+  { label: "Prototype", state: "Crown Knight, one Fraud, one area", done: false, current: false },
+  { label: "Private playtest", state: "Not open yet", done: false, current: false },
+  { label: "Release 1.0", state: "A Sign of Trouble · no date yet", done: false, current: false },
+] as const;
+
 export const RELEASE_ONE = {
   version: "Release 1.0",
   name: "A Sign of Trouble",

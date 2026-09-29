@@ -67,7 +67,7 @@ export function ConceptArchive() {
 
   return (
     <>
-      <nav aria-label="Archive categories" className="sticky top-20 z-30 border-y border-antique-gold/20 bg-[#0b0a12]/92 backdrop-blur-sm">
+      <nav aria-label="Archive categories" className="sticky top-16 z-30 sm:top-20 border-y border-antique-gold/20 bg-[#0b0a12]/92 backdrop-blur-sm">
         <ol className="no-scrollbar mx-auto flex max-w-7xl gap-1 overflow-x-auto px-5 py-2 sm:px-8">
           {CONCEPT_CATEGORIES.map((category) => (
             <li key={category.id} className="flex-none">

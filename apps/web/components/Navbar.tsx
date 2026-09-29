@@ -30,10 +30,10 @@ export const Navbar: React.FC = () => {
   }, [mobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-cloud-white/10 bg-[#121526]/90 backdrop-blur-md">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+    <header data-razz-clear className="sticky top-0 z-50 border-b border-cloud-white/10 bg-[#121526]/90 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:h-20 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-3" aria-label="Rascal Realms: Crownfall home">
-          <Image src="/brand/app-icon.png" alt="" width={44} height={44} className="h-11 w-11 rounded-lg object-contain" priority />
+          <Image src="/brand/app-icon.png" alt="" width={44} height={44} className="h-10 w-10 rounded-lg object-contain sm:h-11 sm:w-11" priority />
           <span>
             <span className="block font-display text-lg font-bold leading-tight text-cloud-white transition group-hover:text-antique-gold">Rascal Realms</span>
             <span className="block text-xs font-medium text-paper-cream/65">Crownfall · in pre-production</span>

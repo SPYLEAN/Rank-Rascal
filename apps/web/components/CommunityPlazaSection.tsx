@@ -15,11 +15,9 @@ import {
   Zap,
 } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { DISCORD_URL } from "@/lib/site-config";
 
 export function CommunityPlazaSection() {
-  const discordUrl =
-    process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://discord.gg/gkneGrpzAn";
-
   return (
     <section
       id="community-plaza"
@@ -115,7 +113,7 @@ export function CommunityPlazaSection() {
 
             <div className="mt-8 border-t border-cloud-white/10 pt-5">
               <a
-                href={discordUrl}
+                href={DISCORD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="action-primary w-full justify-center gap-2 bg-[#5865F2] hover:bg-cloud-white hover:text-midnight-bg font-mono text-xs uppercase tracking-wider font-bold shadow-[0_0_25px_rgba(88,101,242,0.4)]"

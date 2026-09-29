@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowLeft, ArrowRight, SendHorizontal, X } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
-import { TEASER_CLOSE_EVENT } from "@/lib/media-preferences";
+import { INTRO_DONE_EVENT, TEASER_CLOSE_EVENT, isIntroDone } from "@/lib/media-preferences";
 import { RAZZ_GREETING, RAZZ_LAUNCHER_GREETING, RAZZ_REACT_EVENT, RAZZ_REACTIONS, type RazzReaction } from "@/lib/razz";
 import { QUICK_QUESTION_IDS, type CanonEntry, type CanonStatus } from "@/lib/razz-canon";
 import { EMPTY_CONTEXT, answerById, askRazz, contextFor, type RazzContext, type RazzResult } from "@/lib/razz-engine";
@@ -17,6 +17,13 @@ const GREETED_KEY = "rr.razz.greeted"; // sessionStorage: the launcher greeting 
 const SMALL_QUERY = "(max-width: 639px)";
 const MAX_QUESTION = 300;
 const AVOID_SELECTOR = "[data-razz-avoid]";
+// The greeting never sits on top of any control, form or element marked data-razz-clear
+// (the header, hero actions, the video control, the footer).
+const GREETING_CLEAR_SELECTOR =
+  "[data-razz-avoid], [data-razz-clear], a[href], button, input, select, textarea, summary, [role='tab']";
+const GREETING_DELAY_MS = 1200; // after the intro has finished and the page is usable
+const GREETING_LIFETIME_MS = 12000; // from first visible; paused while hovered or focused
+const GREETING_WAIT_MS = 20000; // longest it waits for a spot that covers nothing
 
 const STATUS_LABEL: Record<CanonStatus, string> = {
   confirmed: "Confirmed",
@@ -53,14 +60,17 @@ const quickEntries = QUICK_QUESTION_IDS.map((id) => answerById(id)).filter((entr
  * lib/razz-engine.ts. Nothing typed here leaves the visitor's device. Only the latest answer is
  * shown; the current topic is kept in memory for follow-ups.
  *
- * Razz also reacts once per session after the teaser, a solved Fraud and the King Wrongway reveal,
- * and steps aside whenever the launcher would overlap an element marked data-razz-avoid (forms).
+ * Razz also greets each browser session once, reacts once per session after the teaser, a solved
+ * Fraud and the King Wrongway reveal, and steps aside whenever the launcher would overlap an
+ * element marked data-razz-avoid (forms).
  */
 export function RazzGuide() {
   const drawerId = useId();
   const pathname = usePathname();
   const launcherRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const greetingRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [shown, setShown] = useState<Shown | null>(null);
   const [context, setContext] = useState<RazzContext>(EMPTY_CONTEXT);
@@ -72,25 +82,90 @@ export function RazzGuide() {
   const bubbleTimer = useRef(0);
 
   const [greeting, setGreeting] = useState(false);
+  // False until measured clear of every control; until then the bubble is invisible and unfocusable.
+  const [greetingClear, setGreetingClear] = useState(false);
+  const greetingTimer = useRef(0);
 
   useEffect(() => {
     setQuiet(readStore("local", QUIET_KEY) === "1");
   }, []);
 
-  // A one-line hello beside the launcher: after 1.5 s, gone after 7 s, once per browser session,
-  // never while the drawer is open or the launcher has stepped aside for a form.
+  // Razz's hello: a speech bubble above the launcher, once per browser session, shortly after the
+  // intro has finished. It never takes focus, and never shows while the drawer is open or the
+  // launcher has stepped aside for a form.
   useEffect(() => {
     if (readStore("local", QUIET_KEY) === "1" || readStore("session", GREETED_KEY) === "1") return;
-    const show = window.setTimeout(() => {
-      writeStore("session", GREETED_KEY, "1");
-      setGreeting(true);
-    }, 1500);
-    const hide = window.setTimeout(() => setGreeting(false), 1500 + 7000);
+    let delay = 0;
+    const start = () => {
+      window.removeEventListener(INTRO_DONE_EVENT, start);
+      delay = window.setTimeout(() => {
+        if (readStore("session", GREETED_KEY) === "1") return; // the visitor already opened Razz
+        writeStore("session", GREETED_KEY, "1");
+        setGreeting(true);
+      }, GREETING_DELAY_MS);
+    };
+    if (isIntroDone()) start();
+    else window.addEventListener(INTRO_DONE_EVENT, start);
     return () => {
-      window.clearTimeout(show);
-      window.clearTimeout(hide);
+      window.removeEventListener(INTRO_DONE_EVENT, start);
+      window.clearTimeout(delay);
     };
   }, []);
+
+  const holdGreeting = useCallback(() => window.clearTimeout(greetingTimer.current), []);
+  const releaseGreeting = useCallback((ms: number) => {
+    window.clearTimeout(greetingTimer.current);
+    greetingTimer.current = window.setTimeout(() => setGreeting(false), ms);
+  }, []);
+
+  // The lifetime starts once the bubble is actually visible: where it would cover a control (a
+  // tablet's hero buttons, say) it waits for a clear spot, and gives up if none appears in time.
+  const greetingSeen = useRef(false);
+  useEffect(() => {
+    if (!greeting) {
+      setGreetingClear(false);
+      greetingSeen.current = false;
+      return;
+    }
+    const giveUp = window.setTimeout(() => {
+      if (!greetingSeen.current) setGreeting(false);
+    }, GREETING_WAIT_MS);
+    return () => {
+      window.clearTimeout(giveUp);
+      window.clearTimeout(greetingTimer.current);
+    };
+  }, [greeting]);
+
+  useEffect(() => {
+    if (!greeting || !greetingClear || greetingSeen.current) return;
+    greetingSeen.current = true;
+    releaseGreeting(GREETING_LIFETIME_MS);
+  }, [greeting, greetingClear, releaseGreeting]);
+
+  /** Closing the greeting from inside it hands focus to the launcher, since the bubble disappears. */
+  const dismissGreeting = useCallback((restoreFocus: boolean) => {
+    setGreeting(false);
+    if (restoreFocus) launcherRef.current?.focus();
+  }, []);
+
+  const openFromGreeting = () => {
+    setGreeting(false);
+    setBubble(null);
+    setOpen(true);
+  };
+
+  // Escape dismisses the greeting, unless another dialog (the teaser, a viewer) owns the key.
+  useEffect(() => {
+    if (!greeting) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      const inside = Boolean(greetingRef.current?.contains(document.activeElement));
+      if (!inside && document.querySelector("dialog[open]")) return;
+      dismissGreeting(inside);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [greeting, dismissGreeting]);
 
   const react = useCallback((reaction: RazzReaction) => {
     if (readStore("local", QUIET_KEY) === "1") return;
@@ -135,6 +210,18 @@ export function RazzGuide() {
         return box.left < zone.right + gap && box.right > zone.left - gap && box.top < zone.bottom + gap && box.bottom > zone.top - gap;
       });
       setDocked(hit);
+
+      const bubble = greetingRef.current;
+      if (bubble) {
+        const box = bubble.getBoundingClientRect();
+        const covered = Array.from(document.querySelectorAll<HTMLElement>(GREETING_CLEAR_SELECTOR)).some((element) => {
+          if (rootRef.current?.contains(element)) return false;
+          const rect = element.getBoundingClientRect();
+          if (!rect.width || !rect.height) return false;
+          return rect.left < box.right && rect.right > box.left && rect.top < box.bottom && rect.bottom > box.top;
+        });
+        setGreetingClear(!covered);
+      }
     };
     const schedule = () => {
       if (!frame) frame = window.requestAnimationFrame(measure);
@@ -150,7 +237,7 @@ export function RazzGuide() {
       resize.disconnect();
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [pathname]);
+  }, [pathname, greeting]);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -262,27 +349,48 @@ export function RazzGuide() {
   const hideLauncher = docked && !open;
 
   return (
-    <div className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-end gap-3 sm:right-6">
+    <div ref={rootRef} className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-end gap-3 sm:right-6">
+      <p role="status" className="sr-only">
+        {greeting && greetingClear ? `Razz says: ${RAZZ_LAUNCHER_GREETING}` : ""}
+      </p>
+
       {greeting && !bubble && !open && !docked ? (
-        <div className="storybook pointer-events-auto relative max-w-[15rem] text-sm leading-snug">
-          <button
-            type="button"
-            onClick={() => {
-              setGreeting(false);
-              setOpen(true);
-            }}
-            className="block w-full px-4 py-3 pr-9 text-left"
-          >
+        <div
+          ref={greetingRef}
+          role="group"
+          aria-label="Greeting from Razz"
+          onMouseEnter={holdGreeting}
+          onMouseLeave={() => releaseGreeting(5000)}
+          onFocus={holdGreeting}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) releaseGreeting(5000);
+          }}
+          className={`razz-greeting storybook relative mb-1 w-[min(16rem,calc(100vw-2rem))] ${
+            greetingClear ? "razz-greeting-enter pointer-events-auto visible" : "invisible"
+          }`}
+        >
+          {/* The whole message opens Razz for pointer users; "Ask Razz" is the keyboard route. */}
+          <p onClick={openFromGreeting} className="cursor-pointer px-4 pt-3 text-[0.95rem] font-semibold leading-snug">
+            <span className="mb-1 block text-[0.68rem] font-bold uppercase tracking-[0.18em] text-wood">Razz</span>
             {RAZZ_LAUNCHER_GREETING}
-          </button>
-          <button
-            type="button"
-            onClick={() => setGreeting(false)}
-            aria-label="Dismiss greeting"
-            className="absolute right-1 top-1 flex h-7 w-7 items-center justify-center rounded-full text-ink-plum/70 hover:text-ink-plum"
-          >
-            <X className="h-3.5 w-3.5" aria-hidden="true" />
-          </button>
+          </p>
+          <div className="flex items-center justify-between pb-1.5 pl-2 pr-1.5 pt-1">
+            <button
+              type="button"
+              onClick={openFromGreeting}
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-sm px-2 text-sm font-bold text-wood hover:underline"
+            >
+              Ask Razz <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => dismissGreeting(true)}
+              aria-label="Close Razz's greeting"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-ink-plum/75 hover:bg-ink-plum/10 hover:text-ink-plum"
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
         </div>
       ) : null}
 
@@ -387,6 +495,7 @@ export function RazzGuide() {
           else {
             setBubble(null);
             setGreeting(false);
+            writeStore("session", GREETED_KEY, "1"); // already talking to Razz: no hello later
             setOpen(true);
           }
         }}

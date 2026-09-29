@@ -17,6 +17,7 @@ import {
   type UpdateKind,
   type UpdatePost,
 } from "@/lib/updates";
+import { DISCORD_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Updates & Announcements",
@@ -237,7 +238,7 @@ export default function UpdatesPage({ searchParams }: { searchParams?: { type?: 
             ))}
           </ol>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <a href={process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://discord.gg/gkneGrpzAn"} target="_blank" rel="noopener noreferrer" className="action-primary">
+            <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="action-primary">
               Get announcements on Discord <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <Link href="/devlog" className="action-secondary">

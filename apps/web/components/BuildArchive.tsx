@@ -2,14 +2,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { UnknownSpecimen } from "@/components/UnknownSpecimen";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { PRODUCTION_STAGES } from "@/lib/game-content";
 import { UPDATE_KINDS, formatUpdateDate, publishedUpdates } from "@/lib/updates";
-
-const STAGES = [
-  { label: "Foundation", state: "Canon, scope and art direction: now", done: false, current: true },
-  { label: "Prototype", state: "Crown Knight, one Fraud, one area", done: false, current: false },
-  { label: "Private playtest", state: "Not open yet", done: false, current: false },
-  { label: "Release 1.0", state: "A Sign of Trouble · no date yet", done: false, current: false },
-] as const;
 
 /**
  * Chapter 10 — the honest production record, what's current versus what's next (without
@@ -27,7 +21,7 @@ export function BuildArchive() {
         <p className="chapter-lede">Concept art is direction. A prototype is evidence. Only a tested build earns the word final.</p>
 
         <ol className="mt-12 grid gap-6 border-t border-cloud-white/15 pt-6 sm:grid-cols-4" aria-label="Production stages">
-          {STAGES.map((stage) => (
+          {PRODUCTION_STAGES.map((stage) => (
             <li key={stage.label} className="flex items-start gap-3">
               <span
                 className={`mt-1.5 h-3 w-3 flex-none rounded-full ${
