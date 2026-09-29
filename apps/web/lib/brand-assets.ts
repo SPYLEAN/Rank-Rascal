@@ -114,6 +114,10 @@ export const BRAND_ASSETS = {
     glitchGrove: "/brand/game/locations/glitch-grove-v1.png",
     kingWrongwayCitadel: "/brand/game/locations/king-wrongway-citadel-v1.png",
     skyBridges: "/brand/game/locations/sky-bridges-v1.png",
+    // Canonical atlas art for these three areas (owner-supplied 2026-09-29); they used map crops before.
+    riverPath: "/brand/game/locations/river-path-v1.webp",
+    crownRuins: "/brand/game/locations/crown-ruins-v1.webp",
+    wrongwayTerritory: "/brand/game/locations/wrongway-territory-v1.webp",
   },
 
   // Crownfall teaser derivatives. The 29 MB master never ships; see

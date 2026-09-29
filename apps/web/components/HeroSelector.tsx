@@ -35,6 +35,9 @@ const SCENE_NAMES: Record<SceneKey, string> = {
   glitchGrove: "Glitch Grove",
   kingWrongwayCitadel: "King Wrongway Citadel",
   skyBridges: "the Sky Bridges",
+  riverPath: "the River Path",
+  crownRuins: "the Crown Ruins",
+  wrongwayTerritory: "Wrongway Territory",
 };
 
 function sceneName(scene: SceneKey): string {

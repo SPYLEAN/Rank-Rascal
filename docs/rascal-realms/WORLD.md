@@ -10,18 +10,18 @@ On the website atlas each area also carries a `hotspot` (its position on the Sti
 
 | # | Area | Chapter role (spec) | Purpose (spec) | Website art |
 |---|---|---|---|---|
-| 1 | Starting Village | Act I | Onboarding, NPCs, first quests, basic merchants, peaceful introduction | Map detail |
+| 1 | Starting Village | Act I | Onboarding, NPCs, first quests, basic merchants, peaceful introduction | `starting-village-v1` |
 | 2 | Rascal Plaza | Act I (first objective: "Reach Rascal Plaza") | Main social hub: gathering, merchants, quest NPCs, pets, future guild and event hooks | `rascal-plaza-realm-v1` |
 | 3 | Stickerwood Forest | Acts I–II | Main exploration zone: paths, secrets, light combat, Frauds, pets, collectibles, caves | `mystery-forest-v1` |
-| 4 | River Path | Side content | Fishing, nature, side quests, atmosphere, secrets | Map detail |
+| 4 | River Path | Side content | Fishing, nature, side quests, atmosphere, secrets | `river-path-v1` |
 | 5 | Ancient Tree | Act III | Landmark visible from many areas; lore, scale, traversal, story progression | `ancient-tree-v1` |
 | 6 | Glitch Grove | Act IV | Increasing instability; distorted plants, Crown energy, harder enemies, advanced Frauds | `glitch-grove-v1` |
-| 7 | Crown Ruins | Act V | Relics, tougher enemies, major lore, stronger corruption; Overgrown Receipt mini-boss | Map detail |
+| 7 | Crown Ruins | Act V | Relics, tougher enemies, major lore, stronger corruption; Overgrown Receipt mini-boss | `crown-ruins-v1` |
 | 8 | Sky Bridges | Late chapter | Floating islands, bridges, waterfalls, vistas; traversal spectacle | `sky-bridges-v1` |
-| 9 | Wrongway Territory | Acts IV–VI | Contradictory signs, strange geometry, warped routes, boss foreshadowing | Map detail |
+| 9 | Wrongway Territory | Acts IV–VI | Contradictory signs, strange geometry, warped routes, boss foreshadowing | `wrongway-territory-v1` |
 | 10 | King Wrongway Citadel | Act VI | Final Chapter 1 environment; dark and hostile but still Stickerwood | `king-wrongway-citadel-v1` |
 
-"Map detail" means the atlas shows a zoomed crop of the approved key art around the hotspot rather than inventing new art.
+"Map detail" means the atlas shows a zoomed crop of the approved key art around the hotspot rather than inventing new art. Since 2026-09-29 every area has its own art (River Path, Crown Ruins and Wrongway Territory got owner-supplied images), so the map-detail fallback is unused.
 
 ## Authored detail (CONCEPT)
 

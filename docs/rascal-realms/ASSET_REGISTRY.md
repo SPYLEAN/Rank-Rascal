@@ -17,6 +17,9 @@ Twenty-four owner-supplied PNGs (`Downloads/website new changes/`) were preserve
 |---|---|---|
 | `hero 1–6.png` (1122×1402) | `brand/heroes/{crown-knight,glitchcaster,shadow-ranger,trickster,lorekeeper,badge-scout}.webp` (+ 720 px thumbs), about 290–360 KB each | Hero selector portrait, right-hand column |
 | `starting village.png` (1672×941) | `brand/game/locations/starting-village-v1.webp`, 551 KB | **The one canonical Starting Village image**: atlas dossier and the homepage "Current · Release 1.0" card. No other Starting Village asset exists in the repo |
+| `river path.webp` (1672×941) | `brand/game/locations/river-path-v1.webp`, 417 KB | River Path atlas art (owner-supplied 2026-09-29; replaced the map-detail crop) |
+| `crown ruins.webp` (1672×941) | `brand/game/locations/crown-ruins-v1.webp`, 402 KB | Crown Ruins atlas art (owner-supplied 2026-09-29; replaced the map-detail crop). Chapter 1 concept, not Release 1.0 |
+| `wrongway territory.webp` (1672×941) | `brand/game/locations/wrongway-territory-v1.webp`, 403 KB | Wrongway Territory atlas art (owner-supplied 2026-09-29; replaced the map-detail crop). Chapter 1 concept, not Release 1.0 |
 | `high ress map.png` (1672×941) | `brand/game/stickerwood-map-v2.webp`, 566 KB | World atlas map and map-detail crops (replaces the key art, which had Razz covering the left side). Hotspots re-placed. `stickerwood-key-art-v1.png` stays for OG/share images |
 | `crown sprout`, `lost sticker`, `glitch slime`, `overgrown receipt`, `king wrongway` | `brand/concepts/enemies/*`, `brand/concepts/king-wrongway/king-wrongway-sheet` | Archive 01 and 10 |
 | `pet 1–5.png` | `brand/concepts/pets/*` | Archive 02 (companion concepts) |

@@ -336,7 +336,7 @@ export const WORLD_LOCATIONS = [
     changes: "A strange catch here points upstream, toward the Ancient Tree.",
     status: "planned" as LoreStatus,
     hotspot: { x: 42, y: 50 },
-    image: null,
+    image: "riverPath",
   },
   {
     number: "05",
@@ -390,7 +390,7 @@ export const WORLD_LOCATIONS = [
     changes: "Beating the Overgrown Receipt opens the way up to the Sky Bridges.",
     status: "planned" as LoreStatus,
     hotspot: { x: 40, y: 15 },
-    image: null,
+    image: "crownRuins",
   },
   {
     number: "08",
@@ -426,7 +426,7 @@ export const WORLD_LOCATIONS = [
     changes: "Every road here bends toward the Citadel.",
     status: "planned" as LoreStatus,
     hotspot: { x: 80, y: 55 },
-    image: null,
+    image: "wrongwayTerritory",
   },
   {
     number: "10",

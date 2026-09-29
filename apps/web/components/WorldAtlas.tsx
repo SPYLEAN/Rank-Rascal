@@ -26,15 +26,6 @@ function routePath(points: readonly (readonly [number, number])[]): string {
 
 const ROUTE = routePath(POINTS);
 
-const DETAIL_ZOOM = 4;
-
-/** background-position that centres a DETAIL_ZOOM×-scaled copy of the key art on the hotspot. */
-function detailPosition(x: number, y: number): string {
-  const clamp = (v: number) => Math.min(100, Math.max(0, v));
-  const axis = (v: number) => clamp((((DETAIL_ZOOM * v) / 100 - 0.5) / (DETAIL_ZOOM - 1)) * 100);
-  return `${axis(x)}% ${axis(y)}%`;
-}
-
 /**
  * Chapter 06 — Stickerwood as one continuous chapter, not a level-select screen. The route
  * connects every area in story order; choosing a place lights its stretch of road, dims the
@@ -135,30 +126,16 @@ export function WorldAtlas() {
       <div className="mx-auto mt-12 grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
         <figure key={location.number} className="scene-in">
           <div className="paper-frame relative aspect-[16/9] overflow-hidden">
-            {location.image ? (
-              <Image
-                src={BRAND_ASSETS.locations[location.image as LocationImageKey]}
-                alt={`Concept illustration of ${location.name}`}
-                fill
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="object-cover"
-              />
-            ) : (
-              <div
-                role="img"
-                aria-label={`Detail of ${location.name} on the Stickerwood concept map`}
-                className="absolute inset-0 bg-no-repeat"
-                style={{
-                  backgroundImage: `url(${BRAND_ASSETS.game.stickerwoodMap})`,
-                  backgroundSize: `${DETAIL_ZOOM * 100}% ${DETAIL_ZOOM * 100}%`,
-                  backgroundPosition: detailPosition(location.hotspot.x, location.hotspot.y),
-                }}
-              />
-            )}
+            {/* Every area has its own 16:9 art, so cover fills the 16:9 frame with no visible crop. */}
+            <Image
+              src={BRAND_ASSETS.locations[location.image as LocationImageKey]}
+              alt={`Concept illustration of ${location.name}`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 45vw"
+              className="object-cover object-center"
+            />
           </div>
-          <figcaption className="mt-2 text-xs text-cloud-white/60">
-            {location.image ? "Concept art" : "Detail from the concept map"} · not in-game
-          </figcaption>
+          <figcaption className="mt-2 text-xs text-cloud-white/60">Concept art · not in-game</figcaption>
         </figure>
 
         <div aria-live="polite">
