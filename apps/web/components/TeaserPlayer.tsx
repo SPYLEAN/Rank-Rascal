@@ -2,28 +2,13 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { ListVideo, Pause, Play, RotateCcw, Volume2, VolumeX, X } from "lucide-react";
-import { BRAND_ASSETS } from "@/lib/brand-assets";
 import {
   TEASER_CLOSE_EVENT,
   TEASER_OPEN_EVENT,
   pickVideoSource,
   prefersReducedMotion,
 } from "@/lib/media-preferences";
-
-const { media } = BRAND_ASSETS;
-
-/** Text alternative for the teaser's visuals; source of truth is TEASER_STORYBOARD.md. */
-const SCENES = [
-  { at: 0, label: "The Chaos Crown fractures in the dark, spilling purple light." },
-  { at: 2.2, label: "Stickerwood at golden hour: a windmill village, floating islands and waterfalls." },
-  { at: 5.6, label: "A palace of the old kingdom, purple crystals pushing through its stone." },
-  { at: 8.3, label: "A forest path and a signpost pointing the way." },
-  { at: 11.2, label: "Crown corruption shatters the view into drifting shards." },
-  { at: 13.9, label: "Razz and Stickerwood's creatures peer out of the undergrowth." },
-  { at: 16.6, label: "A corrupted citadel looms in the dark." },
-  { at: 20.0, label: "Open sky over the floating realm." },
-  { at: 23.9, label: "Title card: Rascal Realms: Crownfall. Coming soon, only on Roblox." },
-] as const;
+import { TRAILERS, type Trailer } from "@/lib/trailers";
 
 function formatTime(seconds: number): string {
   if (!Number.isFinite(seconds)) return "0:00";
@@ -31,7 +16,7 @@ function formatTime(seconds: number): string {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
-type Props = { className?: string; children: ReactNode };
+type Props = { className?: string; children: ReactNode; trailer?: Trailer };
 
 /**
  * "Watch the full teaser": a theater-style modal player.
@@ -41,7 +26,8 @@ type Props = { className?: string; children: ReactNode };
  * - Native <dialog>.showModal() makes the page behind it inert (focus stays inside) and
  *   maps Escape to close; focus returns to the trigger.
  */
-export function TeaserPlayer({ className, children }: Props) {
+export function TeaserPlayer({ className, children, trailer = TRAILERS.crownfallTeaser }: Props) {
+  const kind = trailer.kind;
   const dialogRef = useRef<HTMLDialogElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -75,7 +61,7 @@ export function TeaserPlayer({ className, children }: Props) {
     const video = videoRef.current;
     if (!dialog || !video) return;
     if (!video.getAttribute("src")) {
-      video.src = pickVideoSource(video, { webm: media.teaserWebm, mp4: media.teaserMp4 });
+      video.src = pickVideoSource(video, { webm: trailer.webm, mp4: trailer.mp4 });
     }
     dialog.showModal();
     setOpen(true);
@@ -206,9 +192,9 @@ export function TeaserPlayer({ className, children }: Props) {
         <div className="teaser-stage">
           <div className="flex items-center justify-between gap-4 px-1 pb-3">
             <h2 id={titleId} className="font-display text-sm font-bold uppercase tracking-[0.18em] text-cloud-white/80">
-              Rascal Realms: Crownfall <span className="text-cloud-white/45">· Teaser</span>
+              {trailer.title} <span className="text-cloud-white/60">· {kind === "teaser" ? "Teaser" : "Trailer"}</span>
             </h2>
-            <button type="button" onClick={closePlayer} className={controlClass} aria-label="Close teaser">
+            <button type="button" onClick={closePlayer} className={controlClass} aria-label={`Close ${kind}`}>
               <X className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
@@ -217,7 +203,7 @@ export function TeaserPlayer({ className, children }: Props) {
             <video
               ref={videoRef}
               className="h-full w-full cursor-pointer object-contain"
-              poster={hasOpened ? media.teaserPoster : undefined}
+              poster={hasOpened ? trailer.poster : undefined}
               playsInline
               preload="none"
               disablePictureInPicture
@@ -243,7 +229,7 @@ export function TeaserPlayer({ className, children }: Props) {
                 type="button"
                 onClick={ended ? replay : togglePlay}
                 className="absolute inset-0 m-auto flex h-20 w-20 items-center justify-center rounded-full border border-cloud-white/40 bg-black/55 text-cloud-white backdrop-blur-sm transition hover:border-cloud-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-toxic-lime"
-                aria-label={ended ? "Replay teaser" : "Play teaser"}
+                aria-label={ended ? `Replay ${kind}` : `Play ${kind}`}
               >
                 {ended ? <RotateCcw className="h-8 w-8" aria-hidden="true" /> : <Play className="h-8 w-8 translate-x-0.5" aria-hidden="true" />}
               </button>
@@ -251,10 +237,10 @@ export function TeaserPlayer({ className, children }: Props) {
           </div>
 
           <div className="flex flex-wrap items-center gap-1 pt-3 sm:gap-2">
-            <button type="button" onClick={togglePlay} className={controlClass} aria-label={playing ? "Pause teaser" : "Play teaser"}>
+            <button type="button" onClick={togglePlay} className={controlClass} aria-label={playing ? `Pause ${kind}` : `Play ${kind}`}>
               {playing ? <Pause className="h-5 w-5" aria-hidden="true" /> : <Play className="h-5 w-5" aria-hidden="true" />}
             </button>
-            <button type="button" onClick={replay} className={controlClass} aria-label="Restart teaser">
+            <button type="button" onClick={replay} className={controlClass} aria-label={`Restart ${kind}`}>
               <RotateCcw className="h-5 w-5" aria-hidden="true" />
             </button>
 
@@ -291,9 +277,9 @@ export function TeaserPlayer({ className, children }: Props) {
           </div>
 
           <div id={notesId} hidden={!showNotes} className="mt-3 max-h-[32vh] overflow-y-auto border-t border-cloud-white/10 pt-3">
-            <p className="px-1 pb-2 text-xs text-cloud-white/55">A written description of the teaser. Select a moment to jump to it.</p>
+            <p className="px-1 pb-2 text-xs text-cloud-white/65">A written description of the {kind}. Select a moment to jump to it.</p>
             <ol>
-              {SCENES.map((scene) => (
+              {trailer.scenes.map((scene) => (
                 <li key={scene.at}>
                   <button
                     type="button"
@@ -308,7 +294,7 @@ export function TeaserPlayer({ className, children }: Props) {
             </ol>
           </div>
 
-          <p className="px-1 pt-3 text-xs text-cloud-white/45">Pre-production cinematic art. Not in-game footage.</p>
+          <p className="px-1 pt-3 text-xs text-cloud-white/65">{trailer.note}</p>
         </div>
       </dialog>
     </>

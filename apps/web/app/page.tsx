@@ -10,6 +10,10 @@ import { FutureRealmsTeaser } from "@/components/FutureRealmsTeaser";
 import { BuildArchive } from "@/components/BuildArchive";
 import { JoinRascalLabs } from "@/components/JoinRascalLabs";
 
+// Re-render at most every five minutes so scheduled announcements reach "Latest from the realm"
+// without a redeploy, while the page itself stays cached.
+export const revalidate = 300;
+
 /**
  * The homepage is one continuous journey through Stickerwood:
  *  01 cinematic hero → 02 understand the game in Stickerwood → 03 why the world lies → 04 choose your hero →

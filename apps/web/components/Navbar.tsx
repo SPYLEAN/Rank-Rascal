@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: "/#heroes", label: "Heroes" },
   { href: "/#investigate", label: "Investigate" },
   { href: "/#explore-stickerwood", label: "World" },
+  { href: "/updates", label: "Updates" },
   { href: "/community", label: "Community" },
 ] as const;
 
@@ -39,7 +40,7 @@ export const Navbar: React.FC = () => {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-4 lg:flex xl:gap-7" aria-label="Primary navigation">
           {NAV_ITEMS.map(({ href, label }) => {
             const isActive = pathname === href;
             return (
