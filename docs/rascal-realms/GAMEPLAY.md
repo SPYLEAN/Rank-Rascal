@@ -1,5 +1,7 @@
 # Gameplay Concepts
 
+> **Release 1 update (2026-09-29).** [`FIRST_RELEASE.md`](FIRST_RELEASE.md) now defines the Release 1 loops (§5), quest types (§24), progression (§23) and currencies (§21). It supersedes the older concepts below where they conflict. The website now shows: the primary loop *Explore → Notice something wrong → Investigate → Expose a Fraud → Fight / Solve / Traverse → Earn loot → Progress → Discover a larger mystery*; quest types Main Story, Mystery Cases, Side Quests, Exploration, Pets & Fishing, Hidden Quests; progression through hero level, abilities, weapons and gear, relics, pet bonding and exploration; and exactly three currencies: **Gold, Crown Shards, gems/crystals**. *Bounty Gold*, *Guild Credits*, *Class Mastery* and in-game *Badges* are retired from the website. The full guild system is **DEFERRED** (foreshadowed in Rascal Plaza only).
+
 Nothing in this document is implemented Roblox gameplay. It documents the design intent behind the website's Quest Journal and progression/economy sections, all labeled CONCEPT or PLANNED on the page itself.
 
 ## Core loop — IN DEVELOPMENT (already canon, from `CORE_LOOP`)

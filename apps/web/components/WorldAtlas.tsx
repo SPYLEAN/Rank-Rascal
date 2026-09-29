@@ -2,38 +2,64 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
-import { WORLD_LOCATIONS, type LoreStatus } from "@/lib/game-content";
-
-const STATUS: Record<LoreStatus, string> = {
-  "in-development": "In development",
-  concept: "Concept",
-  planned: "Planned",
-};
+import { WORLD_LOCATIONS } from "@/lib/game-content";
 
 type LocationImageKey = keyof typeof BRAND_ASSETS.locations;
 
+const COUNT = WORLD_LOCATIONS.length;
+// The key art is 1672×941; the route is drawn in that same coordinate space.
+const W = 1672;
+const H = 941;
+const POINTS = WORLD_LOCATIONS.map((item) => [(item.hotspot.x / 100) * W, (item.hotspot.y / 100) * H] as const);
+
+/** A gentle curve through every area in chapter order, so the realm reads as one road. */
+function routePath(points: readonly (readonly [number, number])[]): string {
+  return points.reduce((d, [x, y], i) => {
+    if (i === 0) return `M${x} ${y}`;
+    const [px, py] = points[i - 1];
+    const mx = (px + x) / 2;
+    return `${d} Q${mx} ${py} ${mx} ${(py + y) / 2} T${x} ${y}`;
+  }, "");
+}
+
+const ROUTE = routePath(POINTS);
+
+const DETAIL_ZOOM = 4;
+
+/** background-position that centres a DETAIL_ZOOM×-scaled copy of the key art on the hotspot. */
+function detailPosition(x: number, y: number): string {
+  const clamp = (v: number) => Math.min(100, Math.max(0, v));
+  const axis = (v: number) => clamp((((DETAIL_ZOOM * v) / 100 - 0.5) / (DETAIL_ZOOM - 1)) * 100);
+  return `${axis(x)}% ${axis(y)}%`;
+}
+
 /**
- * Chapter 06 — the illustrated map dominates. Choosing a place moves a soft spotlight onto it
- * (the rest of the realm dims) and opens its dossier below. The numbered list mirrors the map
- * for keyboard and small-screen use.
+ * Chapter 06 — Stickerwood as one continuous chapter, not a level-select screen. The route
+ * connects every area in story order; choosing a place lights its stretch of road, dims the
+ * rest of the realm and explains what progress there changes further along.
  */
 export function WorldAtlas() {
   const [active, setActive] = useState(0);
   const location = WORLD_LOCATIONS[active];
-  // The spotlight layer is 300% of the stage; translate it so its centre sits on the hotspot.
+  const next = active < COUNT - 1 ? WORLD_LOCATIONS[active + 1] : null;
   const spot = `translate(${(location.hotspot.x - 150) / 3}%, ${(location.hotspot.y - 150) / 3}%)`;
+  // Highlight the road walked so far.
+  const walked = routePath(POINTS.slice(0, active + 1));
 
   return (
     <section id="explore-stickerwood" aria-labelledby="atlas-title" className="scroll-mt-20 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <p className="section-kicker">06 · Explore the realm</p>
-        <h2 id="atlas-title" className="chapter-title mt-4 max-w-4xl">Eleven places. One argument.</h2>
-        <p className="chapter-lede">Stickerwood is one connected world, not a level-select screen. Choose a place to see what it&apos;s hiding.</p>
+        <h2 id="atlas-title" className="chapter-title mt-4 max-w-4xl">Ten areas. One road that keeps lying.</h2>
+        <p className="chapter-lede">
+          Stickerwood is one connected realm. Every truth you prove opens the way to the next place, from a festival village to the King&apos;s citadel.
+        </p>
       </div>
 
       <div className="mx-auto mt-12 max-w-[92rem] sm:px-8">
-        <div className="relative aspect-[1672/941] w-full overflow-hidden sm:rounded-sm">
+        <div className="paper-frame relative aspect-[1672/941] w-full overflow-hidden">
           <Image
             src={BRAND_ASSETS.game.stickerwoodKeyArt}
             alt="Illustrated concept map of Stickerwood, from Starting Village up to King Wrongway Citadel"
@@ -42,8 +68,13 @@ export function WorldAtlas() {
             className="object-cover"
           />
           <div className="atlas-spotlight" style={{ transform: spot }} aria-hidden="true" />
+          <svg viewBox={`0 0 ${W} ${H}`} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
+            <path d={ROUTE} fill="none" stroke="rgba(243,229,200,.55)" strokeWidth="5" strokeDasharray="4 16" strokeLinecap="round" />
+            <path key={active} d={walked} fill="none" stroke="#D5A84B" strokeWidth="6" strokeLinecap="round" className="atlas-route" />
+          </svg>
           {WORLD_LOCATIONS.map((item, index) => {
             const on = index === active;
+            const visited = index < active;
             return (
               <button
                 key={item.number}
@@ -58,10 +89,12 @@ export function WorldAtlas() {
                   className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-[11px] font-bold transition sm:h-9 sm:w-9 sm:text-xs ${
                     on
                       ? "scale-110 border-paper-cream bg-antique-gold text-ink-plum shadow-[0_0_24px_rgba(213,168,75,.7)]"
-                      : "border-paper-cream/80 bg-ink-plum/75 text-paper-cream group-hover:scale-110 group-hover:bg-ink-plum group-focus-visible:scale-110"
+                      : visited
+                        ? "border-antique-gold bg-ink-plum/85 text-antique-gold group-hover:scale-110"
+                        : "border-paper-cream/80 bg-ink-plum/75 text-paper-cream group-hover:scale-110 group-hover:bg-ink-plum group-focus-visible:scale-110"
                   }`}
                 >
-                  {item.number}
+                  {Number(item.number)}
                 </span>
                 <span
                   className={`pointer-events-none mt-1 hidden whitespace-nowrap rounded-sm bg-ink-plum/85 px-2 py-0.5 text-xs font-semibold text-paper-cream transition lg:block ${
@@ -74,10 +107,10 @@ export function WorldAtlas() {
               </button>
             );
           })}
-          <p className="absolute bottom-2 right-3 text-[10px] text-paper-cream/70">Concept map · final geography in production</p>
+          <p className="absolute bottom-2 right-3 rounded-sm bg-ink-plum/70 px-2 py-0.5 text-[10px] text-paper-cream/90">Concept map · final geography in production</p>
         </div>
 
-        <ol className="no-scrollbar flex gap-1 overflow-x-auto px-5 pt-4 sm:px-0" aria-label="All eleven locations">
+        <ol className="no-scrollbar flex gap-1 overflow-x-auto px-5 pt-4 sm:px-0" aria-label="All ten areas in chapter order">
           {WORLD_LOCATIONS.map((item, index) => (
             <li key={item.number} className="flex-none">
               <button
@@ -85,10 +118,10 @@ export function WorldAtlas() {
                 onClick={() => setActive(index)}
                 aria-pressed={index === active}
                 className={`min-h-11 whitespace-nowrap border-b-2 px-3 text-sm transition ${
-                  index === active ? "border-antique-gold font-semibold text-cloud-white" : "border-transparent text-cloud-white/60 hover:text-cloud-white"
+                  index === active ? "border-antique-gold font-semibold text-cloud-white" : "border-transparent text-cloud-white/65 hover:text-cloud-white"
                 }`}
               >
-                <span className="mr-1.5 text-cloud-white/40">{item.number}</span>
+                <span className="mr-1.5 text-cloud-white/45">{Number(item.number)}</span>
                 {item.name}
               </button>
             </li>
@@ -96,57 +129,94 @@ export function WorldAtlas() {
         </ol>
       </div>
 
-      <div className="mx-auto mt-12 grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]" aria-live="polite">
-        {location.image ? (
-          <div key={location.image} className="scene-in relative aspect-[16/9] overflow-hidden rounded-sm">
-            <Image
-              src={BRAND_ASSETS.locations[location.image as LocationImageKey]}
-              alt={`Concept illustration of ${location.name}`}
-              fill
-              sizes="(max-width: 1024px) 100vw, 45vw"
-              className="object-cover"
-            />
-            <p className="absolute bottom-2 left-3 text-[10px] text-paper-cream/80">Concept art</p>
+      <div className="mx-auto mt-12 grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+        <figure key={location.number} className="scene-in">
+          <div className="paper-frame relative aspect-[16/9] overflow-hidden">
+            {location.image ? (
+              <Image
+                src={BRAND_ASSETS.locations[location.image as LocationImageKey]}
+                alt={`Concept illustration of ${location.name}`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover"
+              />
+            ) : (
+              <div
+                role="img"
+                aria-label={`Detail of ${location.name} on the Stickerwood concept map`}
+                className="absolute inset-0 bg-no-repeat"
+                style={{
+                  backgroundImage: `url(${BRAND_ASSETS.game.stickerwoodKeyArt})`,
+                  backgroundSize: `${DETAIL_ZOOM * 100}% ${DETAIL_ZOOM * 100}%`,
+                  backgroundPosition: detailPosition(location.hotspot.x, location.hotspot.y),
+                }}
+              />
+            )}
           </div>
-        ) : (
-          <div className="hidden lg:block" />
-        )}
+          <figcaption className="mt-2 text-xs text-cloud-white/60">
+            {location.image ? "Concept art" : "Detail from the concept map"} · not in-game
+          </figcaption>
+        </figure>
 
-        <div>
-          <p className="text-sm text-cloud-white/55">
-            Location {location.number} · {STATUS[location.status]}
+        <div aria-live="polite">
+          <p className="text-sm text-cloud-white/65">
+            Area {Number(location.number)} of {COUNT} · {location.chapterRole}
           </p>
           <h3 className="mt-2 font-display text-3xl font-extrabold text-cloud-white sm:text-4xl">{location.name}</h3>
-          <p className="mt-1 text-lg italic text-paper-cream/85">{location.tagline}</p>
-          <p className="mt-4 leading-relaxed text-cloud-white/80">{location.description}</p>
+          <p className="mt-1 text-lg italic text-paper-cream/90">{location.tagline}</p>
+          <p className="mt-4 leading-relaxed text-cloud-white/85">{location.description}</p>
 
           <dl className="mt-6 grid gap-x-8 gap-y-5 text-sm sm:grid-cols-2">
             <div>
               <dt className="section-kicker">Mysteries</dt>
-              <dd className="mt-1.5 space-y-1 text-cloud-white/80">
+              <dd className="mt-1.5 space-y-1 text-cloud-white/85">
                 {location.mysteries.map((item) => <span key={item} className="block">{item}</span>)}
               </dd>
             </div>
             <div>
               <dt className="section-kicker">Threat</dt>
-              <dd className="mt-1.5 text-cloud-white/80">{location.threats}</dd>
+              <dd className="mt-1.5 text-cloud-white/85">{location.threats}</dd>
             </div>
             <div>
               <dt className="section-kicker">Found here</dt>
-              <dd className="mt-1.5 space-y-1 text-cloud-white/80">
-                {location.discoveries.length > 0
-                  ? location.discoveries.map((item) => <span key={item} className="block">{item}</span>)
-                  : <span className="block">Nothing yet. It&apos;s sealed.</span>}
+              <dd className="mt-1.5 space-y-1 text-cloud-white/85">
+                {location.discoveries.map((item) => <span key={item} className="block">{item}</span>)}
               </dd>
             </div>
             <div>
               <dt className="section-kicker">Who you&apos;ll meet</dt>
-              <dd className="mt-1.5 space-y-1 text-cloud-white/80">
+              <dd className="mt-1.5 space-y-1 text-cloud-white/85">
                 {location.notableCharacters.map((name) => <span key={name} className="block">{name}</span>)}
               </dd>
             </div>
           </dl>
-          <p className="mt-5 text-sm text-cloud-white/55">Quest styles: {location.questStyles}</p>
+
+          <div className="mt-7 border-l-2 border-antique-gold pl-4">
+            <p className="section-kicker">What this changes</p>
+            <p className="mt-1.5 text-cloud-white/90">{location.changes}</p>
+          </div>
+
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setActive(active - 1)}
+              disabled={active === 0}
+              aria-label="Previous area"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-cloud-white/30 text-cloud-white transition hover:border-antique-gold disabled:opacity-35"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            </button>
+            {next ? (
+              <button type="button" onClick={() => setActive(active + 1)} className="text-link min-h-11">
+                Follow the road to {next.name} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            ) : (
+              <a href="#king-wrongway" className="text-link min-h-11">
+                Meet the King <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            )}
+          </div>
+          <p className="mt-4 text-xs text-cloud-white/60">Release 1 area · pre-production. Quest styles: {location.questStyles}</p>
         </div>
       </div>
     </section>

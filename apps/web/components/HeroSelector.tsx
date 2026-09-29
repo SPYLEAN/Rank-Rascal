@@ -4,15 +4,9 @@ import { useId, useRef, useState, type KeyboardEvent, type TouchEvent } from "re
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
-import { PLAYER_ROLES, WORLD_LOCATIONS, type LoreStatus } from "@/lib/game-content";
+import { PLAYER_ROLES } from "@/lib/game-content";
 
 type SceneKey = keyof typeof BRAND_ASSETS.locations;
-
-const STATUS: Record<LoreStatus, string> = {
-  "in-development": "In development",
-  concept: "Concept",
-  planned: "Planned",
-};
 
 /** Canon accents are for light and atmosphere; these lighter variants keep text at ≥4.5:1. */
 const READABLE_ACCENT: Record<string, string> = {
@@ -21,8 +15,19 @@ const READABLE_ACCENT: Record<string, string> = {
   "#E632A9": "#FF7CC8",
 };
 
+const SCENE_NAMES: Record<SceneKey, string> = {
+  stickerwoodHeartwood: "the Heartwood",
+  mysteryForest: "Stickerwood Forest",
+  ancientTree: "the Ancient Tree",
+  rascalPlazaRealm: "Rascal Plaza",
+  hiddenCove: "a hidden cove",
+  glitchGrove: "Glitch Grove",
+  kingWrongwayCitadel: "King Wrongway Citadel",
+  skyBridges: "the Sky Bridges",
+};
+
 function sceneName(scene: SceneKey): string {
-  return WORLD_LOCATIONS.find((location) => location.image === scene)?.name ?? "Stickerwood";
+  return SCENE_NAMES[scene] ?? "Stickerwood";
 }
 
 /**
@@ -106,8 +111,15 @@ export function HeroSelector() {
         <h2 id="heroes-title" className="sr-only">Choose your hero</h2>
 
         <div id={`${baseId}-panel`} role="tabpanel" aria-labelledby={`${baseId}-tab-${index}`} className="mt-6 max-w-3xl">
-          <p key={`${hero.name}-role`} className="scene-in text-sm font-semibold uppercase tracking-[0.2em]" style={{ color: READABLE_ACCENT[hero.accent] ?? hero.accent }}>
+          <p key={`${hero.name}-role`} className="scene-in flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold uppercase tracking-[0.2em]" style={{ color: READABLE_ACCENT[hero.accent] ?? hero.accent }}>
             {hero.role}
+            <span
+              className={`rounded-sm px-2 py-0.5 text-[0.68rem] tracking-[0.14em] ${
+                hero.release === "launch" ? "bg-antique-gold text-ink-plum" : "border border-paper-cream/40 text-paper-cream/90"
+              }`}
+            >
+              {hero.releaseNote}
+            </span>
           </p>
           <h3 key={hero.name} className="scene-in mt-3 font-display text-[clamp(3.25rem,10vw,8.5rem)] font-extrabold uppercase leading-[.85] tracking-[-0.04em] text-cloud-white">
             {hero.name}
@@ -158,8 +170,8 @@ export function HeroSelector() {
             ))}
           </div>
           <div className="flex items-center gap-4">
-            <p className="hidden text-xs text-cloud-white/55 md:block">
-              {STATUS[hero.status]} · Scene: {sceneName(scene)}, concept art
+            <p className="hidden text-xs text-cloud-white/65 md:block">
+              Scene: {sceneName(scene)}, concept art. No final models yet.
             </p>
             <button type="button" onClick={() => select(index - 1)} aria-label="Previous hero" className="flex h-11 w-11 items-center justify-center rounded-full border border-cloud-white/30 text-cloud-white transition hover:border-antique-gold">
               <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -169,8 +181,11 @@ export function HeroSelector() {
             </button>
           </div>
         </div>
-        <p className="mt-3 text-xs text-cloud-white/55 md:hidden">
-          {STATUS[hero.status]} · Scene: {sceneName(scene)}, concept art
+        <p className="mt-3 text-xs text-cloud-white/65 md:hidden">
+          Scene: {sceneName(scene)}, concept art. No final models yet.
+        </p>
+        <p className="mt-2 text-xs text-cloud-white/65">
+          Release 1 launches with three heroes. Trickster, Lorekeeper and Badge Scout arrive in later updates.
         </p>
       </div>
     </section>

@@ -20,9 +20,14 @@ Rank Rascal is not being deleted or hidden. It is the prior product this team sh
 
 Status: **CANON**. Earlier fox-based Razz exploration is **RETIRED** — see `game-content.ts` devlog entry `razz-canonical` and `Rascal_Realms_Preproduction_Pack_v1.0.0/CHANGELOG.md`, which explicitly discards it. No fox assets or fox-named components exist anywhere in `apps/web`; nothing further to remove.
 
-## Playable heroes (6)
+## Release 1 scope — LOCKED
 
-Crown Knight, Glitchcaster, Shadow Ranger, Trickster — **IN DEVELOPMENT** (already in `game-content.ts`, described in written form on `/game`, concept art exists). Lorekeeper, Badge Scout — **CONCEPT** (concept art exists in the asset pack; full ability/lore text authored for this pass in `HEROES.md`). See `HEROES.md` for full roster.
+[`FIRST_RELEASE.md`](FIRST_RELEASE.md) is the canonical working scope for Release 1, **Chapter 1: The Sign That Lied**, and supersedes anything in this folder that conflicts with it. Summary: one realm (Stickerwood), ten major areas, three launch heroes, Razz as a non-playable companion, Crown Sprout / Glitch Slime / Lost Sticker enemies, the Overgrown Receipt mini-boss, King Wrongway (BOSS-001), about four pets, a small fishing system, Gold / Crown Shards / gems, co-op and reliable saving. Fairness rule, verbatim: *"The world may deceive the player, but the game itself does not cheat."* The project is in pre-production (Phase 1: Foundation).
+
+## Playable heroes (6 canon, 3 at launch)
+
+Release 1 launch heroes: Crown Knight (Relic Sword + Royal Shield), Glitchcaster (Fracture Staff), Shadow Ranger (Whisper Bow). **LOCKED** for Release 1, **PLANNED** as builds.
+Future hero updates: Trickster, Lorekeeper, Badge Scout. **DEFERRED** beyond Release 1 (canon heroes, not cut). See `HEROES.md`.
 
 ## World locations (11)
 

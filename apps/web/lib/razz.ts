@@ -21,7 +21,7 @@ export const RAZZ_QUESTIONS: readonly RazzAnswer[] = [
     id: "stickerwood",
     question: "What is Stickerwood?",
     answer:
-      "Episode 1's realm: eleven connected places, from Starting Village up to the sealed King Wrongway Citadel. Everything looks friendly. Most of it is lying.",
+      "Chapter 1's realm: ten connected areas, from Starting Village and Rascal Plaza all the way to King Wrongway's Citadel. Everything looks friendly. Most of it is lying.",
     link: { label: "Open the atlas", href: "/#explore-stickerwood" },
   },
   {
@@ -35,22 +35,22 @@ export const RAZZ_QUESTIONS: readonly RazzAnswer[] = [
     id: "heroes",
     question: "Which hero should I pick?",
     answer:
-      "Like reading evidence? Lorekeeper or Shadow Ranger. Like breaking rules? Trickster or Glitchcaster. Like protecting people? Crown Knight. Like finding secrets? Badge Scout. There's no wrong pick. I'd pick me, but I'm not playable.",
-    link: { label: "Meet all six", href: "/#heroes" },
+      "Release 1 launches with three. Crown Knight if you like standing in front and blocking things. Glitchcaster if you like ranged magic and big Crown-energy explosions. Shadow Ranger if you like precision, speed and noticing footprints. Trickster, Lorekeeper and Badge Scout come in later updates. I'd pick me, but I'm not playable.",
+    link: { label: "Meet the heroes", href: "/#heroes" },
   },
   {
     id: "wrongway",
     question: "Who is King Wrongway?",
     answer:
-      "Stickerwood's last ruler. He used the Crown to make one 'safe' version of reality, and now his final command deletes any road that disagrees with it. He isn't a cartoon villain. That's what makes him dangerous.",
+      "Chapter 1's boss, waiting in his Citadel at the end of Stickerwood. His whole thing is misdirection: fake bridges, lying signs, false clones. He isn't a cartoon villain, which is what makes him dangerous. You'll always have enough evidence to find the truth. The game doesn't cheat, even when he does.",
     link: { label: "Face him", href: "/#king-wrongway" },
   },
   {
     id: "status",
     question: "Can I play it yet?",
     answer:
-      "Not yet, and I won't pretend otherwise. Rascal Realms: Crownfall is in pre-production. There is no playable build and no release date. The art you see is concept work; the devlog says exactly what's real.",
-    link: { label: "Read the devlog", href: "/devlog" },
+      "Not yet, and I won't pretend otherwise. Rascal Realms: Crownfall is in pre-production. The first release, Chapter 1: The Sign That Lied, is being planned now. There's no playable build and no release date. Announcements land on the Updates page.",
+    link: { label: "See the updates", href: "/updates" },
   },
   {
     id: "help",
@@ -64,7 +64,7 @@ export const RAZZ_QUESTIONS: readonly RazzAnswer[] = [
 /** One-line interruptions, each shown at most once per browser session. */
 export const RAZZ_REACTIONS = {
   teaserClosed: "Pretty, right? Now go prove which parts of it are lying.",
-  fraudSolved: "Rotten timber under royal varnish. Classic Wrongway. The river says thanks.",
+  fraudSolved: "Okay. Fine. I trusted the sign. Footprints don't lie; signs apparently do.",
   wrongwaySeen: "Keep your voice down. He can hear roads.",
 } as const;
 

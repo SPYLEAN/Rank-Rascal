@@ -4,10 +4,11 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 import {
+  CHAPTER_ONE_ACTS,
   CORE_LOOP,
-  EPISODE_ONE_BEATS,
   LORE_ERAS,
   PLAYER_ROLES,
+  RELEASE_ONE,
   STORY_FOUNDATION,
   STORY_THEMES,
   WORLD_LOCATIONS,
@@ -15,16 +16,14 @@ import {
 
 export const metadata: Metadata = {
   title: "World, Story & Gameplay",
-  description: "The story, history, heroes, eleven locations and World Lies systems of Rascal Realms: Crownfall.",
+  description: "Chapter 1: The Sign That Lied. The story, heroes, ten Stickerwood areas and World Lies systems of Rascal Realms: Crownfall.",
 };
 
 const FACTS = [
-  ["Format", "Cinematic co-op action mystery"],
+  ["Genre", "Story-driven co-op action RPG mystery"],
   ["Players", "Solo or a squad of up to four"],
-  ["First realm", "Stickerwood"],
+  ["First release", "Chapter 1: The Sign That Lied"],
 ] as const;
-
-const STATUS_LABEL = { "in-development": "In development", concept: "Concept", planned: "Planned" } as const;
 
 export default function GamePage() {
   return (
@@ -34,7 +33,7 @@ export default function GamePage() {
         <div className="chapter-art">
           <Image
             src={BRAND_ASSETS.locations.stickerwoodHeartwood}
-            alt="The Heartwood grove at the centre of Stickerwood in warm evening light"
+            alt="Concept art of Stickerwood: treehouse walkways, lanterns and waterfalls in warm evening light"
             fill
             priority
             sizes="100vw"
@@ -159,27 +158,54 @@ export default function GamePage() {
         </div>
       </section>
 
-      {/* Episode 1 */}
-      <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
-        <p className="section-kicker">Episode 1 · The Sign That Lied</p>
-        <h2 className="section-title max-w-4xl">A missing courier. A perfect road. Four truths that can&apos;t all be right.</h2>
+      {/* Chapter 1 */}
+      <section id="chapter-one" className="mx-auto max-w-7xl scroll-mt-24 px-5 py-24 sm:px-8 lg:py-32">
+        <p className="section-kicker">Release 1 · {RELEASE_ONE.name}</p>
+        <h2 className="section-title max-w-4xl">A small first chapter with a very big horizon.</h2>
         <p className="section-lede max-w-3xl">
-          It opens with an easy accusation against a suspicious sign and ends by asking whether the squad will restore a dangerous future.
+          It opens with a sign that lies about the road to Rascal Plaza and ends at a viewpoint that shows how much more of the realm is breaking.
         </p>
-        <div className="mt-14 border-t border-cloud-white/10">
-          {EPISODE_ONE_BEATS.map((beat) => (
-            <article key={beat.act} className="grid gap-6 border-b border-cloud-white/10 py-10 lg:grid-cols-[10rem_1fr_1fr]">
+        <ol className="mt-14 border-t border-cloud-white/10">
+          {CHAPTER_ONE_ACTS.map((beat) => (
+            <li key={beat.act} className="grid gap-3 border-b border-cloud-white/10 py-8 md:grid-cols-[10rem_1fr] md:gap-8">
               <div>
                 <p className="font-semibold text-antique-gold">{beat.act}</p>
-                <p className="mt-1 text-sm text-cloud-white/55">{beat.place}</p>
+                <p className="mt-1 text-sm text-cloud-white/65">{beat.place}</p>
               </div>
               <div>
-                <h3 className="font-display text-2xl font-bold text-cloud-white sm:text-3xl">{beat.title}</h3>
-                <p className="mt-3 leading-7 text-cloud-white/70">{beat.copy}</p>
+                <h3 className="font-display text-2xl font-bold text-cloud-white">{beat.title}</h3>
+                <p className="mt-2 max-w-3xl leading-7 text-cloud-white/80">{beat.copy}</p>
               </div>
-              <blockquote className="border-l-2 border-antique-gold/60 pl-5 text-lg leading-8 text-paper-cream/90">{beat.question}</blockquote>
-            </article>
+            </li>
           ))}
+        </ol>
+
+        <div className="mt-16 grid gap-12 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+          <div>
+            <h3 className="font-display text-xl font-bold text-cloud-white">Release 1 targets</h3>
+            <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
+              {RELEASE_ONE.targets.map(([label, value]) => (
+                <div key={label} className="border-t border-antique-gold/40 pt-3">
+                  <dt className="text-sm text-cloud-white/70">{label}</dt>
+                  <dd className="mt-1 font-display text-2xl font-extrabold text-cloud-white">{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-6 text-sm text-cloud-white/70">
+              Also in scope: {RELEASE_ONE.includes.join(" · ")}. Production targets, not promises; numbers may change after prototyping.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-display text-xl font-bold text-cloud-white">Saved for later updates</h3>
+            <ul className="mt-5 space-y-2 text-cloud-white/80">
+              {RELEASE_ONE.deferred.map((item) => (
+                <li key={item} className="border-l-2 border-cloud-white/20 pl-3">{item}</li>
+              ))}
+            </ul>
+            <Link href="/updates#roadmap" className="text-link mt-6">
+              See the update roadmap <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -189,8 +215,8 @@ export default function GamePage() {
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-4">
               <p className="section-kicker">The squad</p>
-              <h2 className="section-title">Six heroes. Six ways to question the world.</h2>
-              <p className="section-lede">No hero owns the answer; a complete theory needs perspectives to overlap.</p>
+              <h2 className="section-title">Three heroes at launch. Three more on the way.</h2>
+              <p className="section-lede">No hero owns the answer; a complete theory needs perspectives to overlap. Trickster, Lorekeeper and Badge Scout arrive in later updates.</p>
               <Link href="/#heroes" className="text-link mt-6">
                 Open the hero selector <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
@@ -200,8 +226,9 @@ export default function GamePage() {
                 <article key={role.name} className="border-b border-cloud-white/10 py-8">
                   <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                     <h3 className="font-display text-2xl font-bold text-cloud-white">{role.name}</h3>
-                    <span className="text-sm text-cloud-white/55">
-                      {role.role} · {STATUS_LABEL[role.status]}
+                    <span className="text-sm text-cloud-white/70">
+                      {role.role} · {role.weapon} ·{" "}
+                      <span className={role.release === "launch" ? "font-semibold text-antique-gold" : undefined}>{role.releaseNote}</span>
                     </span>
                   </div>
                   <dl className="mt-5 grid gap-5 text-sm leading-7 md:grid-cols-3">
@@ -230,9 +257,9 @@ export default function GamePage() {
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <p className="section-kicker">The realm</p>
-            <h2 className="section-title">Eleven places, one realm.</h2>
+            <h2 className="section-title">Ten areas, one connected realm.</h2>
             <p className="section-lede">
-              The four Episode 1 districts are in development. The other seven are concept and planned work in the same tone.
+              Every Release 1 area, in chapter order. All of it is in pre-production; the concept art sets the direction, not the final look.
             </p>
             <Link href="/#explore-stickerwood" className="text-link mt-6">
               Open the interactive atlas <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -242,12 +269,13 @@ export default function GamePage() {
             {WORLD_LOCATIONS.map((loc) => (
               <li key={loc.number} className="border-b border-cloud-white/10 py-5">
                 <div className="flex items-baseline justify-between gap-3">
-                  <p className="font-display text-lg font-bold text-cloud-white">{loc.name}</p>
-                  <span className={`flex-none text-xs font-semibold ${loc.status === "in-development" ? "text-signal-lime" : "text-cloud-white/55"}`}>
-                    {STATUS_LABEL[loc.status]}
-                  </span>
+                  <p className="font-display text-lg font-bold text-cloud-white">
+                    <span className="mr-2 text-antique-gold/80">{Number(loc.number)}</span>
+                    {loc.name}
+                  </p>
+                  <span className="flex-none text-xs font-semibold text-cloud-white/65">{loc.chapterRole.split(" · ")[0]}</span>
                 </div>
-                <p className="mt-1 text-sm text-cloud-white/65">{loc.tagline}</p>
+                <p className="mt-1 text-sm text-cloud-white/75">{loc.tagline}</p>
               </li>
             ))}
           </ol>

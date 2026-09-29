@@ -2,6 +2,27 @@
 
 Explicit resolutions for every conflict named in the completion-pass brief.
 
+## Release 1 specification vs. the earlier website canon (2026-09-29)
+
+`FIRST_RELEASE.md` arrived after the site was built. Where they disagreed, the spec wins:
+
+| Topic | Before | Now | Decided by |
+|---|---|---|---|
+| Heroes | 6 playable, 4 "in development" | 3 launch heroes; Trickster, Lorekeeper, Badge Scout are future updates | Spec §7.4, §32 |
+| Hero weapons | Banner-lance; fracture rod | Relic Sword + Royal Shield; Fracture Staff | Spec §7.4 |
+| Areas | 11 locations incl. Heartwood, Mystery Forest, Hidden Cove | 10 Release 1 areas incl. Stickerwood Forest and Wrongway Territory | Owner, 2026-09-29 ("Match Release 1") |
+| Citadel | Sealed, future chapter | Final Chapter 1 environment, King Wrongway fought there | Spec §9.10, §10 |
+| Crown Ruins | Wrongway's redoubt | Act V: relic discovery and the Overgrown Receipt mini-boss | Spec §10, §14 |
+| First Fraud | Royal causeway over a collapsed crossing | Crossroads sign pointing away from Rascal Plaza; Razz trusts the sign | Spec §8 |
+| Currencies | Crown Shards, Bounty Gold, Guild Credits | Gold, Crown Shards, gems/crystals | Spec §21 |
+| Naming | "Episode 1" | "Chapter 1: The Sign That Lied" (Release 1) | Spec §1 |
+| Status labels | Some areas "in development" | All areas and systems "planned"; project is in Phase 1 (Foundation) | Spec header |
+| Monetisation copy | "Never loot boxes or paid randomness" | "Long-term Robux items lean toward cosmetics, not pay-to-win" (the spec's wording; no stronger promise) | Spec §31 |
+
+## Ask Razz: scripted vs. AI (2026-09-29)
+
+The owner asked for Ask Razz to become an AI agent that can answer anything about the game; an earlier brief said to keep it scripted. The owner chose **AI with a scripted fallback**: answers are generated only from the canon in this folder, are labelled as AI, and fall back to the six curated answers when no model key is configured.
+
 ## Rank Rascal vs. Rascal Realms branding
 
 **Resolution**: Rascal Realms: Crownfall is the primary identity across `layout.tsx` metadata, `Navbar`, `Footer`, `RazzGuide`, `RazzMascot` default alt text, and `CommunityForms` copy. "Rank Rascal" is retained only in: the Privacy/Terms legal-entity name, `/invite` (the bot archive page, which is honestly framed as "back in the lab"), and the footer copyright line (now paired, e.g. "© Rascal Labs / Rank Rascal · Created by SPYLEAN"). The OG/Twitter card copy was already on-message before this pass and needed no change.

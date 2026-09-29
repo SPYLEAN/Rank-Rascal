@@ -1,16 +1,11 @@
 "use client";
 
 import { useId, useState, type KeyboardEvent } from "react";
-import { QUEST_JOURNAL, type LoreStatus } from "@/lib/game-content";
+import { ECONOMY_CONCEPTS, PROGRESSION_CONCEPTS, QUEST_CATEGORIES, QUEST_JOURNAL } from "@/lib/game-content";
 
-const CATEGORIES = ["Story", "Mysteries", "Bounties", "Guild Missions", "Hidden Quests"] as const;
-const LOOP = ["Explore", "Investigate", "Expose the lie", "Fight, solve or escape", "Earn", "Upgrade", "Discover something worse"] as const;
-
-const STATUS: Record<LoreStatus, string> = {
-  "in-development": "In development",
-  concept: "Concept",
-  planned: "Planned",
-};
+const CATEGORIES = QUEST_CATEGORIES;
+// The primary loop, word for word from the Release 1 specification.
+const LOOP = ["Explore", "Notice something wrong", "Investigate", "Expose a Fraud", "Fight, solve or traverse", "Earn loot", "Progress", "Discover a larger mystery"] as const;
 
 /** Part of chapter 06: what you actually do out there — the loop, the journal and growth. */
 export function QuestJournal() {
@@ -76,26 +71,36 @@ export function QuestJournal() {
                 <li key={entry.title} className="py-4">
                   <p className="font-display text-lg font-bold text-cloud-white">{entry.title}</p>
                   <p className="mt-1 text-cloud-white/75">{entry.summary}</p>
-                  <p className="mt-1 text-xs text-cloud-white/50">{entry.location} · {STATUS[entry.status]}</p>
+                  <p className="mt-1 text-xs text-cloud-white/65">{entry.location} · Concept</p>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="space-y-8 text-cloud-white/80">
+          <div className="space-y-8 text-cloud-white/85">
             <div>
               <h3 className="font-display text-xl font-bold text-cloud-white">Growing stronger</h3>
-              <p className="mt-3 leading-relaxed">
-                Heroes grow through <strong className="text-cloud-white">Hero Level</strong>, <strong className="text-cloud-white">Abilities</strong>,{" "}
-                <strong className="text-cloud-white">Gear</strong>, <strong className="text-cloud-white">Relics</strong>,{" "}
-                <strong className="text-cloud-white">Class Mastery</strong> and <strong className="text-cloud-white">Badges</strong>. You earn{" "}
-                <strong className="text-antique-gold">Crown Shards</strong> by correcting lies, <strong className="text-antique-gold">Bounty Gold</strong> from bounties and{" "}
-                <strong className="text-antique-gold">Guild Credits</strong> from guild missions.
+              <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                {PROGRESSION_CONCEPTS.map((item) => (
+                  <li key={item.name}>
+                    <strong className="text-cloud-white">{item.name}</strong>
+                    <span className="block text-sm text-cloud-white/70">{item.copy}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 leading-relaxed">
+                Three currencies, no more:{" "}
+                {ECONOMY_CONCEPTS.map((item, index) => (
+                  <span key={item.name}>
+                    <strong className="text-antique-gold">{item.name}</strong>
+                    {index < ECONOMY_CONCEPTS.length - 2 ? ", " : index === ECONOMY_CONCEPTS.length - 2 ? " and " : "."}
+                  </span>
+                ))}
               </p>
             </div>
             <p className="border-l-2 border-antique-gold pl-4 text-sm leading-relaxed">
-              All of this is concept design, not a finished system. It will never include loot boxes, paid randomness or pay-to-win.
-              In-game Guild Missions are a planned feature, separate from the real Founders Guild at the end of this page.
+              Concept design, not a finished system. Release 1 targets 8–12 main quests, 8–15 side quests and 10–20 Frauds; numbers may change after prototyping.
+              Long-term Robux items lean toward cosmetics, not pay-to-win power. The full in-game guild system comes after Release 1 and is separate from the real Founders Guild below.
             </p>
           </div>
         </div>

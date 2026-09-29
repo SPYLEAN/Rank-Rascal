@@ -16,7 +16,7 @@ export function EnterStickerwood() {
       <div className="chapter-art" style={{ position: "absolute", inset: 0 }}>
         <Image
           src={BRAND_ASSETS.locations.stickerwoodHeartwood}
-          alt="The Heartwood of Stickerwood: a treehouse village, lantern-lit walkways and waterfalls in warm afternoon light"
+          alt="Concept art of Stickerwood: a treehouse village, lantern-lit walkways and waterfalls in warm afternoon light"
           fill
           sizes="100vw"
           className="object-cover object-[center_60%]"

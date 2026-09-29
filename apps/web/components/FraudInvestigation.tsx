@@ -6,32 +6,38 @@ import { Check, RotateCcw } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { razzReact } from "@/lib/razz";
 
+// The canonical first Fraud (docs/rascal-realms/FIRST_RELEASE.md §8). Razz's advice is listed
+// with the clues on purpose: characters may be wrong, and confidence is not evidence.
 const CLUES = [
-  { id: "varnish", title: "Fresh varnish over rotten wood", detail: "The royal seal was painted over an older warning carved into the post." },
-  { id: "compass", title: "A courier's compass, spinning", detail: "Boot prints leave the gold road and go down toward the gorge." },
-  { id: "hollow", title: "A hollow ring underfoot", detail: "The paving is paper-thin. There is empty air beneath it." },
+  { id: "footprints", title: "Footprints go left", detail: "Fresh boot prints ignore the sign and head down the left path.", evidence: true },
+  { id: "branches", title: "Broken branches point left", detail: "Someone pushed through the left trail recently. The right trail is untouched.", evidence: true },
+  { id: "lantern", title: "The lantern leans", detail: "Its flame keeps flickering toward the left path, even without wind.", evidence: true },
+  { id: "loop", title: "The right path loops", detail: "Follow it for a minute and you're back at this same sign.", evidence: true },
+  { id: "razz", title: "Razz trusts the sign", detail: "“It's an official sign. Official signs are official.”", evidence: false },
 ] as const;
 
 const THEORIES = [
   {
-    id: "illusion",
-    label: "The causeway is an illusion hiding a collapsed crossing",
+    id: "fraud",
+    label: "The sign is a Fraud. Rascal Plaza is down the left path.",
     correct: true,
     feedback: "",
   },
   {
-    id: "flood",
-    label: "Floods washed away the courier's markers",
+    id: "old-prints",
+    label: "The sign is right. The footprints are just old.",
     correct: false,
-    feedback: "Good instinct, wrong culprit. Floodwater can't make stone ring hollow. Look at the paving again.",
+    feedback: "Old prints wouldn't explain the loop. Walk the right path and you end up back at this sign.",
   },
   {
-    id: "bandits",
-    label: "Bandits swapped the signs to trap travellers",
+    id: "both",
+    label: "Both paths reach the Plaza, so it doesn't matter.",
     correct: false,
-    feedback: "Bandits can fake a sign, but not a royal seal, and not empty air under solid-looking stone.",
+    feedback: "If both roads worked, the right one wouldn't bring you straight back here.",
   },
 ] as const;
+
+const EVIDENCE_COUNT = CLUES.filter((clue) => clue.evidence).length;
 
 type Phase = "investigating" | "rewriting" | "revealed";
 
@@ -56,6 +62,10 @@ export function FraudInvestigation() {
   };
 
   const accuse = () => {
+    if (found.includes("razz")) {
+      setFeedback("Razz sounds sure, but confidence isn't evidence. Characters can be wrong; the clues can't. Drop his advice and look again.");
+      return;
+    }
     if (found.length < 2) {
       setFeedback("Not enough evidence yet. Choose at least two clues that disagree with the sign.");
       return;
@@ -92,7 +102,7 @@ export function FraudInvestigation() {
       <div className="chapter-art" style={{ position: "absolute", inset: 0 }}>
         <Image
           src={BRAND_ASSETS.media.signpost}
-          alt="A carved wooden signpost on a forest path, pointing toward a sunlit castle road while footprints lead the other way"
+          alt="A carved wooden signpost at a forest crossroads in Stickerwood, from the Crownfall teaser"
           fill
           sizes="100vw"
           className="object-cover object-[72%_center]"
@@ -108,20 +118,20 @@ export function FraudInvestigation() {
           <p className="section-kicker">05 · Investigate a Fraud</p>
           <h2 id="investigate-title" className={`chapter-title mt-4 ${phase === "rewriting" ? "corrupt-type" : ""}`}>The sign that lied</h2>
           <p className="chapter-lede">
-            The official marker says the causeway is safe. Three clues say otherwise. Prove what the world is hiding. No penalty for being wrong.
+            Your first objective: reach Rascal Plaza. At the crossroads, the sign points right. The world around it disagrees. No penalty for being wrong.
           </p>
 
           <div className="mt-8" aria-live="polite">
-            <div className={`sign-plank ${revealed ? "is-true" : ""}`}>
+            <div className={`sign-plank ${revealed ? "is-true" : ""} ${phase === "rewriting" ? "sign-fracture" : ""}`}>
               {revealed ? (
                 <>
-                  <p className="font-display text-sm font-extrabold uppercase tracking-[0.18em]">Old ford</p>
-                  <p className="mt-1 text-sm">Causeway collapsed. Cross at the river.</p>
+                  <p className="font-display text-sm font-extrabold uppercase tracking-[0.18em]">&larr; Rascal Plaza</p>
+                  <p className="mt-1 text-sm">The real road. It was always this way.</p>
                 </>
               ) : (
                 <>
-                  <p className="font-display text-sm font-extrabold uppercase tracking-[0.18em]">Royal causeway</p>
-                  <p className="mt-1 text-sm">Verified sound by decree. Stay on the gold road.</p>
+                  <p className="font-display text-sm font-extrabold uppercase tracking-[0.18em]">Rascal Plaza &rarr;</p>
+                  <p className="mt-1 text-sm">This way. Obviously.</p>
                 </>
               )}
             </div>
@@ -129,12 +139,12 @@ export function FraudInvestigation() {
 
           {revealed ? (
             <div className="mt-10">
-              <p className="section-kicker !text-signal-lime">Truth revealed</p>
+              <p className="section-kicker !text-signal-lime">Fraud exposed</p>
               <h3 ref={resultRef} tabIndex={-1} className="mt-3 font-display text-2xl font-bold text-cloud-white sm:text-3xl">
-                The false causeway folds away. The old ford is back.
+                The sign fractures. The real road appears.
               </h3>
-              <p className="mt-4 text-base leading-relaxed text-cloud-white/80">
-                The river returns to its canal, and the missing courier&apos;s raft drifts into view with an unedited map inside. In the game, that correction stays: the world remembers you proved it.
+              <p className="mt-4 text-base leading-relaxed text-cloud-white/85">
+                Crown energy escapes, the false arrow breaks apart and the left path opens toward Rascal Plaza. Razz has to admit he was wrong. In the game this happens in the world itself, and the correction stays.
               </p>
               <button type="button" onClick={reset} className="action-secondary mt-8">
                 <RotateCcw className="h-4 w-4" aria-hidden="true" /> Investigate again
@@ -202,7 +212,7 @@ export function FraudInvestigation() {
                 <button type="button" onClick={accuse} disabled={phase === "rewriting"} className="action-primary">
                   3 · Accuse the sign
                 </button>
-                <p className="mt-3 text-sm text-cloud-white/60">{found.length} of 3 clues chosen · two or more needed</p>
+                <p className="mt-3 text-sm text-cloud-white/70">{found.length} chosen · pick two or more of the {EVIDENCE_COUNT} real clues</p>
                 <p role="status" className={`mt-4 border-l-2 border-hot-magenta pl-4 text-sm leading-relaxed text-cloud-white ${feedback ? "" : "sr-only"}`}>
                   {feedback || (phase === "rewriting" ? "The world is correcting itself." : "")}
                 </p>
