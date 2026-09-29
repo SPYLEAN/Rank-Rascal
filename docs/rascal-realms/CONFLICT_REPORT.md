@@ -21,7 +21,11 @@ Explicit resolutions for every conflict named in the completion-pass brief.
 
 ## Ask Razz: scripted vs. AI (2026-09-29)
 
-The owner asked for Ask Razz to become an AI agent that can answer anything about the game; an earlier brief said to keep it scripted. The owner chose **AI with a scripted fallback**: answers are generated only from the canon in this folder, are labelled as AI, and fall back to the six curated answers when no model key is configured.
+The owner first asked for Ask Razz to become an AI agent, and a Claude-based version with a scripted fallback was built (commit `d4578db`). Later the same day the owner replaced it with a **zero-cost, self-contained Razz Canon Engine**: a structured knowledge base plus an in-browser matcher, with no paid API, no server route, and no question ever sent to an AI provider. The Anthropic SDK, route and prompt were removed. See `ASK_RAZZ.md`.
+
+## "QA Scout roster" wording (2026-09-29)
+
+Privacy (v1.3) and Terms (v1.3) now say reviews may join the **Founding QA candidate pool**, and that this guarantees no testing access, invitation, employment or compensation. No "roster" wording remains in the site's user-facing copy.
 
 ## Rank Rascal vs. Rascal Realms branding
 

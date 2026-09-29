@@ -40,7 +40,7 @@ const boundaries = [
   },
   {
     title: "Razz is a fictional guide",
-    body: "Razz is a character—not a person, therapist, authority, or source of medical advice. On this site his typed answers can come from AI and can be wrong. Don’t share personal details with him. If someone may be in danger, contact a trusted adult or local emergency support.",
+    body: "Razz is a character—not a person, therapist, authority, or source of medical advice. On this site he answers from a fixed script, right in your browser, and those answers describe plans that can change. Don’t share personal details with him. If someone may be in danger, contact a trusted adult or local emergency support.",
   },
 ];
 

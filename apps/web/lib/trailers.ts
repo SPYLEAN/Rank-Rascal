@@ -1,4 +1,4 @@
-import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { BRAND_ASSETS } from "./brand-assets";
 
 /**
  * Every video the site can play in the theater player. Each update can point at one of these by

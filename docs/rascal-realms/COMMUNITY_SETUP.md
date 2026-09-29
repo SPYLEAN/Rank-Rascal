@@ -34,6 +34,19 @@ Do not describe email delivery as working until someone has sent a real submissi
 
 Generate secrets with `openssl rand -hex 32`.
 
+## Resend free plan capacity
+
+As of 2026-09-29 (figures supplied by the owner; confirm on Resend's pricing page before relying on them), Resend's free plan allows **3,000 emails per month** and **100 emails per day**, at no cost.
+
+Every accepted submission sends **two emails**: one to the owner and one thank-you to the sender. On the free plan that supports roughly:
+
+| Limit | Emails | Submissions |
+|---|---|---|
+| Per day | 100 | about **50** |
+| Per month | 3,000 | about **1,500** |
+
+If the daily limit is reached, Resend rejects further sends, the API returns `502 delivery_failed`, and the form asks the visitor to try again later. Nothing is stored in that case. The optional Discord webhook copy does not count toward Resend limits. No paid plan is configured.
+
 ## Owner steps to go live (manual; not done by the agent)
 
 1. Create a Resend account and verify `rankrascal.lol` (SPF/DKIM DNS records). This changes DNS, so it's the owner's step.

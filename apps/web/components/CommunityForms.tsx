@@ -364,7 +364,8 @@ export function CommunityForms() {
     <div className="relative">
       <span id="review" className="absolute -top-28" aria-hidden="true" />
       <span id="guild" className="absolute -top-28" aria-hidden="true" />
-      <div className="form-panel">
+      {/* data-razz-avoid: the floating Ask Razz launcher steps aside whenever it would overlap this panel. */}
+      <div className="form-panel" data-razz-avoid>
         <div role="tablist" aria-label="Choose a form" className="grid grid-cols-2 border-b border-paper-cream/15" onKeyDown={onKeyDown}>
           {TABS.map((tab) => {
             const selected = tab.kind === kind;

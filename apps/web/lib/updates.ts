@@ -1,4 +1,4 @@
-import type { TrailerId } from "@/lib/trailers";
+import type { TrailerId } from "./trailers";
 
 /**
  * Updates & announcements for rankrascal.lol (FIRST_RELEASE.md §36).

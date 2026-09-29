@@ -167,7 +167,7 @@ export function CommunityPlazaSection() {
                 className="action-secondary w-full justify-center gap-2 border-reward-yellow/60 text-reward-yellow hover:bg-reward-yellow hover:text-midnight-bg font-mono text-xs uppercase tracking-wider font-bold"
               >
                 <BadgeCheck className="h-4 w-4" />
-                <span>Reserve Playtest Spot via QA Roster</span>
+                <span>Join the Founding QA candidate pool</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
