@@ -1,13 +1,14 @@
 /**
- * Ask Razz — every line Razz can say, in one place.
+ * Ask Razz — the curated lines, reactions and scripted fallback.
  *
- * Razz is a scripted character, not an AI: there is no free-text input and nothing here is
- * generated. Answers about the game's production status must stay literally true; Razz can
- * joke about the world, never about what exists.
+ * Free-typed questions go to /api/razz, which answers with Claude from the canon in
+ * lib/razz-knowledge.ts. These six curated answers are shown instantly (no AI call) and are the
+ * fallback whenever the AI isn't configured or available. Answers about production status must
+ * stay literally true; Razz can joke about the world, never about what exists.
  */
 
 export const RAZZ_GREETING =
-  "Psst. You made it into Stickerwood before the Crown noticed. Ask me something—quickly.";
+  "Psst. You made it into Stickerwood before the Crown noticed. Ask me anything about Crownfall, or pick one of these.";
 
 export type RazzAnswer = {
   id: string;
@@ -60,6 +61,29 @@ export const RAZZ_QUESTIONS: readonly RazzAnswer[] = [
     link: { label: "Join Rascal Labs", href: "/#join-rascal-labs" },
   },
 ] as const;
+
+const KEYWORDS: Record<string, readonly string[]> = {
+  stickerwood: ["stickerwood", "world", "map", "area", "areas", "place", "realm", "village", "plaza", "forest", "river", "tree", "grove", "ruins", "bridge", "citadel"],
+  lies: ["lie", "lies", "lying", "fraud", "frauds", "crown", "story", "evidence", "clue", "mystery", "investigat"],
+  heroes: ["hero", "heroes", "class", "classes", "knight", "glitchcaster", "ranger", "trickster", "lorekeeper", "scout", "pick", "character", "play as"],
+  wrongway: ["wrongway", "king", "boss", "villain", "receipt", "enemy", "enemies"],
+  status: ["play", "release", "launch", "date", "when", "out", "beta", "build", "available", "price", "cost", "free", "update", "updates", "trailer"],
+  help: ["help", "join", "discord", "community", "guild", "review", "qa", "apply", "job", "work", "test", "playtest"],
+};
+
+/**
+ * The scripted fallback when the AI isn't available: pick the curated answer whose keywords best
+ * match the visitor's question, or null when nothing fits.
+ */
+export function matchScriptedAnswer(question: string): RazzAnswer | null {
+  const text = question.toLowerCase();
+  let best: { answer: RazzAnswer; score: number } | null = null;
+  for (const answer of RAZZ_QUESTIONS) {
+    const score = (KEYWORDS[answer.id] ?? []).reduce((sum, word) => sum + (text.includes(word) ? 1 : 0), 0);
+    if (score > 0 && (!best || score > best.score)) best = { answer, score };
+  }
+  return best?.answer ?? null;
+}
 
 /** One-line interruptions, each shown at most once per browser session. */
 export const RAZZ_REACTIONS = {
