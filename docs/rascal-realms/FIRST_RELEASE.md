@@ -2,10 +2,10 @@
 ## Release 1 Production Specification
 ### Chapter 1 — The Sign That Lied
 
-**Status:** Working baseline for Release 1  
-**Phase:** Pre-production / Resource Foundation  
-**Target platform:** Roblox  
-**Game type:** Story-driven open-zone co-op action RPG mystery  
+**Status:** Working baseline for Release 1\
+**Phase:** Pre-production / Resource Foundation\
+**Target platform:** Roblox\
+**Game type:** Story-driven open-zone co-op action RPG mystery\
 **Release philosophy:** **Small first chapter. Ridiculous polish. Obvious future.**
 
 This document is the canonical working scope for Release 1. It exists to prevent scope drift and to give ChatGPT, Claude, Antigravity, artists, developers, animators, and future contributors a shared build reference.
@@ -206,15 +206,15 @@ Razz can make incorrect assumptions. This teaches that characters may be wrong w
 Release 1 targets three heroes:
 
 ### Crown Knight
-Relic Sword + Royal Shield  
+Relic Sword + Royal Shield\
 Accessible melee/frontline hero. Defense, blocking, protection, survivability.
 
 ### Glitchcaster
-Fracture Staff  
+Fracture Staff\
 Ranged magic, area effects, Crown-energy spectacle, positioning.
 
 ### Shadow Ranger
-Whisper Bow  
+Whisper Bow\
 Precision, mobility, scouting, evasion.
 
 Future canon heroes — Trickster, Lorekeeper, Badge Scout — are deferred to updates.
@@ -411,7 +411,7 @@ Purpose:
 
 # 15. Boss: King Wrongway
 
-**ID:** BOSS-001  
+**ID:** BOSS-001\
 **Status:** LOCKED
 
 Theme: misdirection, false certainty, contradictory routes.

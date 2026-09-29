@@ -63,7 +63,7 @@ export const Footer: React.FC = () => (
         <p className="flex flex-wrap items-center gap-x-1.5">
           <span>© {new Date().getFullYear()} Rascal Labs / Rank Rascal ·</span>
           <span className="inline-flex items-center gap-1.5">
-            Created by
+            Created by{" "}
             <a
               href="https://spylean-portfolio.vercel.app/"
               target="_blank"
