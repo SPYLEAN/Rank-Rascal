@@ -18,17 +18,17 @@ export function JoinRascalLabs() {
           alt="Razz and the builders of Rascal Labs at work in a sunlit Stickerwood workshop"
           fill
           sizes="100vw"
-          className="object-cover object-center"
+          className="parallax-art object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(26,16,6,.9)_0%,rgba(26,16,6,.65)_40%,rgba(26,16,6,.1)_75%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_100%,rgba(213,168,75,.28),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(26,16,6,.88)_0%,rgba(26,16,6,.55)_38%,rgba(26,16,6,0)_68%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(0deg,rgba(12,14,26,.85),rgba(12,14,26,0))]" />
+        <div className="absolute inset-x-0 top-0 h-1/4 bg-[linear-gradient(180deg,#121526,rgba(18,21,38,0))]" />
       </div>
-      <div className="absolute inset-x-0 top-0 -z-[1] h-1/4 bg-[linear-gradient(180deg,#121526,rgba(18,21,38,0))]" />
 
       <div className="mx-auto w-full max-w-7xl px-5 pb-24 pt-40 sm:px-8 lg:pb-32">
         <p className="section-kicker">10 · Join Rascal Labs</p>
         <h2 id="join-title" className="chapter-title mt-4 max-w-3xl">Build the realm with us.</h2>
-        <p className="chapter-lede">
+        <p className="chapter-lede hero-shadow">
           Rascal Labs is the community making Crownfall in the open. Bring your theories, your honest reviews or your craft.
         </p>
 
@@ -44,7 +44,7 @@ export function JoinRascalLabs() {
           </Link>
         </div>
 
-        <p className="mt-8 max-w-xl text-sm leading-relaxed text-paper-cream/75">
+        <p className="hero-shadow mt-8 max-w-xl text-sm leading-relaxed text-paper-cream/95">
           A person reads every review and application. Joining is free, isn&apos;t a job offer and doesn&apos;t guarantee playtest access.
           The official Roblox group opens with the first private prototype.
         </p>

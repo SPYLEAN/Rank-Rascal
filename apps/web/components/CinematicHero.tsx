@@ -24,11 +24,11 @@ export function CinematicHero() {
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-28 sm:px-8 sm:pb-20 lg:pb-24">
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E8C877] hero-shadow">
+          <p className="pr-12 text-xs font-semibold uppercase tracking-[0.2em] text-[#E8C877] hero-shadow sm:pr-0">
             A Roblox co-op action RPG mystery · in pre-production
           </p>
 
-          <h1 id="hero-title" className="title-rise -ml-2 mt-3 w-[min(88vw,22rem)] sm:-ml-3 sm:w-[30rem] lg:w-[36rem]">
+          <h1 id="hero-title" className="title-rise -ml-2 mt-6 w-[min(84vw,21rem)] sm:-ml-3 sm:mt-4 sm:w-[30rem] lg:w-[36rem]">
             <Image
               src={BRAND_ASSETS.titleLogo.full}
               alt="Rascal Realms: Crownfall"

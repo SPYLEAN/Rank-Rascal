@@ -37,7 +37,7 @@ export default function GamePage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center"
+            className="parallax-art object-cover object-center"
           />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,10,20,.92)_0%,rgba(12,10,20,.6)_45%,rgba(12,10,20,.05)_80%)]" />
         </div>
@@ -85,7 +85,7 @@ export default function GamePage() {
             alt="Razz and a squad investigate a disputed route between Stickerwood and the Crown Ruins"
             fill
             sizes="100vw"
-            className="object-cover object-center"
+            className="parallax-art object-cover object-center"
           />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,10,20,.92)_0%,rgba(12,10,20,.6)_45%,rgba(12,10,20,.1)_85%)]" />
         </div>
@@ -290,7 +290,7 @@ export default function GamePage() {
             alt="Concept lineup of Crown-corrupted enemies and King Wrongway"
             fill
             sizes="100vw"
-            className="object-cover object-center"
+            className="parallax-art object-cover object-center"
           />
           <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(12,10,20,.95)_0%,rgba(12,10,20,.7)_45%,rgba(12,10,20,.1)_85%)]" />
         </div>

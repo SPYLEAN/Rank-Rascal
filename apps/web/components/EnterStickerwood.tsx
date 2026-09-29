@@ -19,7 +19,7 @@ export function EnterStickerwood() {
           alt="Concept art of Stickerwood: a treehouse village, lantern-lit walkways and waterfalls in warm afternoon light"
           fill
           sizes="100vw"
-          className="object-cover object-[center_60%]"
+          className="parallax-art object-cover object-[center_60%]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,10,18,.96)_0%,rgba(18,12,12,.84)_38%,rgba(18,12,12,.34)_70%,rgba(12,10,18,.46)_100%)]" />
       </div>
