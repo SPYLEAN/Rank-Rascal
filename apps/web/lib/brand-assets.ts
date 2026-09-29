@@ -120,6 +120,16 @@ export const BRAND_ASSETS = {
     wrongwayTerritory: "/brand/game/locations/wrongway-territory-v1.webp",
   },
 
+  // 480 px location cards for the homepage quest journal (scripts/build-concepts.py).
+  journalCards: {
+    startingVillage: "/brand/game/locations/starting-village-v1-thumb.webp",
+    rascalPlaza: "/brand/game/locations/rascal-plaza-realm-v1-thumb.webp",
+    stickerwoodForest: "/brand/game/locations/mystery-forest-v1-thumb.webp",
+    ancientTree: "/brand/game/locations/ancient-tree-v1-thumb.webp",
+    skyBridges: "/brand/game/locations/sky-bridges-v1-thumb.webp",
+    riverPath: "/brand/game/locations/river-path-v1-thumb.webp",
+  },
+
   // Crownfall teaser derivatives. The 29 MB master never ships; see
   // docs/rascal-realms/TEASER_EXPORT_SPEC.md and scripts/encode-teaser.sh.
   media: {

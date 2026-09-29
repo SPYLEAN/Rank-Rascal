@@ -663,6 +663,65 @@ a:focus-visible > .spylean-heart { animation: heart-beat 700ms ease; }
   }
 }
 
+/* How the realm plays ----------------------------------------------------------- */
+/* A soft light that travels along the gameplay loop's thread, left to right. */
+.loop-light {
+  background: linear-gradient(90deg, transparent, rgba(255, 226, 150, .95), transparent) no-repeat;
+  background-size: 18% 100%;
+  animation: loop-light 7s linear infinite;
+}
+
+@keyframes loop-light {
+  from { background-position: -30% 0; }
+  to { background-position: 130% 0; }
+}
+
+/* The quest journal page: cream paper, a faint grain and ruled lines. */
+.journal-page {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 6%, rgba(255, 255, 255, .55), transparent 40%),
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(123, 78, 45, .07) 27px 28px),
+    var(--cream);
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(123, 78, 45, .35), 0 30px 60px -30px rgba(0, 0, 0, .8);
+}
+
+/* Turning to another journal tab: a short fade, no zoom. */
+.journal-turn {
+  animation: journal-turn 280ms ease-out both;
+}
+
+@keyframes journal-turn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* A note scribbled in the margin. */
+.journal-note {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  transform: rotate(-1.2deg);
+}
+
+.quest-stamp {
+  transform: rotate(-5deg);
+}
+
+/* Crown Shards glint now and then; nothing floats. */
+.shard-pulse {
+  animation: shard-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes shard-pulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(185, 155, 255, 0)); }
+  50% { filter: drop-shadow(0 0 8px rgba(185, 155, 255, .85)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loop-light { display: none; }
+}
+
 /* Ask Razz's once-a-session hello: a speech bubble whose tail points at the launcher below. */
 .razz-greeting-enter {
   animation: razz-greeting-in 320ms cubic-bezier(.2, .8, .2, 1) both;

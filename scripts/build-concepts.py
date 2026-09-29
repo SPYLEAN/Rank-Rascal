@@ -7,7 +7,7 @@ never shipped). Output: apps/web/public/brand/... as WebP.
 - Full files keep native resolution at quality 90, so hand-lettered sheet text stays sharp.
 - Thumbnails (720 px wide, quality 82) are for cards and previews; a thumbnail is only written
   when the source is wider than 720 px. The mobile homepage uses smaller thumbnails of the three
-  launch heroes (480 px) and the atlas map (960 px).
+  launch heroes (480 px) and the atlas map (960 px); the quest journal uses 480 px location cards.
 - The nine-panel overview board ("stuff.png") is cut into one file per panel. World Lies and
   Beyond Stickerwood tiles are cut without their printed captions (the site supplies its own copy,
   and unapproved realm names stay off the site).
@@ -83,6 +83,18 @@ ART = [
     ("high ress map.png", "game/stickerwood-map-v2", 960),
 ]
 
+# Small cards for the homepage quest journal, cut from location art already in the site
+# (the originals are ~3 MB PNGs). Written next to the source as <name>-thumb.webp.
+JOURNAL_CARDS = [
+    "game/locations/starting-village-v1.webp",
+    "game/locations/rascal-plaza-realm-v1.png",
+    "game/locations/mystery-forest-v1.png",
+    "game/locations/ancient-tree-v1.png",
+    "game/locations/sky-bridges-v1.png",
+    "game/locations/river-path-v1.webp",
+]
+JOURNAL_WIDTH = 480
+
 
 def save(image: Image.Image, target: str, quality: int, thumb: bool, thumb_width: int = THUMB_WIDTH) -> None:
     path = PUBLIC / f"{target}.webp"
@@ -113,6 +125,12 @@ def main() -> None:
         save(load(name).crop(box), target, 90, thumb=False)
     for name, target, thumb_width in ART:
         save(load(name), target, 86, thumb=thumb_width is not None, thumb_width=thumb_width or THUMB_WIDTH)
+    for source in JOURNAL_CARDS:
+        image = Image.open(PUBLIC / source).convert("RGB")
+        height = round(image.height * JOURNAL_WIDTH / image.width)
+        target = PUBLIC / f"{source.rsplit('.', 1)[0]}-thumb.webp"
+        image.resize((JOURNAL_WIDTH, height), Image.LANCZOS).save(target, "WEBP", quality=82, method=6)
+        print(f"{target.relative_to(PUBLIC)} {JOURNAL_WIDTH}x{height} {target.stat().st_size // 1024}KB")
 
 
 if __name__ == "__main__":

@@ -457,87 +457,126 @@ export const QUEST_CATEGORIES = [
   "Hidden Quests",
 ] as const;
 
-export const QUEST_JOURNAL = [
+/**
+ * Quest journal. Release 1.0 ships exactly one quest, Q01: A Sign of Trouble; every other entry
+ * is a concept or a future update and must be labelled that way wherever it appears.
+ * `card` names a location card (BRAND_ASSETS.journalCards).
+ */
+export type QuestStatus = "release-1" | "concept" | "future-update";
+
+export type QuestEntry = {
+  category: (typeof QUEST_CATEGORIES)[number];
+  code?: string;
+  title: string;
+  hook: string;
+  summary?: string;
+  location: string;
+  route?: string;
+  reward?: string;
+  note?: string;
+  status: QuestStatus;
+  card: "startingVillage" | "rascalPlaza" | "stickerwoodForest" | "ancientTree" | "skyBridges" | "riverPath";
+};
+
+export const QUEST_JOURNAL: readonly QuestEntry[] = [
   {
     category: "Main Story",
-    title: "The Sign That Lied",
+    code: "Q01",
+    title: "A Sign of Trouble",
+    hook: "The road to Rascal Plaza should be simple. It isn't.",
+    summary: "Follow Razz through Stickerwood, investigate the first impossible sign, gather evidence and expose your first Fraud.",
     location: "Starting Village",
-    summary: "Reach Rascal Plaza. The crossroads sign disagrees with every footprint.",
-    status: "concept" as LoreStatus,
+    route: "Starting Village → First Crossroads → Rascal Plaza",
+    reward: "First Crown Shard",
+    status: "release-1",
+    card: "startingVillage",
   },
   {
     category: "Main Story",
     title: "The Ancient Tree",
+    hook: "Stickerwood's older connection to the Crown is written in its rings.",
     location: "Ancient Tree",
-    summary: "Stickerwood's older connection to the Crown is written in its rings.",
-    status: "concept" as LoreStatus,
+    status: "future-update",
+    card: "ancientTree",
   },
   {
     category: "Mystery Cases",
     title: "The Merchant Who Remembers You Wrong",
-    location: "Rascal Plaza",
+    hook: "He swears you've met before.",
     summary: "He's certain you've met. You're certain you haven't.",
-    status: "concept" as LoreStatus,
+    location: "Rascal Plaza",
+    note: "Something about his story keeps changing.",
+    status: "concept",
+    card: "rascalPlaza",
   },
   {
     category: "Mystery Cases",
     title: "The Bridge Two Maps Disagree On",
+    hook: "Two official maps. One bridge. Zero agreement.",
     location: "River Path",
-    summary: "Two official maps, one bridge, zero agreement.",
-    status: "concept" as LoreStatus,
+    status: "concept",
+    card: "riverPath",
   },
   {
     category: "Side Quests",
     title: "The Ferryman's Second Logbook",
+    hook: "One logbook says the crossing never happened. The other one is lying.",
     location: "River Path",
-    summary: "One logbook says the crossing never happened. The other one is lying.",
-    status: "concept" as LoreStatus,
+    status: "concept",
+    card: "riverPath",
   },
   {
     category: "Exploration",
     title: "Behind the Waterfall",
+    hook: "Everyone can see it. Nobody admits there's anything behind it.",
     location: "Stickerwood Forest",
-    summary: "Everyone can see it. Nobody admits there's anything behind it.",
-    status: "concept" as LoreStatus,
+    status: "concept",
+    card: "stickerwoodForest",
   },
   {
     category: "Pets & Fishing",
     title: "Too Young to Carry a Rascal",
+    hook: "A young creature decides you're family. Feed it, earn its trust, and don't try to ride it yet.",
     location: "Rascal Plaza",
-    summary: "A young creature decides you're family. Feed it, earn its trust, and don't try to ride it yet.",
-    status: "concept" as LoreStatus,
+    status: "future-update",
+    card: "rascalPlaza",
   },
   {
     category: "Pets & Fishing",
     title: "Something Strange on the Line",
+    hook: "Fill the fish journal. One catch is glowing Crown violet.",
     location: "River Path",
-    summary: "Fill the fish journal. One catch is glowing Crown violet.",
-    status: "concept" as LoreStatus,
+    status: "future-update",
+    card: "riverPath",
   },
   {
     category: "Hidden Quests",
     title: "Redraw the Bridges Before They Forget",
+    hook: "Map every crossing before tonight's cartographer erases the wrong ones again.",
     location: "Sky Bridges",
-    summary: "Map every crossing before tonight's cartographer erases the wrong ones again.",
-    status: "concept" as LoreStatus,
+    status: "concept",
+    card: "skyBridges",
   },
-] as const;
+];
 
-/** Release 1 progression (FIRST_RELEASE.md §23). No enormous skill trees at launch. */
+/**
+ * How a hero grows. Release 1.0 ships the foundation (level, abilities, weapons, relics,
+ * exploration); pet bonding is a future system and is labelled that way.
+ */
 export const PROGRESSION_CONCEPTS = [
-  { name: "Hero level", copy: "Experience earned per hero." },
-  { name: "Abilities", copy: "Two or three abilities, a signature move and an ultimate per hero." },
-  { name: "Weapons and gear", copy: "Weapon upgrades and starter equipment." },
-  { name: "Relics", copy: "Unique passives and strange interactions, not simple stat boosts." },
-  { name: "Pet bonding", copy: "Trust and growth with around four launch companions." },
-  { name: "Exploration", copy: "Completion, collectibles, the fish journal and story progress." },
+  { id: "level", name: "Hero level", copy: "Experience earned per hero.", future: false },
+  { id: "abilities", name: "Abilities", copy: "Unlock and improve your combat kit.", future: false },
+  { id: "weapons", name: "Weapons", copy: "Upgrade signature equipment.", future: false },
+  { id: "relics", name: "Relics", copy: "Change how you fight and explore.", future: false },
+  { id: "exploration", name: "Exploration", copy: "Discover places, secrets and collectibles.", future: false },
+  { id: "bonding", name: "Pet bonding", copy: "Future system concept.", future: true },
 ] as const;
 
-/** Release 1 currencies (FIRST_RELEASE.md §21). Deliberately short. */
+/** Two core currencies; gems and crystals are upgrade materials, never a third wallet. */
 export const ECONOMY_CONCEPTS = [
-  { name: "Gold", copy: "Everyday currency for shops, basic upgrades and services." },
-  { name: "Crown Shards", copy: "The major progression resource, earned from story, bosses and exposed Frauds." },
-  { name: "Gems and crystals", copy: "Materials for weapon upgrades and relics." },
+  { name: "Gold", copy: "Everyday currency.", kind: "currency" },
+  { name: "Crown Shards", copy: "Rare progression resource.", kind: "currency" },
+  { name: "Gems & Crystals", copy: "Upgrade materials.", kind: "material" },
 ] as const;
 
 export const KING_WRONGWAY = {
