@@ -369,6 +369,19 @@ html[data-intro-seen="1"] { --intro-s: .37; }
   box-shadow: 0 0 0 1px rgba(243, 229, 200, .22), 0 24px 60px -24px rgba(0, 0, 0, .75);
 }
 
+/* Community form panel: a dark storybook page with a cream keyline and a gold spine. */
+.form-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(243, 229, 200, .18);
+  border-top: 3px solid var(--gold);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(213, 168, 75, .08), transparent 40%),
+    #151329;
+  box-shadow: 0 30px 80px -40px rgba(0, 0, 0, .8);
+}
+
 /* The atlas route: the stretch of road walked so far draws itself in. */
 .atlas-route {
   stroke-dasharray: 6000;

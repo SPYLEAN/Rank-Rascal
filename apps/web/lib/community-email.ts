@@ -23,6 +23,14 @@ type ReviewerArtifactInput = {
   issuedOn: string;
 };
 
+// Crownfall palette (docs/rascal-realms/ART_DIRECTION.md).
+const CREAM = "#F3E5C8";
+const GOLD = "#D5A84B";
+const INK = "#1B1426";
+const WOOD = "#7B4E2D";
+const VIOLET = "#6B31A8";
+const FOREST = "#41633B";
+
 export function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (character) => {
     const entities: Record<string, string> = {
@@ -36,6 +44,11 @@ export function escapeHtml(value: string): string {
   });
 }
 
+/**
+ * A stable, non-guessable reviewer ID: the same review from the same address on the same day
+ * always maps to the same ID (so a double-submit can't mint two), and nobody can derive another
+ * person's ID without the server secret.
+ */
 export function generateReviewerId(
   email: string,
   message: string,
@@ -50,47 +63,56 @@ export function generateReviewerId(
   return `QA-${issuedOn.replace(/-/g, "")}-${digest}`;
 }
 
+/** Shortens long display names so they always fit the badge and certificate. */
+function fitName(name: string, max: number): string {
+  return name.length > max ? `${name.slice(0, max - 1)}…` : name;
+}
+
+/** Founding QA Scout badge: a cream paper seal with a gold crown and a wooden ribbon. */
 export function buildReviewerBadgeSvg({ name, reviewerId }: ReviewerArtifactInput): string {
-  const safeName = escapeHtml(name);
+  const safeName = escapeHtml(fitName(name, 28));
   const safeId = escapeHtml(reviewerId);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Rascal Realms Founding QA Scout badge for ${safeName}">
-  <defs>
-    <radialGradient id="bg" cx="50%" cy="38%" r="72%"><stop offset="0" stop-color="#2d1b63"/><stop offset="1" stop-color="#090b18"/></radialGradient>
-    <linearGradient id="lime" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#efff77"/><stop offset="1" stop-color="#82ff27"/></linearGradient>
-    <filter id="glow"><feGaussianBlur stdDeviation="14" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>
-  <rect width="1200" height="1200" rx="120" fill="url(#bg)"/>
-  <circle cx="600" cy="515" r="350" fill="none" stroke="#7a4dff" stroke-width="20"/>
-  <circle cx="600" cy="515" r="310" fill="#11152a" stroke="url(#lime)" stroke-width="12" filter="url(#glow)"/>
-  <path d="M350 540L430 350L535 445L600 260L670 445L780 350L850 540L755 700H445Z" fill="url(#lime)" stroke="#070914" stroke-width="24" stroke-linejoin="round"/>
-  <path d="M464 548L535 490L600 575L670 490L745 548L700 640H500Z" fill="#ff4fa3" stroke="#070914" stroke-width="18" stroke-linejoin="round"/>
-  <circle cx="600" cy="720" r="74" fill="#7a4dff" stroke="#b7ff36" stroke-width="14"/>
-  <path d="M568 720l24 25 48-56" fill="none" stroke="#f8f8ff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="600" y="950" text-anchor="middle" fill="#f8f8ff" font-family="Arial, sans-serif" font-size="62" font-weight="800">FOUNDING QA SCOUT</text>
-  <text x="600" y="1025" text-anchor="middle" fill="#b7ff36" font-family="monospace" font-size="34" font-weight="700">${safeId}</text>
-  <text x="600" y="1090" text-anchor="middle" fill="#aeb4dc" font-family="Arial, sans-serif" font-size="28">Issued to ${safeName}</text>
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Rascal Realms: Crownfall Founding QA Scout badge for ${safeName}">
+  <rect width="1200" height="1200" fill="${INK}"/>
+  <circle cx="600" cy="560" r="430" fill="${GOLD}" stroke="${INK}" stroke-width="18"/>
+  <circle cx="600" cy="560" r="385" fill="${CREAM}" stroke="${WOOD}" stroke-width="10" stroke-dasharray="4 18" stroke-linecap="round"/>
+  <circle cx="600" cy="560" r="340" fill="none" stroke="${INK}" stroke-width="6"/>
+  <path d="M400 600 L440 390 L520 470 L600 320 L680 470 L760 390 L800 600 Z" fill="${GOLD}" stroke="${INK}" stroke-width="16" stroke-linejoin="round"/>
+  <rect x="400" y="600" width="400" height="56" rx="10" fill="${GOLD}" stroke="${INK}" stroke-width="16"/>
+  <path d="M600 372 l26 44 -26 44 -26 -44 Z" fill="${VIOLET}" stroke="${INK}" stroke-width="8"/>
+  <circle cx="470" cy="628" r="12" fill="${VIOLET}"/><circle cx="600" cy="628" r="12" fill="${FOREST}"/><circle cx="730" cy="628" r="12" fill="${VIOLET}"/>
+  <text x="600" y="760" text-anchor="middle" fill="${INK}" font-family="Georgia, 'Times New Roman', serif" font-size="44" font-weight="700" letter-spacing="6">THE WORLD LIES</text>
+  <text x="600" y="812" text-anchor="middle" fill="${WOOD}" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-style="italic">we check the evidence</text>
+  <path d="M150 930 L260 880 L940 880 L1050 930 L940 980 L260 980 Z" fill="${WOOD}" stroke="${INK}" stroke-width="14" stroke-linejoin="round"/>
+  <text x="600" y="948" text-anchor="middle" fill="${CREAM}" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="700" letter-spacing="4">FOUNDING QA SCOUT</text>
+  <text x="600" y="1060" text-anchor="middle" fill="${GOLD}" font-family="'Courier New', monospace" font-size="36" font-weight="700">${safeId}</text>
+  <text x="600" y="1120" text-anchor="middle" fill="${CREAM}" font-family="Georgia, 'Times New Roman', serif" font-size="32">${safeName}</text>
 </svg>`;
 }
 
+/** Certificate of early review, printed on cream paper with an ink double rule. */
 export function buildCertificateSvg({ name, reviewerId, issuedOn }: ReviewerArtifactInput): string {
-  const safeName = escapeHtml(name);
+  const safeName = escapeHtml(fitName(name, 34));
   const safeId = escapeHtml(reviewerId);
   const safeDate = escapeHtml(issuedOn);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1131" viewBox="0 0 1600 1131" role="img" aria-label="Rascal Realms Founding QA Scout certificate for ${safeName}">
-  <defs><linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171a31"/><stop offset="1" stop-color="#0a0c18"/></linearGradient><filter id="g"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-  <rect width="1600" height="1131" fill="#090b18"/>
-  <rect x="44" y="44" width="1512" height="1043" rx="44" fill="url(#panel)" stroke="#7a4dff" stroke-width="10"/>
-  <rect x="74" y="74" width="1452" height="983" rx="30" fill="none" stroke="#b7ff36" stroke-width="3" opacity=".7"/>
-  <g transform="translate(690 115)" filter="url(#g)"><path d="M0 145L42 42L96 94L130 0L168 94L225 42L270 145L218 230H52Z" fill="#b7ff36" stroke="#050712" stroke-width="14" stroke-linejoin="round"/><path d="M70 148l55-42 38 52 48-52 32 42-35 55H95Z" fill="#ff4fa3" stroke="#050712" stroke-width="10"/></g>
-  <text x="800" y="430" text-anchor="middle" fill="#b7ff36" font-family="monospace" font-size="31" font-weight="700" letter-spacing="7">RASCAL REALMS: CROWNFALL</text>
-  <text x="800" y="515" text-anchor="middle" fill="#f8f8ff" font-family="Arial, sans-serif" font-size="76" font-weight="900">FOUNDING QA SCOUT</text>
-  <text x="800" y="585" text-anchor="middle" fill="#aeb4dc" font-family="Arial, sans-serif" font-size="30">Certificate of early review contribution</text>
-  <line x1="360" y1="650" x2="1240" y2="650" stroke="#7a4dff" stroke-width="3"/>
-  <text x="800" y="750" text-anchor="middle" fill="#f8f8ff" font-family="Arial, sans-serif" font-size="60" font-weight="700">${safeName}</text>
-  <text x="800" y="820" text-anchor="middle" fill="#aeb4dc" font-family="Arial, sans-serif" font-size="28">helped challenge the world before the world could challenge its players.</text>
-  <text x="270" y="950" fill="#aeb4dc" font-family="monospace" font-size="23">ISSUED ${safeDate}</text>
-  <text x="1330" y="950" text-anchor="end" fill="#b7ff36" font-family="monospace" font-size="23">${safeId}</text>
-  <text x="800" y="1020" text-anchor="middle" fill="#7a4dff" font-family="Arial, sans-serif" font-size="24" font-weight="700">THE WORLD LIES · QA SCOUTS VERIFY</text>
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1131" viewBox="0 0 1600 1131" role="img" aria-label="Rascal Realms: Crownfall certificate of early review for ${safeName}">
+  <rect width="1600" height="1131" fill="${CREAM}"/>
+  <rect x="40" y="40" width="1520" height="1051" fill="none" stroke="${INK}" stroke-width="10"/>
+  <rect x="64" y="64" width="1472" height="1003" fill="none" stroke="${GOLD}" stroke-width="4"/>
+  <g fill="${GOLD}" stroke="${INK}" stroke-width="4">
+    <path d="M64 64 h90 l-90 90 Z"/><path d="M1536 64 h-90 l90 90 Z"/><path d="M64 1067 h90 l-90 -90 Z"/><path d="M1536 1067 h-90 l90 -90 Z"/>
+  </g>
+  <path d="M730 250 L748 150 L784 188 L800 120 L816 188 L852 150 L870 250 Z" fill="${GOLD}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>
+  <text x="800" y="320" text-anchor="middle" fill="${WOOD}" font-family="Georgia, 'Times New Roman', serif" font-size="30" letter-spacing="8">RASCAL REALMS: CROWNFALL</text>
+  <text x="800" y="420" text-anchor="middle" fill="${INK}" font-family="Georgia, 'Times New Roman', serif" font-size="84" font-weight="700">Founding QA Scout</text>
+  <text x="800" y="478" text-anchor="middle" fill="${WOOD}" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-style="italic">Certificate of early review</text>
+  <line x1="420" y1="540" x2="1180" y2="540" stroke="${GOLD}" stroke-width="3"/>
+  <text x="800" y="640" text-anchor="middle" fill="${INK}" font-family="Georgia, 'Times New Roman', serif" font-size="64">${safeName}</text>
+  <text x="800" y="712" text-anchor="middle" fill="${INK}" font-family="Georgia, 'Times New Roman', serif" font-size="28">reviewed Stickerwood before the Crown noticed,</text>
+  <text x="800" y="752" text-anchor="middle" fill="${INK}" font-family="Georgia, 'Times New Roman', serif" font-size="28">and helped make the mystery fairer for everyone who follows.</text>
+  <text x="260" y="900" fill="${WOOD}" font-family="'Courier New', monospace" font-size="24">ISSUED ${safeDate}</text>
+  <text x="1340" y="900" text-anchor="end" fill="${WOOD}" font-family="'Courier New', monospace" font-size="24" font-weight="700">${safeId}</text>
+  <text x="800" y="1010" text-anchor="middle" fill="${WOOD}" font-family="Georgia, 'Times New Roman', serif" font-size="20">Recognises an early review contribution. Not employment, payment or guaranteed playtest access.</text>
 </svg>`;
 }
 
@@ -122,6 +144,7 @@ export async function sendResendEmail(input: SendEmailInput): Promise<void> {
   }
 }
 
+/** Email frame: cream storybook card on ink. Inline styles only; email clients strip <style>. */
 export function emailShell(title: string, preheader: string, content: string): string {
-  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${escapeHtml(title)}</title></head><body style="margin:0;background:#090b18;color:#f8f8ff;font-family:Arial,sans-serif"><div style="display:none;max-height:0;overflow:hidden">${escapeHtml(preheader)}</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#090b18"><tr><td align="center" style="padding:32px 16px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:#171a31;border:1px solid #3b2a72;border-radius:24px;overflow:hidden"><tr><td style="padding:18px 28px;background:#121526;border-bottom:1px solid #3b2a72;color:#b7ff36;font-family:monospace;font-size:13px;letter-spacing:2px;font-weight:700">RASCAL REALMS · THE WORLD LIES</td></tr><tr><td style="padding:36px 28px">${content}</td></tr><tr><td style="padding:22px 28px;background:#101326;color:#aeb4dc;font-size:12px;line-height:1.6">Rascal Labs is an independent project and is not affiliated with or endorsed by Roblox or Discord. Never send passwords, payment details or private account credentials.</td></tr></table></td></tr></table></body></html>`;
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${escapeHtml(title)}</title></head><body style="margin:0;background:${INK};color:${INK};font-family:Georgia,'Times New Roman',serif"><div style="display:none;max-height:0;overflow:hidden">${escapeHtml(preheader)}</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:${INK}"><tr><td align="center" style="padding:32px 16px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:${CREAM};border:2px solid ${GOLD};border-radius:6px;overflow:hidden"><tr><td style="padding:16px 28px;background:${WOOD};color:${CREAM};font-size:13px;letter-spacing:3px;font-weight:700">RASCAL REALMS: CROWNFALL</td></tr><tr><td style="padding:34px 28px;font-size:16px;line-height:1.7">${content}</td></tr><tr><td style="padding:20px 28px;background:#EADABA;color:${WOOD};font-size:12px;line-height:1.6;font-family:Arial,sans-serif">Rascal Labs is an independent project and is not affiliated with or endorsed by Roblox or Discord. We will never ask for passwords, payment details or account credentials.</td></tr></table></td></tr></table></body></html>`;
 }
