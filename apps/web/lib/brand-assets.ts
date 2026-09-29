@@ -13,6 +13,13 @@ export const BRAND_ASSETS = {
   icon192: "/brand/icon-192.png",
   icon512: "/brand/icon-512.png",
 
+  // Final Rascal Realms: Crownfall title logo (approved 2026-09-28), transparent WebP.
+  // Source: all assets graphic/.../title logo/ (preserved, not shipped). 1600×898 and 600×337.
+  titleLogo: {
+    full: "/brand/title/crownfall-title-logo-1600.webp",
+    small: "/brand/title/crownfall-title-logo-600.webp",
+  },
+
   // Mascot Standard
   mascotDefault: "/brand/mascot.png",
 

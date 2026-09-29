@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
+import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { HeroVideo } from "@/components/HeroVideo";
 import { TeaserPlayer } from "@/components/TeaserPlayer";
 
@@ -23,17 +25,23 @@ export function CinematicHero() {
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-28 sm:px-8 sm:pb-20 lg:pb-24">
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E8C877] hero-shadow">
-            A Roblox co-op action-mystery · in pre-production
+            A Roblox co-op action RPG mystery · in pre-production
           </p>
 
-          <h1 id="hero-title" className="mt-4 font-display uppercase text-cloud-white hero-shadow">
-            <span className="block text-[1.35rem] font-bold tracking-[0.2em] text-[#F3E5C8] sm:text-3xl lg:text-4xl">Rascal Realms:</span>
-            <span className="mt-1 block text-[3.4rem] font-extrabold leading-[0.88] tracking-[-0.03em] sm:text-[5.5rem] lg:text-[7rem]">
-              Crownfall
-            </span>
+          <h1 id="hero-title" className="title-rise -ml-2 mt-3 w-[min(88vw,22rem)] sm:-ml-3 sm:w-[30rem] lg:w-[36rem]">
+            <Image
+              src={BRAND_ASSETS.titleLogo.full}
+              alt="Rascal Realms: Crownfall"
+              width={1600}
+              height={898}
+              priority
+              sizes="(min-width: 1024px) 576px, (min-width: 640px) 480px, 88vw"
+              className="h-auto w-full drop-shadow-[0_10px_30px_rgba(0,0,0,.65)]"
+            />
           </h1>
+          <p className="mt-1 text-sm font-semibold text-paper-cream/90 hero-shadow">Release 1 · Chapter 1: The Sign That Lied</p>
 
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-cloud-white/90 hero-shadow sm:text-xl">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-cloud-white/90 hero-shadow sm:text-xl">
             Explore a storybook kingdom with 1–4 players. Read the evidence, expose impossible rules, then survive as reality corrects itself.
           </p>
 

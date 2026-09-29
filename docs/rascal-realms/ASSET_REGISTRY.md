@@ -9,6 +9,21 @@ Audit of every visual asset in the two untracked source trees, classified **CANO
 - **The 6 named hero files** in `03_PLAYABLE_HEROES/` (`crown_knight_guardian_of_rascal_realms.png` and 5 siblings) were opened and rejected for promotion. They are baked "trading card" composites — full-page infographics with an anime-human character style (not the canon's "expressive Roblox proportions"), a different Rascal Realms logo treatment burned into the pixels, and hero stat text (weapon names, powers, reward currencies) that directly conflicts with `HEROES.md` (e.g. the card says Crown Knight's weapon is "Relic Sword & Royal Shield" and rewards are "Crown Shards, bounty gold, and fortress loot"; the card economy terms elsewhere include "Arcane Dust" and "knowledge sigils," neither of which exist in `GAMEPLAY.md`'s economy). These stay **SUPPORTING** — direction reference only, not promotable without a full art + copy reconciliation pass. The hero selector remains typographic/color-driven.
 - **The 10 unlabeled `key locations/` files** were opened and are, by contrast, clean painted environment illustrations with no baked text or UI — genuinely usable. 8 of the 10 were promoted (see below); the other 2 were close duplicates/less distinct compositions of already-covered locations and were left unpromoted.
 
+## Title logo — APPROVED (2026-09-29)
+
+| Published file | Size | Source (preserved, not shipped) | Used in |
+|---|---|---|---|
+| `public/brand/title/crownfall-title-logo-1600.webp` | 1600×898, 425 KB | `Rascal_Realms_Complete_Concept_Art_Pack/title logo/ChatGPT Image Sep 28, 2026, 01_53_08 PM.png` (1672×941 RGBA) | Homepage hero `<h1>` (via `next/image`, priority) |
+| `public/brand/title/crownfall-title-logo-600.webp` | 600×337, 77 KB | same | Intro overlay, footer |
+
+The owner confirmed this as the finalised title logo. Exported with Pillow: trimmed to the alpha bounding box, Lanczos-resized, WebP quality 86 with transparency preserved. The old bot-era `logo-lockup.png` (Rank Rascal) is no longer used by the footer; it stays in `public/brand/` for the legacy bot pages.
+
+## Release 1 area mapping (2026-09-29)
+
+The atlas now follows the ten Release 1 areas (see `WORLD.md`). Location art was reassigned without adding files: `mystery-forest-v1.png` now illustrates **Stickerwood Forest**. `stickerwood-heartwood-v1.png` and `hidden-cove-v1.png` are no longer atlas art; they remain in use as captioned Stickerwood atmosphere (homepage chapter 02, `/game` header) and the Badge Scout scene. Starting Village, River Path, Crown Ruins and Wrongway Territory show a zoomed crop of the approved `stickerwood-key-art-v1.png` rather than new or invented art.
+
+Note on the rejected hero cards below: the Release 1 specification later adopted "Relic Sword & Royal Shield" for Crown Knight, so that one detail on the card now matches canon. The cards remain SUPPORTING for the other reasons listed.
+
 ## Newly promoted — APPROVED (this update)
 
 Optimized via the same convention as the existing `game/` art (full-size PNGs served through `next/image`'s runtime optimizer, matching the ~2.5–3.4MB size class already established by `stickerwood-key-art-v1.png` and siblings). Copied with clean production filenames (no raw `ChatGPT Image...` names) to `apps/web/public/brand/game/locations/`, referenced via `BRAND_ASSETS.locations` in `brand-assets.ts`, and wired to `WORLD_LOCATIONS[].image` in `game-content.ts`, rendered as a banner in each location's `WorldAtlas` dossier card:

@@ -81,9 +81,14 @@ export const PageLoadingOverlay: React.FC = () => {
         <p className="intro-lie font-display text-3xl font-extrabold uppercase tracking-[0.08em] text-cloud-white sm:text-5xl">
           The world lies.
         </p>
-        <p className="intro-title text-xs font-semibold uppercase tracking-[0.3em] text-[#E8C877] sm:text-sm">
-          Rascal Realms: Crownfall
-        </p>
+        {/* eslint-disable-next-line @next/next/no-img-element -- 77 KB pre-optimized title art */}
+        <img
+          src={BRAND_ASSETS.titleLogo.small}
+          alt=""
+          width={600}
+          height={337}
+          className="intro-title h-auto w-[min(72vw,20rem)] drop-shadow-[0_8px_24px_rgba(0,0,0,.7)]"
+        />
       </div>
     </div>
   );
