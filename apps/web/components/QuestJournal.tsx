@@ -99,8 +99,8 @@ export function QuestJournal() {
               </p>
             </div>
             <p className="border-l-2 border-antique-gold pl-4 text-sm leading-relaxed">
-              Concept design, not a finished system. Release 1 targets 8–12 main quests, 8–15 side quests and 10–20 Frauds; numbers may change after prototyping.
-              Long-term Robux items lean toward cosmetics, not pay-to-win power. The full in-game guild system comes after Release 1 and is separate from the real Founders Guild below.
+              System design, not a finished system. Release 1.0 ships one polished main quest, Q01: A Sign of Trouble; the rest of this journal is planned for later updates.
+              Long-term Robux items lean toward cosmetics, not pay-to-win power. The full in-game guild system comes later and is separate from the real Founders Guild below.
             </p>
           </div>
         </div>

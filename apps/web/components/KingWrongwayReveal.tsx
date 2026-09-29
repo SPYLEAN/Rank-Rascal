@@ -75,7 +75,7 @@ export function KingWrongwayReveal() {
           Fake bridges. Lying signs. False clones. Telegraphs that point the wrong way. And always enough evidence to find the truth.
         </p>
         <p className={`mt-10 text-xs text-cloud-white/70 transition-opacity delay-1000 duration-[1800ms] ${seen ? "opacity-100" : "opacity-0"}`}>
-          Concept · Chapter 1 boss. No final model or encounter exists yet.
+          Chapter 1 concept · first major threat · not part of Release 1.0
         </p>
       </div>
     </section>

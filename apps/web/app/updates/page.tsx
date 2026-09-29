@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Clapperboard, Play } from "lucide-react";
+import { ConceptStatusBadge } from "@/components/ConceptStatusBadge";
 import { TeaserPlayer } from "@/components/TeaserPlayer";
+import { UnknownSpecimen } from "@/components/UnknownSpecimen";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { conceptById, conceptHref } from "@/lib/concepts";
 import { TRAILERS } from "@/lib/trailers";
 import {
   UPDATE_KINDS,
@@ -45,6 +48,40 @@ function TrailerSlot({ post, large = false }: { post: UpdatePost; large?: boolea
       </span>
       <span className="sr-only">: {post.title}</span>
     </TeaserPlayer>
+  );
+}
+
+/** A post about a Rascal Labs file: the file's preview, its status and a way into the archive. */
+function LabsFileSlot({ post }: { post: UpdatePost }) {
+  const entry = post.labsFile ? conceptById(post.labsFile) : undefined;
+  if (!entry) return null;
+  return (
+    <Link href={conceptHref(entry)} className="group block max-w-md">
+      <figure className="concept-sheet">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-[2px] bg-[#1a1622]">
+          {/* eslint-disable-next-line @next/next/no-img-element -- pre-built 720 px WebP preview */}
+          <img
+            src={entry.image.thumb}
+            alt={entry.alt}
+            width={720}
+            height={Math.round((720 * entry.image.height) / entry.image.width)}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: entry.focus ?? "50% 50%" }}
+          />
+        </div>
+        <figcaption className="px-1 pt-2 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-plum/75">
+          Rascal Labs // File {entry.file}
+        </figcaption>
+      </figure>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <ConceptStatusBadge status={entry.status} />
+        <span className="inline-flex items-center gap-1.5 text-sm font-bold uppercase tracking-[0.12em] text-antique-gold">
+          View field study <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true" />
+        </span>
+      </div>
+    </Link>
   );
 }
 
@@ -113,6 +150,12 @@ export default function UpdatesPage({ searchParams }: { searchParams?: { type?: 
         </section>
       ) : null}
 
+      {!filter ? (
+        <section aria-label="Coming next" className="mx-auto max-w-7xl px-5 pt-6 sm:px-8">
+          <UnknownSpecimen />
+        </section>
+      ) : null}
+
       <section aria-labelledby="all-updates" className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6 border-b border-cloud-white/15 pb-5">
           <h2 id="all-updates" className="font-display text-2xl font-bold text-cloud-white">{filter ? UPDATE_KINDS[filter] : "All updates"}</h2>
@@ -164,6 +207,10 @@ export default function UpdatesPage({ searchParams }: { searchParams?: { type?: 
                 {post.trailer ? (
                   <div className="md:col-start-2 lg:col-start-3">
                     <TrailerSlot post={post} />
+                  </div>
+                ) : post.labsFile ? (
+                  <div className="md:col-start-2 lg:col-start-3">
+                    <LabsFileSlot post={post} />
                   </div>
                 ) : null}
               </li>

@@ -34,6 +34,7 @@ export const Footer: React.FC = () => (
           <ul className="mt-4 space-y-3 text-sm">
             <li><Link href="/game" className={linkClass}>The game</Link></li>
             <li><Link href="/updates" className={linkClass}>Updates and announcements</Link></li>
+            <li><Link href="/labs" className={linkClass}>Rascal Labs concept archive</Link></li>
             <li><Link href="/#heroes" className={linkClass}>Heroes</Link></li>
             <li><Link href="/#explore-stickerwood" className={linkClass}>World atlas</Link></li>
             <li><Link href="/game#locations" className={linkClass}>All ten areas</Link></li>

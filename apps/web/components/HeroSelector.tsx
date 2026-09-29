@@ -15,7 +15,18 @@ const READABLE_ACCENT: Record<string, string> = {
   "#E632A9": "#FF7CC8",
 };
 
+/** One concept portrait per hero (BRAND_ASSETS.heroes). The scene behind stays cinematic. */
+const HERO_ART: Record<string, string> = {
+  "Crown Knight": BRAND_ASSETS.heroes.crownKnight,
+  Glitchcaster: BRAND_ASSETS.heroes.glitchcaster,
+  "Shadow Ranger": BRAND_ASSETS.heroes.shadowRanger,
+  Trickster: BRAND_ASSETS.heroes.trickster,
+  Lorekeeper: BRAND_ASSETS.heroes.lorekeeper,
+  "Badge Scout": BRAND_ASSETS.heroes.badgeScout,
+};
+
 const SCENE_NAMES: Record<SceneKey, string> = {
+  startingVillage: "Starting Village",
   stickerwoodHeartwood: "the Heartwood",
   mysteryForest: "Stickerwood Forest",
   ancientTree: "the Ancient Tree",
@@ -110,7 +121,26 @@ export function HeroSelector() {
         <p className="section-kicker">04 · Choose your hero</p>
         <h2 id="heroes-title" className="sr-only">Choose your hero</h2>
 
-        <div id={`${baseId}-panel`} role="tabpanel" aria-labelledby={`${baseId}-tab-${index}`} className="mt-6 max-w-3xl">
+        <div
+          id={`${baseId}-panel`}
+          role="tabpanel"
+          aria-labelledby={`${baseId}-tab-${index}`}
+          className="mt-6 grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]"
+        >
+          <figure key={`${hero.name}-art`} className="scene-in order-first mx-auto w-44 sm:w-56 lg:order-last lg:mx-0 lg:w-full">
+            <div className="relative aspect-[1122/1402] overflow-hidden rounded-md shadow-[0_30px_80px_-30px_rgba(0,0,0,.9)] ring-1 ring-antique-gold/50">
+              <Image
+                src={HERO_ART[hero.name] ?? BRAND_ASSETS.heroes.crownKnight}
+                alt={`${hero.name} hero concept art: ${hero.role.toLowerCase()} with the ${hero.weapon}`}
+                fill
+                sizes="(min-width: 1280px) 416px, (min-width: 1024px) 352px, 224px"
+                className="object-cover"
+              />
+            </div>
+            <figcaption className="mt-2 text-center text-xs text-cloud-white/70 lg:text-left">Hero concept art</figcaption>
+          </figure>
+
+          <div className="max-w-3xl">
           <p key={`${hero.name}-role`} className="scene-in flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-semibold uppercase tracking-[0.2em]" style={{ color: READABLE_ACCENT[hero.accent] ?? hero.accent }}>
             {hero.role}
             <span
@@ -121,7 +151,7 @@ export function HeroSelector() {
               {hero.releaseNote}
             </span>
           </p>
-          <h3 key={hero.name} className="scene-in mt-3 font-display text-[clamp(3.25rem,10vw,8.5rem)] font-extrabold uppercase leading-[.85] tracking-[-0.04em] text-cloud-white">
+          <h3 key={hero.name} className="scene-in mt-3 font-display text-[clamp(3rem,7.5vw,7rem)] font-extrabold uppercase leading-[.85] tracking-[-0.04em] text-cloud-white">
             {hero.name}
           </h3>
           <p className="mt-4 text-lg text-paper-cream/90">
@@ -147,6 +177,7 @@ export function HeroSelector() {
           </dl>
 
           <p className="mt-8 max-w-xl text-base italic leading-relaxed text-cloud-white/70">{hero.tension}</p>
+          </div>
         </div>
 
         <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-cloud-white/15 pt-6">
@@ -170,9 +201,7 @@ export function HeroSelector() {
             ))}
           </div>
           <div className="flex items-center gap-4">
-            <p className="hidden text-xs text-cloud-white/65 md:block">
-              Scene: {sceneName(scene)}, concept art. No final models yet.
-            </p>
+            <p className="hidden text-xs text-cloud-white/65 md:block">Scene: {sceneName(scene)} · concept art</p>
             <button type="button" onClick={() => select(index - 1)} aria-label="Previous hero" className="flex h-11 w-11 items-center justify-center rounded-full border border-cloud-white/30 text-cloud-white transition hover:border-antique-gold">
               <ChevronLeft className="h-5 w-5" aria-hidden="true" />
             </button>
@@ -181,11 +210,9 @@ export function HeroSelector() {
             </button>
           </div>
         </div>
-        <p className="mt-3 text-xs text-cloud-white/65 md:hidden">
-          Scene: {sceneName(scene)}, concept art. No final models yet.
-        </p>
+        <p className="mt-3 text-xs text-cloud-white/65 md:hidden">Scene: {sceneName(scene)} · concept art</p>
         <p className="mt-2 text-xs text-cloud-white/65">
-          Release 1 launches with three heroes. Trickster, Lorekeeper and Badge Scout arrive in later updates.
+          Release 1.0 launches with three heroes. Trickster, Lorekeeper and Badge Scout arrive in later updates.
         </p>
       </div>
     </section>

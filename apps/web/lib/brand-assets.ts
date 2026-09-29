@@ -79,10 +79,24 @@ export const BRAND_ASSETS = {
     foundersGuildWorkshop: "/brand/game/founders-guild-workshop-v1.png",
     qaTruthLab: "/brand/game/qa-truth-lab-v1.png",
     fractureBeneathStickerwood: "/brand/game/fracture-beneath-stickerwood-v1.png",
+    // Clean high-resolution Stickerwood map (2026-09-29), used by the world atlas. No Razz in frame.
+    stickerwoodMap: "/brand/game/stickerwood-map-v2.webp",
+  },
+
+  // Hero concept art (2026-09-29), one portrait per canon hero. Built by scripts/build-concepts.py.
+  heroes: {
+    crownKnight: "/brand/heroes/crown-knight.webp",
+    glitchcaster: "/brand/heroes/glitchcaster.webp",
+    shadowRanger: "/brand/heroes/shadow-ranger.webp",
+    trickster: "/brand/heroes/trickster.webp",
+    lorekeeper: "/brand/heroes/lorekeeper.webp",
+    badgeScout: "/brand/heroes/badge-scout.webp",
   },
 
   // World location environment art (2025-09-28 pre-production pass).
   locations: {
+    // The one canonical Starting Village image (owner-supplied 2026-09-29).
+    startingVillage: "/brand/game/locations/starting-village-v1.webp",
     stickerwoodHeartwood: "/brand/game/locations/stickerwood-heartwood-v1.png",
     mysteryForest: "/brand/game/locations/mystery-forest-v1.png",
     ancientTree: "/brand/game/locations/ancient-tree-v1.png",

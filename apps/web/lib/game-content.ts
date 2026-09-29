@@ -158,6 +158,9 @@ export type LoreStatus = "in-development" | "concept" | "planned";
 /** Release 1 (Chapter 1) ships three heroes. The other three are canon heroes arriving in later updates. */
 export type HeroRelease = "launch" | "future";
 
+/** Whether an area is part of Release 1.0 or arrives later in Chapter 1. */
+export type AreaRelease = "release-1" | "chapter-1";
+
 export const PLAYER_ROLES = [
   {
     name: "Crown Knight",
@@ -173,7 +176,7 @@ export const PLAYER_ROLES = [
     scene: "ancientTree",
     status: "planned" as LoreStatus,
     release: "launch" as HeroRelease,
-    releaseNote: "Release 1 launch hero",
+    releaseNote: "Release 1.0 launch hero",
   },
   {
     name: "Glitchcaster",
@@ -189,7 +192,7 @@ export const PLAYER_ROLES = [
     scene: "glitchGrove",
     status: "planned" as LoreStatus,
     release: "launch" as HeroRelease,
-    releaseNote: "Release 1 launch hero",
+    releaseNote: "Release 1.0 launch hero",
   },
   {
     name: "Shadow Ranger",
@@ -205,7 +208,7 @@ export const PLAYER_ROLES = [
     scene: "mysteryForest",
     status: "planned" as LoreStatus,
     release: "launch" as HeroRelease,
-    releaseNote: "Release 1 launch hero",
+    releaseNote: "Release 1.0 launch hero",
   },
   {
     name: "Trickster",
@@ -259,7 +262,7 @@ export const PLAYER_ROLES = [
 
 /**
  * Stickerwood's ten Release 1 areas, in the order the Release 1 specification lists them (§9).
- * `hotspot` is a percentage position on the concept key art; `changes` says how progress here
+ * `hotspot` is a percentage position on the clean Stickerwood map (BRAND_ASSETS.game.stickerwoodMap); `changes` says how progress here
  * affects the rest of the realm. Everything is pre-production: no area is built yet.
  */
 export const WORLD_LOCATIONS = [
@@ -268,6 +271,7 @@ export const WORLD_LOCATIONS = [
     name: "Starting Village",
     tagline: "The festival of forced cheer",
     chapterRole: "Act I · Onboarding",
+    release: "release-1" as AreaRelease,
     description:
       "A peaceful festival town where you choose your hero, meet Razz and learn to move. Every signboard insists the roads are safe. The first lie is almost convincing because everyone wants it to be true.",
     mysteries: ["The crossroads sign that points the wrong way", "Contradictory courier notices on the village board"],
@@ -277,24 +281,25 @@ export const WORLD_LOCATIONS = [
     notableCharacters: ["Razz", "Village merchants and quest-givers"],
     changes: "Exposing the first Fraud reveals the real road to Rascal Plaza.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 39, y: 31 },
-    image: null,
+    hotspot: { x: 15, y: 29 },
+    image: "startingVillage",
   },
   {
     number: "02",
     name: "Rascal Plaza",
     tagline: "Where every rumor ends up",
     chapterRole: "Act I · Social hub",
+    release: "release-1" as AreaRelease,
     description:
-      "Stickerwood's main gathering place: merchants, quest-givers, pets underfoot and players meeting up. A locked guild board and empty banners hint at things the Plaza isn't ready to open yet.",
+      "Stickerwood's main gathering place: merchants, quest-givers and players meeting up. A locked guild board and empty banners hint at things the Plaza isn't ready to open yet.",
     mysteries: ["A merchant who insists he's met you before", "A guild board that stays locked no matter who asks"],
     threats: "Rumors that turn out to be true a beat too late.",
-    discoveries: ["Merchants, the Pet Keeper and future guild and event hooks"],
-    questStyles: "Side Quests, Pet Quest",
-    notableCharacters: ["General Merchant", "Weapon Smith", "Pet Keeper"],
+    discoveries: ["Merchants, quest-givers and hooks for future pets, guilds and events"],
+    questStyles: "Main Story, Side Quests",
+    notableCharacters: ["General Merchant", "Weapon Smith", "Quest-givers"],
     changes: "Rumors traded here send the squad into Stickerwood Forest.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 47, y: 44 },
+    hotspot: { x: 21, y: 35 },
     image: "rascalPlazaRealm",
   },
   {
@@ -302,33 +307,35 @@ export const WORLD_LOCATIONS = [
     name: "Stickerwood Forest",
     tagline: "The trails remember",
     chapterRole: "Acts I–II · Main exploration",
+    release: "release-1" as AreaRelease,
     description:
-      "The realm's main exploration zone. Trail markers survive beneath newer bark, caves hide secrets, and Crown Sprouts, Glitch Slimes and Lost Stickers make the woods feel less friendly the further you go.",
+      "The realm's main exploration zone. Trail markers survive beneath newer bark, caves hide secrets, and Crown Sprouts and Lost Stickers make the woods feel less friendly the further you go.",
     mysteries: ["Old trail marks sealed under fresh sap", "What is behind the waterfall?"],
-    threats: "Crown Sprouts, Glitch Slimes and Lost Stickers.",
+    threats: "Crown Sprouts and Lost Stickers.",
     discoveries: ["Caves, collectibles, creatures and hidden Frauds"],
     questStyles: "Exploration, Mystery Cases",
     notableCharacters: ["Lost Stickers carrying fragments of discarded testimony"],
     changes: "Deeper paths open toward River Path and the Ancient Tree.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 47, y: 64 },
+    hotspot: { x: 12, y: 51 },
     image: "mysteryForest",
   },
   {
     number: "04",
     name: "River Path",
     tagline: "A current the maps deny",
-    chapterRole: "Side content · Fishing and secrets",
+    chapterRole: "Later update · Fishing and river secrets",
+    release: "chapter-1" as AreaRelease,
     description:
       "A quieter stretch of water for fishing, side quests and atmosphere. Official maps disagree about where the bridge is, and the current runs fastest on the days the records call calm.",
     mysteries: ["A bridge on no two matching maps", "A catch that glows violet"],
     threats: "Very little, unless you trust the ferry schedule.",
-    discoveries: ["Fishing spots, a collection journal and at least one Crownfall-corrupted fish"],
+    discoveries: ["Planned fishing spots and a river that hides more than fish"],
     questStyles: "Fishing Quest, Side Quests",
     notableCharacters: ["The Fishing NPC", "A ferryman who keeps two logbooks that disagree"],
     changes: "A strange catch here points upstream, toward the Ancient Tree.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 66, y: 62 },
+    hotspot: { x: 42, y: 50 },
     image: null,
   },
   {
@@ -336,6 +343,7 @@ export const WORLD_LOCATIONS = [
     name: "Ancient Tree",
     tagline: "Visible from everywhere",
     chapterRole: "Act III · The Ancient Tree",
+    release: "chapter-1" as AreaRelease,
     description:
       "A colossal landmark you can see from almost every area. Paths loop up its roots and canopy, and its oldest rings hold Stickerwood's history with the Crown.",
     mysteries: ["Growth rings out of step with recorded history", "Roots that grow toward the Crown Ruins however they're replanted"],
@@ -345,7 +353,7 @@ export const WORLD_LOCATIONS = [
     notableCharacters: ["The Rootbound Archivist"],
     changes: "The truth in its roots shows Crownfall isn't random, and turns the investigation toward King Wrongway.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 57, y: 86 },
+    hotspot: { x: 13, y: 76 },
     image: "ancientTree",
   },
   {
@@ -353,6 +361,7 @@ export const WORLD_LOCATIONS = [
     name: "Glitch Grove",
     tagline: "Where royal commands become terrain",
     chapterRole: "Act IV · Rising instability",
+    release: "chapter-1" as AreaRelease,
     description:
       "Stickerwood starts to come apart. Distorted plants, floating fragments and Crown energy make every path an argument, with harder enemies and more advanced Frauds.",
     mysteries: ["Gravity that flips above violet fissures", "Contradictory decrees carved on floating pillars"],
@@ -362,7 +371,7 @@ export const WORLD_LOCATIONS = [
     notableCharacters: ["Glitch Slimes that repeat and multiply unstable states"],
     changes: "The corruption thickens the closer the squad gets to the Crown Ruins.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 74, y: 22 },
+    hotspot: { x: 29, y: 82 },
     image: "glitchGrove",
   },
   {
@@ -370,6 +379,7 @@ export const WORLD_LOCATIONS = [
     name: "Crown Ruins",
     tagline: "What the Crown left behind",
     chapterRole: "Act V · Crown Ruins",
+    release: "chapter-1" as AreaRelease,
     description:
       "Late-chapter ruins full of relics, tougher enemies and major lore. Corruption is stronger here, and something enormous is growing out of the paperwork.",
     mysteries: ["A royal inscription that contradicts itself", "Relics that are important but unexplained"],
@@ -379,7 +389,7 @@ export const WORLD_LOCATIONS = [
     notableCharacters: ["The Overgrown Receipt"],
     changes: "Beating the Overgrown Receipt opens the way up to the Sky Bridges.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 56, y: 16 },
+    hotspot: { x: 40, y: 15 },
     image: null,
   },
   {
@@ -387,6 +397,7 @@ export const WORLD_LOCATIONS = [
     name: "Sky Bridges",
     tagline: "Causeways over nothing",
     chapterRole: "Late chapter · Traversal spectacle",
+    release: "chapter-1" as AreaRelease,
     description:
       "Floating islands, waterfalls and bridges across huge vistas. Some crossings hold only while a specific rule is believed true.",
     mysteries: ["Bridges that exist only while a rule is believed", "A route that leads somewhere else on the way back"],
@@ -396,7 +407,7 @@ export const WORLD_LOCATIONS = [
     notableCharacters: ["A royal cartographer who redraws the bridges nightly"],
     changes: "The last bridge lands in Wrongway Territory.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 78, y: 79 },
+    hotspot: { x: 64, y: 59 },
     image: "skyBridges",
   },
   {
@@ -404,6 +415,7 @@ export const WORLD_LOCATIONS = [
     name: "Wrongway Territory",
     tagline: "Every sign disagrees",
     chapterRole: "Acts IV–VI · The wrong road",
+    release: "chapter-1" as AreaRelease,
     description:
       "Contradictory signs, strange geometry and warped routes. Nothing here is subtle anymore: the land itself is foreshadowing the boss.",
     mysteries: ["Signs that contradict each other in the same breath", "Routes that bend back on themselves"],
@@ -413,7 +425,7 @@ export const WORLD_LOCATIONS = [
     notableCharacters: ["King Wrongway's influence, everywhere"],
     changes: "Every road here bends toward the Citadel.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 80, y: 61 },
+    hotspot: { x: 80, y: 55 },
     image: null,
   },
   {
@@ -421,6 +433,7 @@ export const WORLD_LOCATIONS = [
     name: "King Wrongway Citadel",
     tagline: "All roads lead to him",
     chapterRole: "Act VI · The final encounter",
+    release: "chapter-1" as AreaRelease,
     description:
       "Chapter 1's final environment: dark, corrupted and hostile, but still unmistakably Stickerwood. King Wrongway waits with fake bridges, false clones and misleading telegraphs, and there is always enough evidence to find the truth.",
     mysteries: ["Which telegraph is lying", "Which bridge is real"],
@@ -430,7 +443,7 @@ export const WORLD_LOCATIONS = [
     notableCharacters: ["King Wrongway"],
     changes: "When Wrongway falls, Stickerwood stabilizes, and the view beyond the clouds shows the Crownfall has only begun.",
     status: "planned" as LoreStatus,
-    hotspot: { x: 91, y: 12 },
+    hotspot: { x: 90, y: 12 },
     image: "kingWrongwayCitadel",
   },
 ] as const;
@@ -541,11 +554,11 @@ export const FUTURE_REALMS_TEASER = {
   status: "planned" as LoreStatus,
 } as const;
 
-/** Chapter 1 story structure (FIRST_RELEASE.md §10). */
+/** Chapter 1 story structure (FIRST_RELEASE.md §10). Release 1.0 covers the opening; the rest arrives in updates. */
 export const CHAPTER_ONE_ACTS = [
   { act: "Prologue", place: "The realms", title: "Crownfall", copy: "The Chaos Crown fractures. Golden energy destabilizes and violet corruption spreads through distant realms. Nobody explains why." },
   { act: "Act I", place: "Starting Village → Rascal Plaza", title: "Welcome to Stickerwood", copy: "Choose a hero, meet Razz, learn to move and explore the village. Then a sign at the crossroads tells your first lie." },
-  { act: "Act II", place: "Stickerwood Forest", title: "Something is wrong", copy: "Crown Sprouts, Glitch Slimes and Lost Stickers appear. People give conflicting answers and the first corruption shows through." },
+  { act: "Act II", place: "Stickerwood Forest", title: "Something is wrong", copy: "Crown Sprouts and Lost Stickers appear, with stranger things to follow. People give conflicting answers and the first corruption shows through." },
   { act: "Act III", place: "Ancient Tree", title: "The Ancient Tree", copy: "Stickerwood has an older connection to the Crown. Crownfall's effects are not random." },
   { act: "Act IV", place: "Glitch Grove · Wrongway Territory", title: "Follow the wrong road", copy: "The investigation points toward King Wrongway. Frauds grow more complex and combat more dangerous." },
   { act: "Act V", place: "Crown Ruins", title: "Crown Ruins", copy: "A major relic and story discovery, and the first mini-boss: the Overgrown Receipt." },
@@ -553,19 +566,44 @@ export const CHAPTER_ONE_ACTS = [
   { act: "Epilogue", place: "A high viewpoint", title: "The Crownfall has only begun", copy: "Stickerwood stabilizes and Razz celebrates. Then the clouds part, and other realms and massive Crown fractures come into view." },
 ] as const;
 
-/** What Release 1 is scoped to include. Production targets, not promises (FIRST_RELEASE.md §42). */
+/**
+ * Release 1.0: the initial playable release (owner brief, 2026-09-29). Deliberately smaller than
+ * Chapter 1: the open-world RPG foundation and one polished main quest. Everything else in
+ * Chapter 1 (Ancient Tree onward, the Overgrown Receipt, King Wrongway) and all future systems
+ * arrive in later updates. Production scope, not a promise; no date has been announced.
+ */
 export const RELEASE_ONE = {
-  name: "Chapter 1: The Sign That Lied",
+  version: "Release 1.0",
+  name: "A Sign of Trouble",
+  quest: "Q01: A Sign of Trouble",
   targets: [
-    ["Playable heroes", "3"],
-    ["Major areas", "10"],
-    ["Pets", "About 4"],
-    ["Fish species", "8–12"],
-    ["Fraud encounters", "10–20"],
-    ["Bosses", "1 mini-boss, 1 chapter boss"],
+    ["Main quest", "1"],
+    ["Launch heroes", "3"],
+    ["Places", "4"],
+    ["Enemy types", "2"],
+    ["Currencies", "2"],
   ],
-  includes: ["Co-op from day one", "Day, night and basic weather", "Fishing and pet bonding", "Loot, relics and reliable saving"],
-  deferred: ["Mount riding (teased only)", "Trading", "Full guild system", "Trickster, Lorekeeper and Badge Scout", "Other playable realms"],
+  places: ["Starting Village", "Stickerwood Forest", "the First Crossroads", "Rascal Plaza"],
+  heroes: ["Crown Knight", "Glitchcaster", "Shadow Ranger"],
+  enemies: ["Crown Sprout", "Lost Sticker"],
+  currencies: ["Gold", "Crown Shards"],
+  includes: [
+    "Razz as your companion",
+    "Combat and exploration foundation",
+    "Loot, inventory and equipment foundation",
+    "Multiplayer foundation and saving",
+    "The first World Lies Fraud",
+  ],
+  deferred: [
+    "Fishing and pets",
+    "Mounts",
+    "The Glitch Slime story, the Overgrown Receipt and King Wrongway",
+    "Crown Ruins and the rest of Chapter 1",
+    "The full relic ecosystem and later weapons",
+    "The full guild system",
+    "Trickster, Lorekeeper and Badge Scout",
+    "Future realms",
+  ],
 } as const;
 
 export const STORY_THEMES = [

@@ -39,7 +39,7 @@ export function CinematicHero() {
               className="h-auto w-full drop-shadow-[0_10px_30px_rgba(0,0,0,.65)]"
             />
           </h1>
-          <p className="mt-1 text-sm font-semibold text-paper-cream/90 hero-shadow">Release 1 · Chapter 1: The Sign That Lied</p>
+          <p className="mt-1 text-sm font-semibold text-paper-cream/90 hero-shadow">Release 1.0 · A Sign of Trouble</p>
 
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-cloud-white/90 hero-shadow sm:text-xl">
             Explore a storybook kingdom with 1–4 players. Read the evidence, expose impossible rules, then survive as reality corrects itself.

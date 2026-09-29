@@ -16,13 +16,13 @@ import {
 
 export const metadata: Metadata = {
   title: "World, Story & Gameplay",
-  description: "Chapter 1: The Sign That Lied. The story, heroes, ten Stickerwood areas and World Lies systems of Rascal Realms: Crownfall.",
+  description: "Release 1.0: A Sign of Trouble, and the Chapter 1 story beyond it. The heroes, ten Stickerwood areas and World Lies systems of Rascal Realms: Crownfall.",
 };
 
 const FACTS = [
   ["Genre", "Story-driven co-op action RPG mystery"],
   ["Players", "Solo or a squad of up to four"],
-  ["First release", "Chapter 1: The Sign That Lied"],
+  ["First release", "Release 1.0: A Sign of Trouble"],
 ] as const;
 
 export default function GamePage() {
@@ -160,10 +160,11 @@ export default function GamePage() {
 
       {/* Chapter 1 */}
       <section id="chapter-one" className="mx-auto max-w-7xl scroll-mt-24 px-5 py-24 sm:px-8 lg:py-32">
-        <p className="section-kicker">Release 1 · {RELEASE_ONE.name}</p>
-        <h2 className="section-title max-w-4xl">A small first chapter with a very big horizon.</h2>
+        <p className="section-kicker">Chapter 1 · The Sign That Lied</p>
+        <h2 className="section-title max-w-4xl">A small first release with a very big horizon.</h2>
         <p className="section-lede max-w-3xl">
-          It opens with a sign that lies about the road to Rascal Plaza and ends at a viewpoint that shows how much more of the realm is breaking.
+          Chapter 1 opens with a sign that lies about the road to Rascal Plaza and ends at a viewpoint that shows how much more of the realm is breaking.
+          {" "}{RELEASE_ONE.version}, {RELEASE_ONE.name}, is the opening: the open-world foundation and one polished main quest. The rest of the chapter arrives in updates.
         </p>
         <ol className="mt-14 border-t border-cloud-white/10">
           {CHAPTER_ONE_ACTS.map((beat) => (
@@ -182,7 +183,13 @@ export default function GamePage() {
 
         <div className="mt-16 grid gap-12 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
           <div>
-            <h3 className="font-display text-xl font-bold text-cloud-white">Release 1 targets</h3>
+            <h3 className="font-display text-xl font-bold text-cloud-white">
+              {RELEASE_ONE.version}: {RELEASE_ONE.name}
+            </h3>
+            <p className="mt-2 text-cloud-white/80">
+              {RELEASE_ONE.quest}, set in {RELEASE_ONE.places.join(", ")}. Heroes: {RELEASE_ONE.heroes.join(", ")}. Enemies:{" "}
+              {RELEASE_ONE.enemies.join(" and ")}. Currencies: {RELEASE_ONE.currencies.join(" and ")}.
+            </p>
             <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
               {RELEASE_ONE.targets.map(([label, value]) => (
                 <div key={label} className="border-t border-antique-gold/40 pt-3">
@@ -192,11 +199,11 @@ export default function GamePage() {
               ))}
             </dl>
             <p className="mt-6 text-sm text-cloud-white/70">
-              Also in scope: {RELEASE_ONE.includes.join(" · ")}. Production targets, not promises; numbers may change after prototyping.
+              Also in scope: {RELEASE_ONE.includes.join(" · ")}. Production scope, not a promise; no release date has been announced.
             </p>
           </div>
           <div>
-            <h3 className="font-display text-xl font-bold text-cloud-white">Saved for later updates</h3>
+            <h3 className="font-display text-xl font-bold text-cloud-white">After Release 1.0</h3>
             <ul className="mt-5 space-y-2 text-cloud-white/80">
               {RELEASE_ONE.deferred.map((item) => (
                 <li key={item} className="border-l-2 border-cloud-white/20 pl-3">{item}</li>
@@ -259,7 +266,7 @@ export default function GamePage() {
             <p className="section-kicker">The realm</p>
             <h2 className="section-title">Ten areas, one connected realm.</h2>
             <p className="section-lede">
-              Every Release 1 area, in chapter order. All of it is in pre-production; the concept art sets the direction, not the final look.
+              Every Chapter 1 area, in order. Release 1.0 opens the first three; the rest arrive in updates. All of it is in pre-production, and the concept art sets the direction, not the final look.
             </p>
             <Link href="/#explore-stickerwood" className="text-link mt-6">
               Open the interactive atlas <ArrowRight className="h-4 w-4" aria-hidden="true" />

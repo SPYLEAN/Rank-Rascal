@@ -9,6 +9,22 @@ Audit of every visual asset in the two untracked source trees, classified **CANO
 - **The 6 named hero files** in `03_PLAYABLE_HEROES/` (`crown_knight_guardian_of_rascal_realms.png` and 5 siblings) were opened and rejected for promotion. They are baked "trading card" composites — full-page infographics with an anime-human character style (not the canon's "expressive Roblox proportions"), a different Rascal Realms logo treatment burned into the pixels, and hero stat text (weapon names, powers, reward currencies) that directly conflicts with `HEROES.md` (e.g. the card says Crown Knight's weapon is "Relic Sword & Royal Shield" and rewards are "Crown Shards, bounty gold, and fortress loot"; the card economy terms elsewhere include "Arcane Dust" and "knowledge sigils," neither of which exist in `GAMEPLAY.md`'s economy). These stay **SUPPORTING** — direction reference only, not promotable without a full art + copy reconciliation pass. The hero selector remains typographic/color-driven.
 - **The 10 unlabeled `key locations/` files** were opened and are, by contrast, clean painted environment illustrations with no baked text or UI — genuinely usable. 8 of the 10 were promoted (see below); the other 2 were close duplicates/less distinct compositions of already-covered locations and were left unpromoted.
 
+## Concept library, hero art, Starting Village and map — APPROVED (2026-09-29, later)
+
+Twenty-four owner-supplied PNGs (`Downloads/website new changes/`) were preserved in `all assets graphic/concepts-2026-09-29/` (gitignored) and built into WebP by `scripts/build-concepts.py`. Each image was opened and classified by its content, not its file name. For example, `overgrown receipt.png` is labelled "relic study" on the sheet but depicts the mini-boss, and `stuff.png` is a nine-panel overview board that feeds eight archive categories.
+
+| Source | Published | Use |
+|---|---|---|
+| `hero 1–6.png` (1122×1402) | `brand/heroes/{crown-knight,glitchcaster,shadow-ranger,trickster,lorekeeper,badge-scout}.webp` (+ 720 px thumbs), about 290–360 KB each | Hero selector portrait, right-hand column |
+| `starting village.png` (1672×941) | `brand/game/locations/starting-village-v1.webp`, 551 KB | **The one canonical Starting Village image**: atlas dossier and the homepage "Current · Release 1.0" card. No other Starting Village asset exists in the repo |
+| `high ress map.png` (1672×941) | `brand/game/stickerwood-map-v2.webp`, 566 KB | World atlas map and map-detail crops (replaces the key art, which had Razz covering the left side). Hotspots re-placed. `stickerwood-key-art-v1.png` stays for OG/share images |
+| `crown sprout`, `lost sticker`, `glitch slime`, `overgrown receipt`, `king wrongway` | `brand/concepts/enemies/*`, `brand/concepts/king-wrongway/king-wrongway-sheet` | Archive 01 and 10 |
+| `pet 1–5.png` | `brand/concepts/pets/*` | Archive 02 (companion concepts) |
+| `fish 1–4.png`, `under water realms- items.png` | `brand/concepts/fishing/*` | Archive 03 (FILE 001 = river mysteries) |
+| `stuff.png` (1491×1055) | panels in `brand/concepts/{loot,materials,weapons,ecology,environments,mounts,king-wrongway,world-lies,future-realms}/*`, plus `brand/concepts/overview-board.webp` | Archive 04–12. World Lies and realm tiles are cut without their printed captions |
+
+Full files are native resolution at WebP quality 90. Previews are 720 px at quality 82. The whole concept library is about 13 MB on disk against about 70 MB of source PNGs, and pages load only the previews they show. See `RASCAL_LABS.md`.
+
 ## Title logo — APPROVED (2026-09-29)
 
 | Published file | Size | Source (preserved, not shipped) | Used in |

@@ -95,30 +95,30 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "release",
     question: "How long is Chapter 1?",
     answer:
-      "Production targets, not promises: about 60 to 90 minutes for the main Chapter 1 path, and roughly two to four hours with side quests, fishing, pets, secrets and exploration. Those numbers may change after prototyping.",
+      "Release 1.0 is one polished main quest plus exploration, and its length hasn't been announced. The long-term target for the whole of Chapter 1, delivered across updates, is about 60 to 90 minutes of main path and a few hours with side content. Targets, not promises.",
     phrasings: ["how long is the game", "how long is chapter 1", "how many hours of gameplay", "how long does it take to finish", "playtime"],
     keywords: [["how long", 3], ["hour", 3], ["minute", 3], ["playtime", 4], ["length", 3], ["finish", 1]],
     related: ["release-one", "chapter-acts"],
-    link: { label: "Release 1 targets", href: "/game#chapter-one" },
+    link: { label: "Release 1.0 scope", href: "/game#chapter-one" },
     status: "planned",
   },
   {
     id: "release-one",
     topic: "release",
-    question: "What is in Release 1?",
-    answer: `Release 1 is ${RELEASE_ONE.name}: one realm (Stickerwood), ten areas, three launch heroes, Razz, about four pets, eight to twelve fish species, ten to twenty Frauds, the Overgrown Receipt mini-boss and King Wrongway. Co-op, day and night, weather, loot, relics and saving are in scope. Targets may change after prototyping.`,
-    phrasings: ["what is in release 1", "what comes in the first release", "what is chapter 1", "what will launch include", "what content is in the first update", "what is the first release"],
-    keywords: [["release 1", 4], ["first release", 4], ["release", 1], ["launch", 1], ["include", 2], ["content", 2], ["scope", 3], ["sign that lied", 3]],
+    question: "What is in Release 1.0?",
+    answer: `${RELEASE_ONE.version} is ${RELEASE_ONE.name}: the open-world RPG foundation and one polished main quest, ${RELEASE_ONE.quest}. It covers ${RELEASE_ONE.places.join(", ")}, with Crown Knight, Glitchcaster and Shadow Ranger, me, Crown Sprouts and Lost Stickers, Gold and Crown Shards, combat, loot, inventory, multiplayer, saving and the first Fraud. The rest of Chapter 1 arrives in updates.`,
+    phrasings: ["what is in release 1", "what comes in the first release", "what will launch include", "what content is in the first update", "what is the first release", "what is a sign of trouble", "what is q01", "what is in release 1 0"],
+    keywords: [["release 1", 4], ["first release", 4], ["release", 1], ["launch", 1], ["include", 2], ["content", 2], ["scope", 3], ["sign of trouble", 6], ["q01", 6]],
     related: ["deferred", "heroes", "stickerwood"],
-    link: { label: "Release 1 scope", href: "/game#chapter-one" },
+    link: { label: "Release 1.0 scope", href: "/game#chapter-one" },
     status: "planned",
   },
   {
     id: "deferred",
     topic: "release",
-    question: "What is not in Release 1?",
+    question: "What is not in Release 1.0?",
     answer:
-      "Saved for later updates: riding mounts (young creatures are teased first), trading, the full guild system, full alignment and factions, raids, big crafting, a player marketplace, flying mounts, other playable realms, and the Trickster, Lorekeeper and Badge Scout heroes. They're future content, not missing features.",
+      "Saved for later: fishing, pets, mounts, the Glitch Slime story, the Overgrown Receipt, King Wrongway, Crown Ruins and the rest of Chapter 1, the full relic ecosystem, later weapons, the full guild system, trading, raids, other realms, and the Trickster, Lorekeeper and Badge Scout heroes. Many appear in the Rascal Labs concept archive as exploration, not promises.",
     phrasings: ["what is not in release 1", "what is coming later", "is trading in the game", "can i ride mounts", "are there raids", "is there a marketplace", "can you craft"],
     keywords: [["later", 2], ["not in", 2], ["trading", 3], ["trade", 3], ["mount", 3], ["ride", 3], ["raid", 3], ["crafting", 3], ["marketplace", 3], ["faction", 3], ["alignment", 3], ["flying", 3], ["deferred", 3]],
     related: ["roadmap", "release-one", "pets"],
@@ -202,7 +202,7 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "heroes",
     question: "When do Trickster, Lorekeeper and Badge Scout arrive?",
     answer:
-      "After Release 1, in later updates. The roadmap names v1.2 “Trickster Arrives” as the planned fourth-hero update. Lorekeeper and Badge Scout are canon heroes without an announced update yet. No dates for any of them.",
+      "After Release 1.0, in later updates. The roadmap names v1.2 “Trickster Arrives” as the planned fourth-hero update. Lorekeeper and Badge Scout are canon heroes without an announced update yet. No dates for any of them.",
     phrasings: ["when is trickster coming", "are there more heroes", "future heroes", "new heroes later"],
     keywords: [["future hero", 4], ["more hero", 3], ["new hero", 3], ["later", 1]],
     related: ["heroes", "roadmap"],
@@ -262,23 +262,23 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "wrongway",
     question: "What is the Overgrown Receipt?",
     answer:
-      "Chapter 1's first mini-boss, waiting in the Crown Ruins. It introduces boss fights: telegraphed patterns, environmental mechanics and better loot, as practice before King Wrongway.",
+      "A Chapter 1 concept for later, not part of Release 1.0: a once-humble receipt reclaimed by Stickerwood and tainted by Crownfall, planned as the first mini-boss in the Crown Ruins. Its concept study is in the Rascal Labs archive.",
     phrasings: ["what is the overgrown receipt", "is there a mini boss", "what is the first boss"],
     keywords: [["overgrown receipt", 6], ["receipt", 5], ["mini boss", 5], ["miniboss", 5], ["first boss", 4]],
     related: ["wrongway", "area-crown-ruins"],
-    link: { label: "Crown Ruins in the atlas", href: "/#explore-stickerwood" },
-    status: "planned",
+    link: { label: "See the concept study", href: "/labs#file-009" },
+    status: "concept",
   },
   {
     id: "enemies",
     topic: "wrongway",
     question: "What enemies are there?",
     answer:
-      "Release 1 has Crown Sprouts (basic melee, they teach combat), Glitch Slimes (corrupted, can split and move unpredictably) and Lost Stickers (fast and mischievous), plus planned Crown-Touched versions of existing creatures. Bosses are the Overgrown Receipt and King Wrongway.",
+      "Release 1.0 has Crown Sprouts (basic melee, they teach combat) and Lost Stickers (fast, mischievous and fond of relabelling signs). Glitch Slimes, Crown-touched creatures, the Overgrown Receipt and King Wrongway are concepts for later updates. You can see them in the Rascal Labs archive.",
     phrasings: ["what enemies are there", "what monsters are in the game", "what do i fight", "what is a crown sprout", "what is a glitch slime"],
     keywords: [["enemy", 4], ["monster", 4], ["crown sprout", 5], ["glitch slime", 5], ["lost sticker", 5], ["creature", 2], ["fight", 1]],
     related: ["wrongway", "loop"],
-    link: { label: "Opposition", href: "/game" },
+    link: { label: "Enemy concept studies", href: "/labs#enemies" },
     status: "planned",
   },
   // ── Systems ─────────────────────────────────────────────────────────────────
@@ -287,7 +287,7 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "systems",
     question: "How does progression work?",
     answer:
-      "You grow through hero level, abilities, weapon upgrades, starter equipment, relics with strange passives, pet bonding, exploration and collectibles. No enormous skill trees in Release 1. It's concept design, not a finished system.",
+      "You grow through hero level, abilities, weapon upgrades, starter equipment, relics with strange passives, pet bonding, exploration and collectibles. Release 1.0 builds the combat, loot, inventory and equipment foundation; pets and the wider relic ecosystem come later. No enormous skill trees. It's concept design, not a finished system.",
     phrasings: ["how do i level up", "how does progression work", "is there leveling", "are there skill trees", "how do heroes get stronger", "what are relics"],
     keywords: [["progression", 4], ["level", 3], ["skill tree", 4], ["upgrade", 3], ["stronger", 3], ["relic", 3], ["gear", 3], ["weapon upgrade", 3], ["xp", 3]],
     related: ["currencies", "loot", "pets"],
@@ -299,7 +299,7 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "systems",
     question: "What currencies are there?",
     answer:
-      "Three, on purpose: Gold for shops and everyday upgrades, Crown Shards as the main progression resource from story, bosses and exposed Frauds, and gems and crystals as upgrade materials. No overloaded currency bar.",
+      "Release 1.0 has two: Gold for shops and everyday upgrades, and Crown Shards as the main progression and story resource. Gems and crystals are planned as upgrade materials, not extra currencies. No overloaded currency bar.",
     phrasings: ["what currencies are there", "what is gold used for", "what are crown shards", "how do i earn money in game"],
     keywords: [["currency", 5], ["gold", 4], ["crown shard", 5], ["shard", 4], ["gem", 4], ["crystal", 3], ["in game money", 3], ["earn", 1]],
     related: ["progression", "monetisation"],
@@ -311,11 +311,11 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "systems",
     question: "What loot is there?",
     answer:
-      "Weapons, equipment, Gold, Crown Shards, gems, materials, relic fragments, keys, pet food, fishing items, cosmetics, lore items and mystery items. Some are deliberately weird, like a Broken Compass that points toward nearby Frauds and a Wrongway Token nobody can explain yet.",
+      "Release 1.0 builds the loot, inventory and equipment foundation, with Gold and Crown Shards. The wider concept includes relics, keys, materials and deliberately weird items, like a Wrongway Token whose arrow moves when you're not looking. Those later relics are concepts, not launch content.",
     phrasings: ["what loot is there", "what items are in the game", "are there chests", "what weird items are there"],
     keywords: [["loot", 5], ["item", 3], ["chest", 3], ["broken compass", 5], ["whispering lantern", 5], ["wrongway token", 5], ["reward", 2]],
     related: ["progression", "currencies"],
-    link: { label: "The game", href: "/game" },
+    link: { label: "Loot & relic studies", href: "/labs#loot" },
     status: "concept",
   },
   {
@@ -323,31 +323,31 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "systems",
     question: "Are there pets?",
     answer:
-      "Yes, about four companions at launch. They follow you, react, can be petted and fed, and build trust that unlocks small helpful abilities. They grow from Young to Bonded to Growing. Riding comes in a later update: they're still too young to carry a Rascal.",
+      "Not in Release 1.0. Companions are a future update concept: creatures that follow you, react, can be fed and build trust, and may grow from Young to Bonded to Growing. The Rascal Labs archive has companion studies. None of it is playable yet.",
     phrasings: ["are there pets", "can i have a pet", "what do pets do", "can pets grow", "how many pets"],
     keywords: [["pet", 5], ["companion", 2], ["bond", 3], ["feed", 2], ["creature", 1], ["animal", 3]],
     related: ["fishing", "deferred"],
-    link: { label: "Pets & Fishing quests", href: "/#quests" },
-    status: "planned",
+    link: { label: "Companion studies", href: "/labs#pets" },
+    status: "concept",
   },
   {
     id: "fishing",
     topic: "systems",
     question: "Is there fishing?",
     answer:
-      "Yes, a small starter system: a rod, a simple skill mechanic, a few fishing spots, sizes and rarities, a collection journal, and eight to twelve species including at least one Crownfall-corrupted fish. v1.1 “Waters of Stickerwood” is the planned fishing expansion.",
+      "Not in Release 1.0. Fishing is a future update concept: Stickerwood fish families, rods and tackle, a collection journal, and at least one Crownfall-corrupted fish. Something may be waiting beneath River Path. The concept sheets are in the Rascal Labs archive.",
     phrasings: ["is there fishing", "can i fish", "how many fish are there", "what is the fish journal"],
     keywords: [["fish", 5], ["fishing", 5], ["rod", 3], ["catch", 2], ["river", 1]],
     related: ["pets", "area-river-path"],
-    link: { label: "River Path in the atlas", href: "/#explore-stickerwood" },
-    status: "planned",
+    link: { label: "Fishing concept studies", href: "/labs#fishing" },
+    status: "concept",
   },
   {
     id: "quests",
     topic: "systems",
     question: "What kinds of quests are there?",
     answer:
-      "Main Story, Mystery Cases, Side Quests, Exploration, Pets and Fishing quests, and Hidden Quests. Release 1 targets 8 to 12 main quests, 8 to 15 side quests and 10 to 20 Fraud encounters.",
+      "Main Story, Mystery Cases, Side Quests, Exploration, Pets and Fishing quests, and Hidden Quests. Release 1.0 ships one polished main quest, Q01: A Sign of Trouble. The rest of the journal is planned for later updates.",
     phrasings: ["what quests are there", "how many quests", "are there side quests", "what are mystery cases"],
     keywords: [["quest", 5], ["mission", 3], ["side quest", 5], ["mystery case", 5], ["hidden quest", 5]],
     related: ["loop", "first-fraud"],
@@ -359,7 +359,7 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "systems",
     question: "Is there day, night and weather?",
     answer:
-      "Yes: sunrise, day, sunset and night, plus clear, cloudy, light rain and storm atmosphere. Night can change which fish, creatures and secrets appear.",
+      "It's planned for Stickerwood: sunrise, day, sunset and night, plus clear, cloudy, light rain and storm atmosphere. Exactly how much of it is in Release 1.0 hasn't been announced.",
     phrasings: ["is there day and night", "is there weather", "does it rain"],
     keywords: [["day", 2], ["night", 4], ["weather", 5], ["rain", 4], ["storm", 3], ["sunset", 3]],
     related: ["fishing", "stickerwood"],
@@ -431,7 +431,7 @@ const HANDWRITTEN: CanonEntry[] = [
     topic: "release",
     question: "What stage is development at?",
     answer:
-      "Phase 1, Foundation: canon, Release 1 scope, art direction, concept art, the teaser and this site. Next is a small prototype with one Stickerwood area, Crown Knight, me, a Crown Sprout, basic combat and the first Fraud sign. No playable build exists yet.",
+      "Phase 1, Foundation: canon, Release 1.0 scope, art direction, concept art, the teaser and this site. Next is a small prototype with one Stickerwood area, Crown Knight, me, a Crown Sprout, basic combat and the first Fraud sign. No playable build exists yet.",
     phrasings: ["what stage is development at", "how far along is the game", "is it being developed", "what is being worked on", "is the game dead", "development progress"],
     keywords: [["development", 4], ["progress", 3], ["stage", 3], ["phase", 4], ["prototype", 4], ["far along", 4], ["working on", 3], ["dead", 2], ["vertical slice", 5]],
     related: ["status", "updates", "devlog"],
@@ -453,7 +453,7 @@ const HANDWRITTEN: CanonEntry[] = [
   {
     id: "roadmap",
     topic: "updates",
-    question: "What updates are planned after Release 1?",
+    question: "What updates are planned after Release 1.0?",
     answer: `Planned, undated: ${UPDATE_ROADMAP.filter((item) => item.version !== "v1.0")
       .map((item) => `${item.version} ${item.title}`)
       .join(", ")}. Each gets its own reveal when it's real.`,
@@ -473,6 +473,18 @@ const HANDWRITTEN: CanonEntry[] = [
     keywords: [["teaser", 5], ["trailer", 4], ["footage", 5], ["cinematic", 4], ["concept art", 4], ["final", 2], ["real", 1]],
     related: ["updates", "dev-status"],
     link: { label: "Watch the teaser", href: "/" },
+    status: "confirmed",
+  },
+  {
+    id: "labs",
+    topic: "updates",
+    question: "What is Rascal Labs' concept archive?",
+    answer:
+      "The concept archive at /labs: studies of enemies, companions, fishing, relics, weapons, King Wrongway, World Lies ideas and glimpses beyond Stickerwood. Every file is labelled with its status. Most of it is exploration for later, not Release 1.0, and any of it can change.",
+    phrasings: ["what is the concept archive", "where is the concept art", "what is rascal labs archive", "can i see concept art", "show me the concept art", "what is from rascal labs"],
+    keywords: [["concept art", 5], ["concept archive", 6], ["archive", 4], ["artbook", 5], ["labs", 3], ["sketch", 3], ["file", 2]],
+    related: ["deferred", "updates", "teaser"],
+    link: { label: "Enter Rascal Labs", href: "/labs" },
     status: "confirmed",
   },
   {
@@ -605,8 +617,8 @@ const HERO_ENTRIES: CanonEntry[] = PLAYER_ROLES.map((hero) => {
     topic: `hero:${slug(hero.name)}`,
     question: `Who is ${hero.name}?`,
     answer: `${hero.name} is a ${hero.role.toLowerCase()} who fights with the ${hero.weapon}. ${hero.combat} In investigations: ${hero.mysterySpecialty} Powers: ${hero.powers.join(", ")}. ${
-      launch ? "A Release 1 launch hero." : "A canon hero arriving in a later update, not at launch."
-    } No final character model exists yet.`,
+      launch ? "A Release 1.0 launch hero." : "A canon hero arriving in a later update, not at launch."
+    } The hero art is concept art.`,
     phrasings: [`who is ${name}`, `tell me about ${name}`, `what does ${name} do`, `what weapon does ${name} use`, `is ${name} playable`, `what are ${name} powers`],
     keywords: [[name, 6], ...hero.name.toLowerCase().split(" ").map((part) => [part, 2] as const), ["weapon", 1], ["power", 1], ["ability", 1]],
     related: launch ? ["heroes", "progression"] : ["future-heroes", "heroes"],
@@ -622,12 +634,14 @@ const AREA_ENTRIES: CanonEntry[] = WORLD_LOCATIONS.map((area, index) => {
     id: `area-${slug(area.name)}`,
     topic: `area:${slug(area.name)}`,
     question: `What is ${area.name}?`,
-    answer: `${area.name} (${area.chapterRole}): ${area.description} ${area.changes}`,
+    answer: `${area.name} (${area.chapterRole}): ${area.description} ${area.changes} ${
+      area.release === "release-1" ? "Part of Release 1.0." : "A concept for later in Chapter 1, not part of Release 1.0."
+    }`,
     phrasings: [`what is ${name}`, `tell me about ${name}`, `where is ${name}`, `what happens in ${name}`, `what is in ${name}`],
     keywords: [[name, 6], ...name.split(" ").filter((part) => part.length > 3).map((part) => [part, 2] as const)],
     related: [next ? `area-${slug(next.name)}` : "wrongway", "stickerwood"],
     link: { label: "Open the atlas", href: "/#explore-stickerwood" },
-    status: "planned",
+    status: area.release === "release-1" ? "planned" : "concept",
   };
 });
 

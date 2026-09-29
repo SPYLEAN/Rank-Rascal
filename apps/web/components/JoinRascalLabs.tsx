@@ -26,7 +26,7 @@ export function JoinRascalLabs() {
       </div>
 
       <div className="mx-auto w-full max-w-7xl px-5 pb-24 pt-40 sm:px-8 lg:pb-32">
-        <p className="section-kicker">10 · Join Rascal Labs</p>
+        <p className="section-kicker">11 · Join Rascal Labs</p>
         <h2 id="join-title" className="chapter-title mt-4 max-w-3xl">Build the realm with us.</h2>
         <p className="chapter-lede hero-shadow">
           Rascal Labs is the community making Crownfall in the open. Bring your theories, your honest reviews or your craft.

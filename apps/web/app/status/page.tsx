@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 
 // Stages follow the production phases in docs/rascal-realms/FIRST_RELEASE.md §39.
 const ITEMS = [
-  { name: "Foundation", status: "Now", tone: "current", detail: "Game bible, Release 1 scope, canon, art direction, concept art, the teaser and this website." },
+  { name: "Foundation", status: "Now", tone: "current", detail: "Game bible, Release 1.0 scope, canon, art direction, the Rascal Labs concept archive, the teaser and this website." },
   { name: "Prototype (vertical slice 0.1)", status: "Next", tone: "next", detail: "One small Stickerwood area, Crown Knight, Razz, a Crown Sprout, basic combat, the first Fraud sign, one quest and saving." },
   { name: "Private playtesting", status: "Not open yet", tone: "later", detail: "Founding QA candidates may be invited in small groups once a build is ready. No date yet." },
-  { name: "Release 1: Chapter 1", status: "Unannounced", tone: "later", detail: "The Sign That Lied. No release date has been set." },
+  { name: "Release 1.0: A Sign of Trouble", status: "Unannounced", tone: "later", detail: "The open-world foundation and one polished main quest. No release date has been set." },
   { name: "Rank Rascal Discord bot", status: "Paused", tone: "paused", detail: "Installation and bot feature work are closed while the team focuses on the game. Preserved data stays covered by the privacy policy." },
 ] as const;
 

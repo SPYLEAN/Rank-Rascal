@@ -19,6 +19,20 @@ Explicit resolutions for every conflict named in the completion-pass brief.
 | Status labels | Some areas "in development" | All areas and systems "planned"; project is in Phase 1 (Foundation) | Spec header |
 | Monetisation copy | "Never loot boxes or paid randomness" | "Long-term Robux items lean toward cosmetics, not pay-to-win" (the spec's wording; no stronger promise) | Spec §31 |
 
+## Release 1.0 narrowed to "A Sign of Trouble" (2026-09-29)
+
+The owner's concept-archive brief redefined the initial release. `FIRST_RELEASE.md` scoped Release 1 as all of Chapter 1, with ten areas, pets, fishing, the Overgrown Receipt and King Wrongway. **Release 1.0 is now "A Sign of Trouble"**:
+- the open-world RPG foundation and one polished main quest, Q01: A Sign of Trouble;
+- Starting Village, Stickerwood Forest, the First Crossroads and Rascal Plaza, with limited surrounding exploration;
+- Razz; Crown Knight, Glitchcaster and Shadow Ranger; Crown Sprout and Lost Sticker; Gold and Crown Shards;
+- the combat, exploration, loot, inventory/equipment, multiplayer and saving foundations, and the first Fraud.
+
+The rest of Chapter 1 (the Ancient Tree onward, the Overgrown Receipt, King Wrongway) and all future systems arrive in later updates. The site now labels:
+- atlas areas as "Release 1.0" or "Chapter 1 · later update";
+- the Glitch Slime, pets, fishing and mounts as future concepts, never launch content.
+
+`RELEASE_ONE` in `game-content.ts`, the Razz canon, Updates, `/game`, `/status` and the roadmap all follow this. `FIRST_RELEASE.md` is the owner's document and was not edited; this entry records where the site departs from it.
+
 ## Ask Razz: scripted vs. AI (2026-09-29)
 
 The owner first asked for Ask Razz to become an AI agent, and a Claude-based version with a scripted fallback was built (commit `d4578db`). Later the same day the owner replaced it with a **zero-cost, self-contained Razz Canon Engine**: a structured knowledge base plus an in-browser matcher, with no paid API, no server route, and no question ever sent to an AI provider. The Anthropic SDK, route and prompt were removed. See `ASK_RAZZ.md`.

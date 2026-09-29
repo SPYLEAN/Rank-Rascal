@@ -35,6 +35,12 @@ Edit `apps/web/lib/updates.ts` and add an entry to `UPDATE_POSTS`:
 3. Add a `TRAILERS` entry in `apps/web/lib/trailers.ts` with a title, `kind` ("teaser" or "trailer"), the sources, the poster, written scene notes (the accessible description; required) and a one-line honesty note ("Pre-production cinematic art. Not in-game footage." when that is true).
 4. Point the post at it: `trailer: { id: "yourTrailerId" }`. It opens in the same accessible theater player as the homepage teaser.
 
+## Point a post at a Rascal Labs file
+
+Set `labsFile: "<concept entry id>"` on the post, with `kind: "labs"` for a pure archive teaser. Also set `updateSlug: "<post slug>"` on the entry in `apps/web/lib/concepts.ts`. The post shows the file's preview and a "View field study" link to `/labs#file-NNN`, and the archive links back. See `RASCAL_LABS.md`.
+
+The "Coming next" card (`components/UnknownSpecimen.tsx`) teases the next update without art, names or dates. Edit its copy when the tease changes.
+
 ## Rules
 
 - Never post a date, feature, trailer or build that doesn't exist.

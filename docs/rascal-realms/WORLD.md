@@ -2,7 +2,9 @@
 
 **Source of truth: [`FIRST_RELEASE.md`](FIRST_RELEASE.md) §9.** Release 1 (Chapter 1: The Sign That Lied) contains one polished, interconnected open-zone realm, Stickerwood, with the ten major areas below, in the specification's order. This file and `apps/web/lib/game-content.ts` → `WORLD_LOCATIONS` are kept in sync; treat a mismatch as a bug.
 
-Every area is **PLANNED** for Release 1. The project is in pre-production (Phase 1: Foundation). No area is built in Roblox yet. Concept art sets direction, not final geography.
+**Release 1.0 update (2026-09-29):** the initial release, *A Sign of Trouble*, covers only Starting Village, Rascal Plaza and Stickerwood Forest (with the First Crossroads). The other seven areas are Chapter 1 content for later updates. `WORLD_LOCATIONS[].release` records this, and the atlas shows it. The atlas now uses the clean high-resolution map (`stickerwood-map-v2.webp`, no Razz in frame), with hotspots re-placed for it, and Starting Village has its canonical art (`starting-village-v1.webp`). See `CONFLICT_REPORT.md`.
+
+Every area is **PLANNED** for Chapter 1. The project is in pre-production (Phase 1: Foundation). No area is built in Roblox yet. Concept art sets direction, not final geography.
 
 On the website atlas each area also carries a `hotspot` (its position on the Stickerwood key art), a `chapterRole` and a `changes` line describing how progress there affects the rest of the realm. The atlas draws one route through all ten in this order so the realm reads as a single chapter, not a level-select screen.
 

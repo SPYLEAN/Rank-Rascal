@@ -7,12 +7,13 @@ import { usePathname } from "next/navigation";
 import { ArrowLeft, ArrowRight, SendHorizontal, X } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { TEASER_CLOSE_EVENT } from "@/lib/media-preferences";
-import { RAZZ_GREETING, RAZZ_REACT_EVENT, RAZZ_REACTIONS, type RazzReaction } from "@/lib/razz";
+import { RAZZ_GREETING, RAZZ_LAUNCHER_GREETING, RAZZ_REACT_EVENT, RAZZ_REACTIONS, type RazzReaction } from "@/lib/razz";
 import { QUICK_QUESTION_IDS, type CanonEntry, type CanonStatus } from "@/lib/razz-canon";
 import { EMPTY_CONTEXT, answerById, askRazz, contextFor, type RazzContext, type RazzResult } from "@/lib/razz-engine";
 
 const QUIET_KEY = "rr.razz.quiet"; // localStorage: the visitor turned interruptions off
 const SEEN_PREFIX = "rr.razz.seen."; // sessionStorage: each reaction at most once per session
+const GREETED_KEY = "rr.razz.greeted"; // sessionStorage: the launcher greeting was shown
 const SMALL_QUERY = "(max-width: 639px)";
 const MAX_QUESTION = 300;
 const AVOID_SELECTOR = "[data-razz-avoid]";
@@ -70,8 +71,25 @@ export function RazzGuide() {
   const [quiet, setQuiet] = useState(false);
   const bubbleTimer = useRef(0);
 
+  const [greeting, setGreeting] = useState(false);
+
   useEffect(() => {
     setQuiet(readStore("local", QUIET_KEY) === "1");
+  }, []);
+
+  // A one-line hello beside the launcher: after 1.5 s, gone after 7 s, once per browser session,
+  // never while the drawer is open or the launcher has stepped aside for a form.
+  useEffect(() => {
+    if (readStore("local", QUIET_KEY) === "1" || readStore("session", GREETED_KEY) === "1") return;
+    const show = window.setTimeout(() => {
+      writeStore("session", GREETED_KEY, "1");
+      setGreeting(true);
+    }, 1500);
+    const hide = window.setTimeout(() => setGreeting(false), 1500 + 7000);
+    return () => {
+      window.clearTimeout(show);
+      window.clearTimeout(hide);
+    };
   }, []);
 
   const react = useCallback((reaction: RazzReaction) => {
@@ -245,6 +263,29 @@ export function RazzGuide() {
 
   return (
     <div className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-end gap-3 sm:right-6">
+      {greeting && !bubble && !open && !docked ? (
+        <div className="storybook pointer-events-auto relative max-w-[15rem] text-sm leading-snug">
+          <button
+            type="button"
+            onClick={() => {
+              setGreeting(false);
+              setOpen(true);
+            }}
+            className="block w-full px-4 py-3 pr-9 text-left"
+          >
+            {RAZZ_LAUNCHER_GREETING}
+          </button>
+          <button
+            type="button"
+            onClick={() => setGreeting(false)}
+            aria-label="Dismiss greeting"
+            className="absolute right-1 top-1 flex h-7 w-7 items-center justify-center rounded-full text-ink-plum/70 hover:text-ink-plum"
+          >
+            <X className="h-3.5 w-3.5" aria-hidden="true" />
+          </button>
+        </div>
+      ) : null}
+
       {bubble && !open && !docked ? (
         <div role="status" className="storybook pointer-events-auto relative max-w-[16rem] px-4 py-3 text-sm leading-snug">
           <p className="pr-5">{bubble}</p>
@@ -345,6 +386,7 @@ export function RazzGuide() {
           if (open) close();
           else {
             setBubble(null);
+            setGreeting(false);
             setOpen(true);
           }
         }}

@@ -7,8 +7,12 @@
  * world, never about what exists.
  */
 
+/** Shown when the drawer opens (owner copy, 2026-09-29). */
 export const RAZZ_GREETING =
-  "Psst. You made it into Stickerwood before the Crown noticed. Ask me anything about Crownfall, or pick one of these.";
+  "Hi 👋 Welcome to Rascal Realms. Ask me anything about Crownfall, Stickerwood, the heroes, or what we're building.";
+
+/** The small bubble beside the launcher, once per session. */
+export const RAZZ_LAUNCHER_GREETING = "Hi 👋 Curious about Crownfall? Ask me anything.";
 
 export type RazzAnswer = {
   id: string;
@@ -36,7 +40,7 @@ export const RAZZ_QUESTIONS: readonly RazzAnswer[] = [
     id: "heroes",
     question: "Which hero should I pick?",
     answer:
-      "Release 1 launches with three. Crown Knight if you like standing in front and blocking things. Glitchcaster if you like ranged magic and big Crown-energy explosions. Shadow Ranger if you like precision, speed and noticing footprints. Trickster, Lorekeeper and Badge Scout come in later updates. I'd pick me, but I'm not playable.",
+      "Release 1.0 launches with three. Crown Knight if you like standing in front and blocking things. Glitchcaster if you like ranged magic and big Crown-energy explosions. Shadow Ranger if you like precision, speed and noticing footprints. Trickster, Lorekeeper and Badge Scout come in later updates. I'd pick me, but I'm not playable.",
     link: { label: "Meet the heroes", href: "/#heroes" },
   },
   {
@@ -50,7 +54,7 @@ export const RAZZ_QUESTIONS: readonly RazzAnswer[] = [
     id: "status",
     question: "Can I play it yet?",
     answer:
-      "Not yet, and I won't pretend otherwise. Rascal Realms: Crownfall is in pre-production. The first release, Chapter 1: The Sign That Lied, is being planned now. There's no playable build and no release date. Announcements land on the Updates page.",
+      "Not yet, and I won't pretend otherwise. Rascal Realms: Crownfall is in pre-production. The first release, Release 1.0: A Sign of Trouble, is being built now: the open-world foundation and one main quest. There's no playable build and no release date. Announcements land on the Updates page.",
     link: { label: "See the updates", href: "/updates" },
   },
   {

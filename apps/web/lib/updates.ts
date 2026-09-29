@@ -24,6 +24,7 @@ export const UPDATE_KINDS = {
   devlog: "Devlog",
   maintenance: "Maintenance",
   community: "Community news",
+  labs: "Rascal Labs file",
 } as const;
 
 export type UpdateKind = keyof typeof UPDATE_KINDS;
@@ -36,8 +37,13 @@ export type UpdatePost = {
   body: readonly string[];
   /** ISO 8601 with an explicit offset, e.g. "2026-10-04T16:00:00Z". */
   publishAt: string;
-  /** Which release this belongs to, e.g. "Release 1". */
+  /** Which release this belongs to, e.g. "Release 1.0". */
   release?: string;
+  /**
+   * A Rascal Labs concept file this post is about (an id from lib/concepts.ts). The post shows the
+   * file's preview and links into the archive; the file links back to the post via updateSlug.
+   */
+  labsFile?: string;
   /** A trailer from lib/trailers.ts, or a plain statement that it is still to come. */
   trailer?: { id: TrailerId } | { comingSoon: string };
   link?: { label: string; href: string };
@@ -47,21 +53,34 @@ export type UpdatePost = {
 
 export const UPDATE_POSTS: readonly UpdatePost[] = [
   {
+    slug: "labs-file-001",
+    kind: "labs",
+    title: "Rascal Labs // File 001",
+    summary: "Something has been spotted beneath River Path.",
+    body: [
+      "A field study from the Rascal Labs concept archive: a crowned key, a broken sign, footprints that glow underwater and a bubble trail leading somewhere it shouldn't.",
+      "This is concept art for a future update, not part of Release 1.0. Nothing more to say. Yet.",
+    ],
+    publishAt: "2026-09-29T06:45:00Z",
+    labsFile: "river-mysteries",
+    link: { label: "View field study", href: "/labs#file-001" },
+  },
+  {
     slug: "release-one-scope",
     kind: "chapter",
-    title: "Release 1 is Chapter 1: The Sign That Lied",
+    title: "Release 1.0 is A Sign of Trouble",
     summary:
-      "The first release is scoped: one realm, ten areas, three launch heroes and a fair mystery at every crossroads. Small first chapter. Ridiculous polish. Obvious future.",
+      "The first release is deliberately small: the open-world RPG foundation and one polished main quest. Small first release. Ridiculous polish. Obvious future.",
     body: [
-      "Rascal Realms: Crownfall will arrive in chapters and updates rather than all at once. Release 1 is Chapter 1: The Sign That Lied, set entirely in Stickerwood.",
-      "It is scoped to ten connected areas, three launch heroes (Crown Knight, Glitchcaster and Shadow Ranger), Razz as your companion, about four pets, a small fishing system, the Overgrown Receipt mini-boss and King Wrongway. Co-op and reliable saving are built in from the start.",
-      "Trickster, Lorekeeper and Badge Scout, mount riding, trading and the full guild system are planned for later updates, each with its own reveal.",
-      "Everything here is pre-production. There is no playable build and no release date yet. Numbers may change after prototyping.",
+      "Rascal Realms: Crownfall will arrive in releases and updates rather than all at once. Release 1.0 is A Sign of Trouble, the opening of Chapter 1, set in Stickerwood.",
+      "It covers Starting Village, Stickerwood Forest, the First Crossroads and Rascal Plaza, with Crown Knight, Glitchcaster and Shadow Ranger, Razz, Crown Sprouts and Lost Stickers, Gold and Crown Shards, combat, loot, inventory, multiplayer, saving and the first World Lies Fraud, all built around one main quest: Q01, A Sign of Trouble.",
+      "Fishing, pets, mounts, the Overgrown Receipt, King Wrongway, Crown Ruins, later weapons and future realms are still in the labs. They come later, each with its own reveal.",
+      "Everything here is pre-production. There is no playable build and no release date yet.",
     ],
     publishAt: "2026-09-29T06:30:00Z",
-    release: "Release 1",
-    trailer: { comingSoon: "The Release 1 trailer arrives with the launch countdown." },
-    link: { label: "Explore Chapter 1", href: "/game#chapter-one" },
+    release: "Release 1.0",
+    trailer: { comingSoon: "The Release 1.0 trailer arrives with the launch countdown." },
+    link: { label: "See what's in Release 1.0", href: "/game#chapter-one" },
     featured: true,
   },
   {
@@ -126,7 +145,8 @@ export function formatUpdateDate(iso: string): string {
  * (with its own trailer) only when it is announced.
  */
 export const UPDATE_ROADMAP = [
-  { version: "v1.0", title: "The Sign That Lied", copy: "The core game and Stickerwood. Chapter 1.", status: "In pre-production" },
+  { version: "v1.0", title: "A Sign of Trouble", copy: "The open-world RPG foundation and one polished main quest, opening Chapter 1 in Stickerwood.", status: "In pre-production" },
+  { version: "Chapter 1", title: "The Sign That Lied continues", copy: "The Ancient Tree, Glitch Grove, Crown Ruins, the Overgrown Receipt and King Wrongway, arriving across later updates.", status: "Planned" },
   { version: "v1.1", title: "Waters of Stickerwood", copy: "A fishing expansion: new fish, water mysteries, weather catches and quests.", status: "Planned" },
   { version: "v1.2", title: "Trickster Arrives", copy: "The fourth hero, with hero quests, weapons and a new combat style.", status: "Planned" },
   { version: "v1.3", title: "Bonded Beasts", copy: "Pet growth, creature evolution and the first mounts.", status: "Planned" },

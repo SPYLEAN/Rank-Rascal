@@ -56,12 +56,15 @@ export function WorldAtlas() {
         <p className="chapter-lede">
           Stickerwood is one connected realm. Every truth you prove opens the way to the next place, from a festival village to the King&apos;s citadel.
         </p>
+        <p className="mt-3 max-w-2xl text-sm text-cloud-white/75">
+          Release 1.0 opens the first stretch: Starting Village, Stickerwood Forest, the First Crossroads and Rascal Plaza. The rest of the road arrives in later updates.
+        </p>
       </div>
 
       <div className="mx-auto mt-12 max-w-[92rem] sm:px-8">
         <div className="paper-frame relative aspect-[1672/941] w-full overflow-hidden">
           <Image
-            src={BRAND_ASSETS.game.stickerwoodKeyArt}
+            src={BRAND_ASSETS.game.stickerwoodMap}
             alt="Illustrated concept map of Stickerwood, from Starting Village up to King Wrongway Citadel"
             fill
             sizes="(max-width: 1500px) 100vw, 1472px"
@@ -146,7 +149,7 @@ export function WorldAtlas() {
                 aria-label={`Detail of ${location.name} on the Stickerwood concept map`}
                 className="absolute inset-0 bg-no-repeat"
                 style={{
-                  backgroundImage: `url(${BRAND_ASSETS.game.stickerwoodKeyArt})`,
+                  backgroundImage: `url(${BRAND_ASSETS.game.stickerwoodMap})`,
                   backgroundSize: `${DETAIL_ZOOM * 100}% ${DETAIL_ZOOM * 100}%`,
                   backgroundPosition: detailPosition(location.hotspot.x, location.hotspot.y),
                 }}
@@ -159,8 +162,17 @@ export function WorldAtlas() {
         </figure>
 
         <div aria-live="polite">
-          <p className="text-sm text-cloud-white/65">
-            Area {Number(location.number)} of {COUNT} · {location.chapterRole}
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-cloud-white/70">
+            <span>
+              Area {Number(location.number)} of {COUNT} · {location.chapterRole}
+            </span>
+            <span
+              className={`rounded-sm px-2 py-0.5 text-[0.68rem] font-bold uppercase tracking-[0.14em] ${
+                location.release === "release-1" ? "bg-antique-gold text-ink-plum" : "border border-[#B99BFF] text-[#D7C6FF]"
+              }`}
+            >
+              {location.release === "release-1" ? "Release 1.0" : "Chapter 1 · later update"}
+            </span>
           </p>
           <h3 className="mt-2 font-display text-3xl font-extrabold text-cloud-white sm:text-4xl">{location.name}</h3>
           <p className="mt-1 text-lg italic text-paper-cream/90">{location.tagline}</p>
@@ -216,7 +228,10 @@ export function WorldAtlas() {
               </a>
             )}
           </div>
-          <p className="mt-4 text-xs text-cloud-white/60">Release 1 area · pre-production. Quest styles: {location.questStyles}</p>
+          <p className="mt-4 text-xs text-cloud-white/65">
+            {location.release === "release-1" ? "Part of Release 1.0: A Sign of Trouble." : "Concept for later in Chapter 1. Not part of Release 1.0."} Quest styles:{" "}
+            {location.questStyles}
+          </p>
         </div>
       </div>
     </section>
