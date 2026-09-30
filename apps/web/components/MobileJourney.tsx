@@ -8,12 +8,12 @@ import { PLAYER_ROLES, PRODUCTION_STAGES } from "@/lib/game-content";
 
 /** One quest, start to finish, in six beats. Tone drives the colour of each beat's marker. */
 const PLAYER_LOOP = [
-  { title: "Explore Stickerwood", copy: "Villages, forest paths, a busy plaza.", tone: "calm" },
-  { title: "Notice what doesn't make sense", copy: "A sign, a bridge or a witness that disagrees.", tone: "calm" },
-  { title: "Gather evidence with your squad", copy: "Tracks, sounds, memories and broken rules.", tone: "calm" },
-  { title: "Expose the false rule", copy: "Accuse the lie the Crown is enforcing.", tone: "fracture" },
-  { title: "Survive the Crown's correction", copy: "The world fights back as the lie breaks.", tone: "fracture" },
-  { title: "Restore the area and unlock what follows", copy: "What you fix stays fixed for the next quest.", tone: "restored" },
+  { title: "Explore Stickerwood", tone: "calm" },
+  { title: "Notice what doesn't make sense", tone: "calm" },
+  { title: "Gather evidence with your squad", tone: "calm" },
+  { title: "Expose the false rule", tone: "fracture" },
+  { title: "Survive the Crown's correction", tone: "fracture" },
+  { title: "Restore the area and unlock what follows", tone: "restored" },
 ] as const;
 
 const MARKER: Record<(typeof PLAYER_LOOP)[number]["tone"], string> = {
@@ -63,24 +63,21 @@ export function MobileJourney() {
           Read the world. <span className="text-antique-gold">Prove it&apos;s lying.</span>
         </h2>
 
-        <ol className="relative mt-7 space-y-4">
+        <ol className="relative mt-6 space-y-3">
           {/* One continuous thread: calm gold, the fracture, then restored. */}
           <span
             className="absolute bottom-3 left-[13px] top-3 w-0.5 bg-[linear-gradient(180deg,#D5A84B_0%,#D5A84B_45%,#E632A9_58%,#E632A9_80%,#B7FF36_100%)]"
             aria-hidden="true"
           />
           {PLAYER_LOOP.map((step, index) => (
-            <li key={step.title} className="relative grid grid-cols-[1.75rem_1fr] gap-3">
+            <li key={step.title} className="relative grid grid-cols-[1.75rem_1fr] items-center gap-3">
               <span
                 className={`flex h-7 w-7 items-center justify-center rounded-full border-2 font-mono text-xs font-bold ${MARKER[step.tone]}`}
                 aria-hidden="true"
               >
                 {index + 1}
               </span>
-              <div>
-                <h3 className="font-display text-[0.95rem] font-bold uppercase leading-tight text-cloud-white">{step.title}</h3>
-                <p className="mt-0.5 text-sm leading-snug text-cloud-white/75">{step.copy}</p>
-              </div>
+              <h3 className="font-display text-[0.95rem] font-bold uppercase leading-tight text-cloud-white">{step.title}</h3>
             </li>
           ))}
         </ol>
@@ -108,8 +105,8 @@ export function MobileJourney() {
         />
 
         <p className="mt-4 text-[0.95rem] leading-relaxed text-cloud-white/85">
-          Stickerwood runs on the Crown, which turns royal commands into physical laws. King Wrongway used it to erase anything uncertain, and now its
-          commands contradict each other. Signs point the wrong way, bridges pretend to be safe, and every lie leaves evidence.
+          The Crown turns royal commands into physical laws. Now those commands contradict each other: signs point the wrong way, bridges pretend
+          to be safe, and every lie leaves evidence.
         </p>
 
         <h3 className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-antique-gold">Release 1.0 heroes</h3>
@@ -140,27 +137,25 @@ export function MobileJourney() {
         <p className="section-kicker">04 · Help build the realm</p>
         <h2 id="help-title" className={`${chapterTitle} mt-3`}>Built in the open.</h2>
 
-        <ol aria-label="Production stages" className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-cloud-white/15 pt-4">
-          {PRODUCTION_STAGES.map((stage) => (
-            <li key={stage.label} className="flex items-start gap-2">
+        {/* The production road in one line; the current stage is marked "Now". */}
+        <ol aria-label="Production stages" className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-2 text-xs font-semibold">
+          {PRODUCTION_STAGES.map((stage, index) => (
+            <li key={stage.label} className="flex items-center gap-1.5">
               <span
-                className={`mt-1.5 h-2.5 w-2.5 flex-none rounded-full ${
-                  stage.current ? "border-2 border-antique-gold bg-antique-gold/40" : "border border-cloud-white/45"
+                className={`rounded-sm px-2 py-1 ${
+                  stage.current ? "bg-antique-gold text-ink-plum" : "border border-cloud-white/25 text-cloud-white/80"
                 }`}
-                aria-hidden="true"
-              />
-              <div>
-                <p className={`font-display text-sm font-bold ${stage.current ? "text-cloud-white" : "text-cloud-white/75"}`}>
-                  {stage.label}
-                  {stage.current ? <span className="sr-only"> (current stage)</span> : null}
-                </p>
-                <p className="text-xs leading-snug text-cloud-white/70">{stage.state}</p>
-              </div>
+              >
+                {stage.current ? "Now: " : ""}
+                {stage.label}
+                {stage.label === "Release 1.0" ? " · no date yet" : ""}
+              </span>
+              {index < PRODUCTION_STAGES.length - 1 ? <span className="text-antique-gold" aria-hidden="true">→</span> : null}
             </li>
           ))}
         </ol>
 
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-5 flex flex-col gap-3">
           <Link href="/community#review" className="action-primary">
             Review the game <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
@@ -169,17 +164,16 @@ export function MobileJourney() {
           </Link>
         </div>
 
-        <h3 className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-antique-gold">Follow Rascal Labs</h3>
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <SocialLinks />
+        <h3 className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-antique-gold">Follow Rascal Labs</h3>
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <SocialLinks compactOnPhones />
           <Link href="/updates" className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-paper-cream hover:text-antique-gold">
             Latest updates <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
 
-        <p className="mt-5 border-l-2 border-antique-gold pl-3 text-xs leading-relaxed text-cloud-white/75">
-          In pre-production: no public build, no release date, and concept art is direction, not final. Joining is free and isn&apos;t a job offer
-          or a playtest guarantee.
+        <p className="mt-4 border-l-2 border-antique-gold pl-3 text-xs leading-relaxed text-cloud-white/75">
+          In pre-production: no public build or release date yet. Joining is free and isn&apos;t a job offer or a playtest guarantee.
         </p>
       </section>
     </div>

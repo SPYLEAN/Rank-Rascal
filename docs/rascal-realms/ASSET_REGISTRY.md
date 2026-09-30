@@ -114,3 +114,7 @@ Everything under `apps/web/public/brand/` today (verified against `apps/web/lib/
 ## Secrets check
 
 No credentials, API keys, or tokens found in either tree (confirmed by pattern sweep). Nothing from either asset tree was copied, moved, or deleted during this audit.
+
+## Served as WebP (2026-10-01)
+
+The site serves images as-is (`images.unoptimized`), and most registered art was 2–3 MB of PNG. `scripts/optimize-brand-images.py` writes a WebP copy next to every PNG/JPG in `BRAND_ASSETS` (alpha kept; badges, insignias and emojis capped at 512 px, Razz poses at 768 px, everything else at 1920 px) and points the registry at it: about 82 MB of PNG became about 10 MB of WebP. The PNG originals stay in place for favicons, touch/PWA icons (never converted) and the Open Graph/Twitter cards. Re-run the script after adding a PNG to the registry.

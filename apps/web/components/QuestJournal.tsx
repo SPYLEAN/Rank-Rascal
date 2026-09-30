@@ -111,7 +111,7 @@ export function QuestJournal() {
           alt=""
           fill
           sizes="100vw"
-          className="object-cover opacity-[.16] blur-[2px] saturate-[.85]"
+          className="object-cover opacity-[.14] saturate-[.85]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(16,24,22,.7)_0%,rgba(18,21,38,.84)_48%,rgba(34,14,54,.72)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(55%_45%_at_100%_35%,rgba(107,49,168,.28),transparent_70%)]" />

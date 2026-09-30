@@ -6,8 +6,8 @@
 
 export const BRAND_ASSETS = {
   // Core Logos & Icons
-  logoLockup: "/brand/logo-lockup.png",
-  appIcon: "/brand/app-icon.png",
+  logoLockup: "/brand/logo-lockup.webp",
+  appIcon: "/brand/app-icon.webp",
   favicon: "/favicon.ico",
   appleTouchIcon: "/brand/apple-touch-icon.png",
   icon192: "/brand/icon-192.png",
@@ -21,25 +21,25 @@ export const BRAND_ASSETS = {
   },
 
   // Mascot Standard
-  mascotDefault: "/brand/mascot.png",
+  mascotDefault: "/brand/mascot.webp",
 
   // Mascot Poses
   poses: {
-    heroPoint: "/brand/poses/razz-hero-point.png",
-    badgePresent: "/brand/poses/razz-badge-present.png",
-    detective: "/brand/poses/razz-detective.png",
-    celebrate: "/brand/poses/razz-celebrate.png",
-    loadStatic: "/brand/animation/razz-load-01.png",
+    heroPoint: "/brand/poses/razz-hero-point.webp",
+    badgePresent: "/brand/poses/razz-badge-present.webp",
+    detective: "/brand/poses/razz-detective.webp",
+    celebrate: "/brand/poses/razz-celebrate.webp",
+    loadStatic: "/brand/animation/razz-load-01.webp",
   },
 
   // Discord Emojis (Expressive UI Accents)
   emojis: {
-    hype: "/brand/emojis/discord/rascal-hype.png",
-    cooked: "/brand/emojis/discord/rascal-cooked.png",
-    sus: "/brand/emojis/discord/rascal-sus.png",
-    win: "/brand/emojis/discord/rascal-win.png",
-    lol: "/brand/emojis/discord/rascal-lol.png",
-    loading: "/brand/emojis/discord/rascal-loading.png",
+    hype: "/brand/emojis/discord/rascal-hype.webp",
+    cooked: "/brand/emojis/discord/rascal-cooked.webp",
+    sus: "/brand/emojis/discord/rascal-sus.webp",
+    win: "/brand/emojis/discord/rascal-win.webp",
+    lol: "/brand/emojis/discord/rascal-lol.webp",
+    loading: "/brand/emojis/discord/rascal-loading.webp",
   },
 
   // Animations & GIFs (3-second slow loop)
@@ -48,37 +48,37 @@ export const BRAND_ASSETS = {
     loadingSlowGif: "/brand/animation/razz-loading-slow.gif",
     loadingWebp: "/brand/animation/razz-loading.webp",
     loadingGif: "/brand/animation/razz-loading.gif",
-    loadStatic: "/brand/animation/razz-load-01.png",
+    loadStatic: "/brand/animation/razz-load-01.webp",
   },
 
   // Official Badge Artwork (3 Canonical Badges)
   badges: {
-    questCrusader: "/brand/badges/quest-crusader.png",
-    dripMonarch: "/brand/badges/drip-monarch.png",
-    veteranNoob: "/brand/badges/veteran-noob.png",
-    questCrusader256: "/brand/badges/discord/quest-crusader-256.png",
-    dripMonarch256: "/brand/badges/discord/drip-monarch-256.png",
-    veteranNoob256: "/brand/badges/discord/veteran-noob-256.png",
-    badgePackPreview: "/brand/badges/badge-pack-preview.png",
+    questCrusader: "/brand/badges/quest-crusader.webp",
+    dripMonarch: "/brand/badges/drip-monarch.webp",
+    veteranNoob: "/brand/badges/veteran-noob.webp",
+    questCrusader256: "/brand/badges/discord/quest-crusader-256.webp",
+    dripMonarch256: "/brand/badges/discord/drip-monarch-256.webp",
+    veteranNoob256: "/brand/badges/discord/veteran-noob-256.webp",
+    badgePackPreview: "/brand/badges/badge-pack-preview.webp",
   },
 
   // Website Art Illustrations
   websiteArt: {
-    whyDifferent: "/brand/website-art/razz-why-different.png",
-    rewardMachine: "/brand/website-art/razz-reward-machine.png",
-    privacyGuardian: "/brand/website-art/razz-privacy-guardian.png",
-    rulebook: "/brand/website-art/razz-rulebook.png",
-    communityClubhouse: "/brand/website-art/razz-community-clubhouse-banner.png",
+    whyDifferent: "/brand/website-art/razz-why-different.webp",
+    rewardMachine: "/brand/website-art/razz-reward-machine.webp",
+    privacyGuardian: "/brand/website-art/razz-privacy-guardian.webp",
+    rulebook: "/brand/website-art/razz-rulebook.webp",
+    communityClubhouse: "/brand/website-art/razz-community-clubhouse-banner.webp",
   },
 
   // Rascal Realms pre-production art approved for the public game site.
   game: {
-    stickerwoodKeyArt: "/brand/game/stickerwood-key-art-v1.png",
-    worldLiesUi: "/brand/game/world-lies-ui-v1.png",
-    stickerwoodEnemiesBoss: "/brand/game/stickerwood-enemies-boss-v1.png",
-    foundersGuildWorkshop: "/brand/game/founders-guild-workshop-v1.png",
-    qaTruthLab: "/brand/game/qa-truth-lab-v1.png",
-    fractureBeneathStickerwood: "/brand/game/fracture-beneath-stickerwood-v1.png",
+    stickerwoodKeyArt: "/brand/game/stickerwood-key-art-v1.webp",
+    worldLiesUi: "/brand/game/world-lies-ui-v1.webp",
+    stickerwoodEnemiesBoss: "/brand/game/stickerwood-enemies-boss-v1.webp",
+    foundersGuildWorkshop: "/brand/game/founders-guild-workshop-v1.webp",
+    qaTruthLab: "/brand/game/qa-truth-lab-v1.webp",
+    fractureBeneathStickerwood: "/brand/game/fracture-beneath-stickerwood-v1.webp",
     // Clean high-resolution Stickerwood map (2026-09-29), used by the world atlas. No Razz in frame.
     stickerwoodMap: "/brand/game/stickerwood-map-v2.webp",
     // 960 px copy for the mobile homepage.
@@ -106,14 +106,14 @@ export const BRAND_ASSETS = {
   locations: {
     // The one canonical Starting Village image (owner-supplied 2026-09-29).
     startingVillage: "/brand/game/locations/starting-village-v1.webp",
-    stickerwoodHeartwood: "/brand/game/locations/stickerwood-heartwood-v1.png",
-    mysteryForest: "/brand/game/locations/mystery-forest-v1.png",
-    ancientTree: "/brand/game/locations/ancient-tree-v1.png",
-    rascalPlazaRealm: "/brand/game/locations/rascal-plaza-realm-v1.png",
-    hiddenCove: "/brand/game/locations/hidden-cove-v1.png",
-    glitchGrove: "/brand/game/locations/glitch-grove-v1.png",
-    kingWrongwayCitadel: "/brand/game/locations/king-wrongway-citadel-v1.png",
-    skyBridges: "/brand/game/locations/sky-bridges-v1.png",
+    stickerwoodHeartwood: "/brand/game/locations/stickerwood-heartwood-v1.webp",
+    mysteryForest: "/brand/game/locations/mystery-forest-v1.webp",
+    ancientTree: "/brand/game/locations/ancient-tree-v1.webp",
+    rascalPlazaRealm: "/brand/game/locations/rascal-plaza-realm-v1.webp",
+    hiddenCove: "/brand/game/locations/hidden-cove-v1.webp",
+    glitchGrove: "/brand/game/locations/glitch-grove-v1.webp",
+    kingWrongwayCitadel: "/brand/game/locations/king-wrongway-citadel-v1.webp",
+    skyBridges: "/brand/game/locations/sky-bridges-v1.webp",
     // Canonical atlas art for these three areas (owner-supplied 2026-09-29); they used map crops before.
     riverPath: "/brand/game/locations/river-path-v1.webp",
     crownRuins: "/brand/game/locations/crown-ruins-v1.webp",
@@ -148,19 +148,19 @@ export const BRAND_ASSETS = {
 
   // Game & Community Banners
   banners: {
-    welcome: "/brand/banners/welcome-banner.png",
-    announcements: "/brand/banners/announcements-banner.png",
-    rascalPlaza: "/brand/banners/rascal-plaza-banner.png",
+    welcome: "/brand/banners/welcome-banner.webp",
+    announcements: "/brand/banners/announcements-banner.webp",
+    rascalPlaza: "/brand/banners/rascal-plaza-banner.webp",
   },
 
   // Realm Insignias & Seals
   insignias: {
-    razzMedallion: "/brand/badges/razz-medallion.png",
-    crystalSigil: "/brand/badges/crystal-sigil.png",
-    crownEyeShield: "/brand/badges/crown-eye-shield.png",
-    qaController: "/brand/badges/qa-controller-badge.png",
-    evidenceCamera: "/brand/badges/evidence-camera-badge.png",
-    royalCrown: "/brand/badges/royal-crown-badge.png",
+    razzMedallion: "/brand/badges/razz-medallion.webp",
+    crystalSigil: "/brand/badges/crystal-sigil.webp",
+    crownEyeShield: "/brand/badges/crown-eye-shield.webp",
+    qaController: "/brand/badges/qa-controller-badge.webp",
+    evidenceCamera: "/brand/badges/evidence-camera-badge.webp",
+    royalCrown: "/brand/badges/royal-crown-badge.webp",
   },
 } as const;
 

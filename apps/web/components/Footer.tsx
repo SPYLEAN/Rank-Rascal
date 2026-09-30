@@ -23,14 +23,14 @@ const COMPACT_LINKS = [
 /**
  * Full-contrast footer. The bottom padding on small screens keeps the credit line clear of the
  * floating Ask Razz launcher, which sits in the bottom-right corner. On phones it collapses to
- * the logo, the social group, one compact link grid and the legal line.
+ * the social icons, one compact link grid and the legal line (the sticky header carries the logo).
  */
 export const Footer: React.FC = () => (
   <footer data-razz-clear className="relative border-t border-antique-gold/25 bg-[#0c0e1a] text-cloud-white/85">
     <div className="mx-auto max-w-7xl px-5 pb-20 pt-8 sm:px-8 sm:pb-14 sm:pt-14">
       <div className="grid gap-5 sm:gap-10 md:grid-cols-4">
         <div className="space-y-3 sm:space-y-4 md:col-span-2">
-          <Link href="/" className="inline-flex" aria-label="Rascal Realms: Crownfall home">
+          <Link href="/" className="hidden sm:inline-flex" aria-label="Rascal Realms: Crownfall home">
             <Image
               src={BRAND_ASSETS.titleLogo.small}
               alt="Rascal Realms: Crownfall"
@@ -43,7 +43,7 @@ export const Footer: React.FC = () => (
             Home of Rascal Realms: Crownfall, a story-driven co-op Roblox action RPG mystery in pre-production, built in the open by the Rascal Labs community.
           </p>
           <p className="text-sm text-paper-cream/85">13+ community · every submission is read by a person</p>
-          <SocialLinks label="Rascal Realms on social media" />
+          <SocialLinks label="Rascal Realms on social media" compactOnPhones />
         </div>
         <nav aria-label="Footer" className="sm:hidden">
           <ul className="grid grid-cols-3 gap-x-3 text-sm">

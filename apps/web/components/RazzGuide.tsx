@@ -7,7 +7,15 @@ import { usePathname } from "next/navigation";
 import { ArrowLeft, ArrowRight, SendHorizontal, X } from "lucide-react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
 import { INTRO_DONE_EVENT, TEASER_CLOSE_EVENT, isIntroDone } from "@/lib/media-preferences";
-import { RAZZ_GREETING, RAZZ_LAUNCHER_GREETING, RAZZ_REACT_EVENT, RAZZ_REACTIONS, type RazzReaction } from "@/lib/razz";
+import {
+  RAZZ_GREETING,
+  RAZZ_LAUNCHER_GREETING,
+  RAZZ_LAUNCHER_HELLO,
+  RAZZ_LAUNCHER_INVITE,
+  RAZZ_REACT_EVENT,
+  RAZZ_REACTIONS,
+  type RazzReaction,
+} from "@/lib/razz";
 import { QUICK_QUESTION_IDS, type CanonEntry, type CanonStatus } from "@/lib/razz-canon";
 import { EMPTY_CONTEXT, answerById, askRazz, contextFor, type RazzContext, type RazzResult } from "@/lib/razz-engine";
 
@@ -21,8 +29,8 @@ const AVOID_SELECTOR = "[data-razz-avoid]";
 // (the header, hero actions, the video control, the footer).
 const GREETING_CLEAR_SELECTOR =
   "[data-razz-avoid], [data-razz-clear], a[href], button, input, select, textarea, summary, [role='tab']";
-const GREETING_DELAY_MS = 1200; // after the intro has finished and the page is usable
-const GREETING_LIFETIME_MS = 12000; // from first visible; paused while hovered or focused
+const GREETING_DELAY_MS = 300; // as soon as the intro has finished and the page is usable
+const GREETING_LIFETIME_MS = 15000; // from first visible; paused while hovered or focused
 const GREETING_WAIT_MS = 20000; // longest it waits for a spot that covers nothing
 
 const STATUS_LABEL: Record<CanonStatus, string> = {
@@ -347,6 +355,7 @@ export function RazzGuide() {
 
   const result = shown?.result;
   const hideLauncher = docked && !open;
+  const waving = greeting && greetingClear && !open;
 
   return (
     <div ref={rootRef} className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-end gap-3 sm:right-6">
@@ -365,15 +374,18 @@ export function RazzGuide() {
           onBlur={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget as Node | null)) releaseGreeting(5000);
           }}
-          className={`razz-greeting storybook relative mb-1 w-[min(16rem,calc(100vw-2rem))] ${
+          className={`razz-greeting storybook relative mb-1 w-[min(17rem,calc(100vw-2rem))] ${
             greetingClear ? "razz-greeting-enter pointer-events-auto visible" : "invisible"
           }`}
         >
           {/* The whole message opens Razz for pointer users; "Ask Razz" is the keyboard route. */}
-          <p onClick={openFromGreeting} className="cursor-pointer px-4 pt-3 text-[0.95rem] font-semibold leading-snug">
-            <span className="mb-1 block text-[0.68rem] font-bold uppercase tracking-[0.18em] text-wood">Razz</span>
-            {RAZZ_LAUNCHER_GREETING}
-          </p>
+          <div onClick={openFromGreeting} className="flex cursor-pointer items-start gap-3 px-4 pt-3">
+            <Image src={BRAND_ASSETS.poses.heroPoint} alt="" width={48} height={48} className="h-12 w-12 flex-none object-contain" />
+            <p className="min-w-0">
+              <span className="block font-display text-lg font-extrabold leading-tight">{RAZZ_LAUNCHER_HELLO}</span>
+              <span className="mt-1 block text-[0.95rem] font-semibold leading-snug">{RAZZ_LAUNCHER_INVITE}</span>
+            </p>
+          </div>
           <div className="flex items-center justify-between pb-1.5 pl-2 pr-1.5 pt-1">
             <button
               type="button"
@@ -505,9 +517,16 @@ export function RazzGuide() {
         className={`relative flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink-plum bg-paper-cream shadow-[3px_3px_0_#1B1426] transition hover:-translate-y-0.5 ${
           // No transform while hidden: the measured rectangle must stay put, or it would flicker.
           hideLauncher ? "invisible opacity-0" : "pointer-events-auto visible opacity-100"
-        }`}
+        } ${waving ? "razz-glow" : ""}`}
       >
-        <Image src={BRAND_ASSETS.insignias.razzMedallion} alt="" width={44} height={44} className="h-11 w-11 object-contain" />
+        {/* Razz waves once when he says hello; the button itself never moves. */}
+        <Image
+          src={BRAND_ASSETS.insignias.razzMedallion}
+          alt=""
+          width={44}
+          height={44}
+          className={`h-11 w-11 object-contain ${waving ? "razz-wave" : ""}`}
+        />
         {pending && !open ? <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-paper-cream bg-signal-lime" aria-hidden="true" /> : null}
       </button>
     </div>

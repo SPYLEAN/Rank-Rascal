@@ -20,13 +20,15 @@ type Props = {
   /** Names the group for assistive technology, e.g. "Rascal Realms on social media". */
   label?: string;
   className?: string;
+  /** Phones show round icon buttons (the name stays as an accessible label and tooltip). */
+  compactOnPhones?: boolean;
 };
 
 /**
  * The official social group: one icon and one text label per profile, from lib/site-config.ts.
  * Profiles without an official URL are left out, so there is never a broken or guessed link.
  */
-export function SocialLinks({ label = "Rascal Realms on social media", className = "" }: Props) {
+export function SocialLinks({ label = "Rascal Realms on social media", className = "", compactOnPhones = false }: Props) {
   if (!SOCIAL_LINKS.length) return null;
   return (
     <ul aria-label={label} className={`flex flex-wrap gap-2 ${className}`}>
@@ -39,10 +41,13 @@ export function SocialLinks({ label = "Rascal Realms on social media", className
               target="_blank"
               rel="noopener noreferrer"
               data-social={id}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-paper-cream/30 bg-[#0b0912]/55 px-4 text-sm font-semibold text-paper-cream transition hover:border-antique-gold hover:text-antique-gold"
+              title={compactOnPhones ? name : undefined}
+              className={`inline-flex min-h-11 items-center gap-2 rounded-full border border-paper-cream/30 bg-[#0b0912]/55 text-sm font-semibold text-paper-cream transition hover:border-antique-gold hover:text-antique-gold ${
+                compactOnPhones ? "min-w-11 justify-center sm:px-4" : "px-4"
+              }`}
             >
               <Icon className="h-[1.1rem] w-[1.1rem] flex-none" />
-              {name}
+              <span className={compactOnPhones ? "sr-only sm:not-sr-only" : undefined}>{name}</span>
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </li>

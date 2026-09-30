@@ -23,9 +23,15 @@ test("placeholders and wrong domains never become links", () => {
   assert.equal(isOfficialProfileUrl("youtube", "https://www.youtube.com/@rascal"), true);
 });
 
-test("Instagram and YouTube stay unlinked until the owner supplies the exact URLs", () => {
-  // Update this test together with OFFICIAL_PROFILES when the real URLs arrive.
-  assert.equal(OFFICIAL_PROFILES.instagram.href, null);
-  assert.equal(OFFICIAL_PROFILES.youtube.href, null);
-  assert.deepEqual(SOCIAL_LINKS.map((link) => link.id), ["discord"]);
+test("the group is Discord, Instagram and YouTube at the owner's exact URLs", () => {
+  assert.deepEqual(
+    SOCIAL_LINKS.map((link) => [link.id, link.href]),
+    [
+      ["discord", DISCORD_URL],
+      ["instagram", "https://www.instagram.com/rascalrealms/"],
+      ["youtube", "https://www.youtube.com/@SPYLEAN"],
+    ],
+  );
+  assert.equal(OFFICIAL_PROFILES.instagram.label, "Instagram");
+  assert.equal(OFFICIAL_PROFILES.youtube.label, "YouTube");
 });

@@ -53,7 +53,7 @@ export default function SafetyPage() {
     >
       <div className="not-prose grid items-center gap-8 sm:grid-cols-[10rem_1fr]">
         <Image
-          src="/brand/website-art/razz-rulebook.png"
+          src="/brand/website-art/razz-rulebook.webp"
           alt="Razz reading the community rulebook"
           width={400}
           height={533}

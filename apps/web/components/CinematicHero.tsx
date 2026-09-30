@@ -25,7 +25,7 @@ export function CinematicHero() {
       <HeroVideo />
       <div className="hero-scrim pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-60 sm:px-8 sm:pb-20 lg:pb-24">
+      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-64 sm:px-8 sm:pb-20 lg:pb-24">
         <div className="max-w-2xl">
           <p className="hidden text-xs font-semibold uppercase tracking-[0.2em] text-[#E8C877] hero-shadow sm:block">
             A Roblox co-op action RPG mystery · in pre-production

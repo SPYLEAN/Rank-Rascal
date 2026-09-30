@@ -2,9 +2,8 @@
  * Official Rascal Realms profiles. Every social link on the site reads from this file, so the
  * homepage, community area and footer can never disagree.
  *
- * A profile is shown only when its exact official URL is set here. Instagram and YouTube are
- * waiting on the owner's URLs: leave them null rather than guessing a handle, and the site
- * simply leaves them out.
+ * A profile is shown only when its exact official URL is set here (never a guessed handle);
+ * set one to null and the site simply leaves it out. URLs supplied by the owner on 2026-10-01.
  */
 export type SocialId = "discord" | "instagram" | "youtube";
 
@@ -19,8 +18,8 @@ export const DISCORD_URL = process.env.NEXT_PUBLIC_COMMUNITY_URL || "https://dis
 
 export const OFFICIAL_PROFILES: Record<SocialId, { label: string; href: string | null; hosts: readonly string[] }> = {
   discord: { label: "Discord", href: DISCORD_URL, hosts: ["discord.gg", "discord.com"] },
-  instagram: { label: "Instagram", href: null, hosts: ["instagram.com", "www.instagram.com"] },
-  youtube: { label: "YouTube", href: null, hosts: ["youtube.com", "www.youtube.com", "youtu.be"] },
+  instagram: { label: "Instagram", href: "https://www.instagram.com/rascalrealms/", hosts: ["instagram.com", "www.instagram.com"] },
+  youtube: { label: "YouTube", href: "https://www.youtube.com/@SPYLEAN", hosts: ["youtube.com", "www.youtube.com", "youtu.be"] },
 };
 
 const ORDER: readonly SocialId[] = ["discord", "instagram", "youtube"];
