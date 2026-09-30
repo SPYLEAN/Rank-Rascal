@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Pool, type PoolClient } from "pg";
+import { UserError, logError } from "../errors.js";
 import { config } from "../config.js";
 import type { BadgeId, EarnedBadge, LinkedProfile, QuestId, RobloxProfile } from "../types.js";
 import {
@@ -13,6 +14,8 @@ import {
 } from "./store.js";
 
 const MIGRATION_LOCK_ID = 1_490_335_501;
+const ROBLOX_ACCOUNT_TAKEN =
+  "Someone else just verified that Roblox account in this server. Please try again.";
 
 export class PostgresStore implements DatabaseStore {
   readonly engine = "postgres" as const;
@@ -26,7 +29,7 @@ export class PostgresStore implements DatabaseStore {
       connectionTimeoutMillis: 10_000,
       idleTimeoutMillis: 30_000,
     });
-    this.pool.on("error", (error) => console.error("PostgreSQL pool error", error));
+    this.pool.on("error", (error) => logError("PostgreSQL pool error", error));
   }
 
   async migrate(): Promise<void> {
@@ -90,6 +93,15 @@ export class PostgresStore implements DatabaseStore {
   }
 
   async saveProfile(guildId: string, discordUserId: string, profile: RobloxProfile, verified = false): Promise<void> {
+    try {
+      await this.saveProfileTransaction(guildId, discordUserId, profile, verified);
+    } catch (error) {
+      if ((error as { code?: string }).code === "23505") throw new UserError(ROBLOX_ACCOUNT_TAKEN);
+      throw error;
+    }
+  }
+
+  private async saveProfileTransaction(guildId: string, discordUserId: string, profile: RobloxProfile, verified: boolean): Promise<void> {
     await this.transaction(async (client) => {
       const existing = await client.query<{ roblox_user_id: string }>(`
         SELECT roblox_user_id FROM profiles
@@ -98,6 +110,14 @@ export class PostgresStore implements DatabaseStore {
       if (existing.rows[0] && Number(existing.rows[0].roblox_user_id) !== profile.id) {
         await client.query("DELETE FROM user_badges WHERE guild_id = $1 AND discord_user_id = $2", [guildId, discordUserId]);
         await client.query("DELETE FROM quest_completions WHERE guild_id = $1 AND discord_user_id = $2", [guildId, discordUserId]);
+      }
+      if (verified) {
+        // OAuth proves current control of this Roblox account, so verified linking is a transfer:
+        // any previous verified holder in this server is released (badges and quests cascade).
+        await client.query(
+          "DELETE FROM profiles WHERE guild_id = $1 AND roblox_user_id = $2 AND verified = TRUE AND discord_user_id <> $3",
+          [guildId, String(profile.id), discordUserId],
+        );
       }
       await client.query(`
         INSERT INTO profiles (
@@ -178,7 +198,7 @@ export class PostgresStore implements DatabaseStore {
 
   async listPublicProfiles(guildId: string): Promise<LinkedProfile[]> {
     const result = await this.pool.query(`
-      SELECT * FROM profiles WHERE guild_id = $1 AND public_profile = TRUE
+      SELECT * FROM profiles WHERE guild_id = $1 AND public_profile = TRUE AND verified = TRUE
       ORDER BY rascal_rep DESC, badge_count DESC LIMIT 10
     `, [guildId]);
     return (result.rows as Record<string, unknown>[]).map(rowToProfile);

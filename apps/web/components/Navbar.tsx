@@ -2,159 +2,101 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import { Menu, X, Shield, Sparkles, Gamepad2, Award, Terminal, LayoutDashboard } from "lucide-react";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+
+const NAV_ITEMS = [
+  { href: "/#enter-stickerwood", label: "The Game" },
+  { href: "/#world-lies", label: "Story" },
+  { href: "/#heroes", label: "Heroes" },
+  { href: "/#investigate", label: "Investigate" },
+  { href: "/#explore-stickerwood", label: "World" },
+  { href: "/updates", label: "Updates" },
+  { href: "/community", label: "Community" },
+] as const;
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  const discordInviteUrl =
-    process.env.NEXT_PUBLIC_DISCORD_INSTALL_URL || "/invite";
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-[#121526]/90 backdrop-blur-md border-b border-panel-navy-light/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center space-x-3 group">
-          <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-panel-navy p-1 border border-royal-purple/40 group-hover:border-toxic-lime transition-colors">
-            <Image
-              src="/brand/app-icon.png"
-              alt="Rank Rascal"
-              width={48}
-              height={48}
-              className="object-contain"
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-display font-bold text-xl text-cloud-white tracking-wide group-hover:text-toxic-lime transition-colors">
-              Rank Rascal
-            </span>
-            <span className="text-xs font-mono text-toxic-lime font-semibold">
-              Roblox Discord Bot
-            </span>
-          </div>
+    <header data-razz-clear className="sticky top-0 z-50 border-b border-cloud-white/10 bg-[#121526]/90 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:h-20 sm:px-6 lg:px-8">
+        <Link href="/" className="group flex items-center gap-3" aria-label="Rascal Realms: Crownfall home">
+          <Image src="/brand/app-icon.webp" alt="" width={44} height={44} className="h-10 w-10 rounded-lg object-contain sm:h-11 sm:w-11" priority />
+          <span>
+            <span className="block font-display text-lg font-bold leading-tight text-cloud-white transition group-hover:text-antique-gold">Rascal Realms</span>
+            <span className="block text-xs font-medium text-paper-cream/65">Crownfall · in pre-production</span>
+          </span>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            href="/commands"
-            className="flex items-center space-x-2 text-cloud-white/90 hover:text-toxic-lime text-sm font-medium transition-colors"
-          >
-            <Terminal className="w-4 h-4 text-royal-purple" />
-            <span>Commands</span>
-          </Link>
-          <Link
-            href="/games"
-            className="flex items-center space-x-2 text-cloud-white/90 hover:text-toxic-lime text-sm font-medium transition-colors"
-          >
-            <Gamepad2 className="w-4 h-4 text-hot-pink" />
-            <span>Games</span>
-          </Link>
-          <Link
-            href="/rewards"
-            className="flex items-center space-x-2 text-cloud-white/90 hover:text-toxic-lime text-sm font-medium transition-colors"
-          >
-            <Award className="w-4 h-4 text-reward-yellow" />
-            <span>Rewards</span>
-          </Link>
-          <Link
-            href="/dashboard"
-            className="flex items-center space-x-2 text-cloud-white/90 hover:text-toxic-lime text-sm font-medium transition-colors"
-          >
-            <LayoutDashboard className="w-4 h-4 text-toxic-lime" />
-            <span>Dashboard</span>
-          </Link>
-          <Link
-            href="/safety"
-            className="flex items-center space-x-2 text-cloud-white/90 hover:text-toxic-lime text-sm font-medium transition-colors"
-          >
-            <Shield className="w-4 h-4 text-royal-purple" />
-            <span>Safety</span>
-          </Link>
+        <nav className="hidden items-center gap-4 lg:flex xl:gap-7" aria-label="Primary navigation">
+          {NAV_ITEMS.map(({ href, label }) => {
+            const isActive = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={isActive ? "page" : undefined}
+                className={`text-sm font-semibold transition ${isActive ? "text-antique-gold" : "text-cloud-white/75 hover:text-antique-gold"}`}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
-        {/* CTA Button */}
-        <div className="hidden md:flex items-center space-x-4">
-          <a
-            href={discordInviteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center space-x-2 bg-royal-purple hover:bg-royal-purple/90 text-cloud-white px-5 py-2.5 rounded-xl font-display font-semibold text-sm transition-all shadow-sticker-lime hover:translate-x-[2px] hover:translate-y-[2px]"
-          >
-            <Sparkles className="w-4 h-4 text-toxic-lime" />
-            <span>Add to Discord (Coming Soon)</span>
-          </a>
-        </div>
+        <Link href="/game" className="hidden rounded-full bg-antique-gold px-5 py-2.5 text-sm font-bold text-ink-plum transition hover:bg-paper-cream lg:inline-flex">
+          Explore Crownfall
+        </Link>
 
-        {/* Mobile menu toggle */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-panel-navy text-cloud-white focus:outline-none focus:ring-2 focus:ring-toxic-lime"
-            aria-label="Toggle Navigation Menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          className="flex h-11 w-11 items-center justify-center rounded-full text-cloud-white hover:bg-cloud-white/10 lg:hidden"
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-nav"
+        >
+          {mobileMenuOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
+        </button>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-panel-navy border-b border-panel-navy-light px-4 pt-2 pb-6 space-y-3">
+      {mobileMenuOpen ? (
+        <nav id="mobile-nav" className="border-t border-cloud-white/10 bg-[#121526] px-4 pb-6 pt-2 lg:hidden" aria-label="Mobile navigation">
+          <ul>
+            {NAV_ITEMS.map(({ href, label }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  aria-current={pathname === href ? "page" : undefined}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block border-b border-cloud-white/10 px-2 py-4 font-display text-lg font-bold text-cloud-white hover:text-antique-gold"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
           <Link
-            href="/commands"
+            href="/game"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-cloud-white hover:bg-royal-purple/20"
+            className="mt-5 flex min-h-12 items-center justify-center rounded-full bg-antique-gold px-4 font-bold text-ink-plum"
           >
-            <Terminal className="w-5 h-5 text-royal-purple" />
-            <span>Commands</span>
+            Explore Crownfall
           </Link>
-          <Link
-            href="/games"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-cloud-white hover:bg-royal-purple/20"
-          >
-            <Gamepad2 className="w-5 h-5 text-hot-pink" />
-            <span>Games</span>
-          </Link>
-          <Link
-            href="/rewards"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-cloud-white hover:bg-royal-purple/20"
-          >
-            <Award className="w-5 h-5 text-reward-yellow" />
-            <span>Rewards</span>
-          </Link>
-          <Link
-            href="/dashboard"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-cloud-white hover:bg-royal-purple/20"
-          >
-            <LayoutDashboard className="w-5 h-5 text-toxic-lime" />
-            <span>Dashboard</span>
-          </Link>
-          <Link
-            href="/safety"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-cloud-white hover:bg-royal-purple/20"
-          >
-            <Shield className="w-5 h-5 text-royal-purple" />
-            <span>Safety</span>
-          </Link>
-          <div className="pt-2">
-            <a
-              href={discordInviteUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center space-x-2 bg-royal-purple text-cloud-white py-3 rounded-xl font-display font-semibold"
-            >
-              <Sparkles className="w-4 h-4 text-toxic-lime" />
-              <span>Add to Discord (Coming Soon)</span>
-            </a>
-          </div>
-        </div>
-      )}
+        </nav>
+      ) : null}
     </header>
   );
 };

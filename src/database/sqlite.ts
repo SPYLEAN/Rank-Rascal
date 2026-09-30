@@ -1,6 +1,7 @@
 import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { DatabaseSync } from "node:sqlite";
+import { UserError } from "../errors.js";
 import type { BadgeId, EarnedBadge, LinkedProfile, QuestId, RobloxProfile } from "../types.js";
 import {
   type DatabaseStore,
@@ -74,6 +75,8 @@ export class SqliteStore implements DatabaseStore {
       );
       CREATE INDEX IF NOT EXISTS quest_completions_user_idx
         ON quest_completions (guild_id, discord_user_id, completed_at);
+      CREATE UNIQUE INDEX IF NOT EXISTS profiles_verified_roblox_uidx
+        ON profiles (guild_id, roblox_user_id) WHERE verified = 1;
     `);
   }
 
@@ -86,6 +89,13 @@ export class SqliteStore implements DatabaseStore {
       if (existing && Number(existing.roblox_user_id) !== profile.id) {
         this.db.prepare("DELETE FROM user_badges WHERE guild_id = ? AND discord_user_id = ?").run(guildId, discordUserId);
         this.db.prepare("DELETE FROM quest_completions WHERE guild_id = ? AND discord_user_id = ?").run(guildId, discordUserId);
+      }
+      if (verified) {
+        // OAuth proves current control of this Roblox account, so verified linking is a transfer:
+        // any previous verified holder in this server is released (badges and quests cascade).
+        this.db.prepare(
+          "DELETE FROM profiles WHERE guild_id = ? AND roblox_user_id = ? AND verified = 1 AND discord_user_id <> ?",
+        ).run(guildId, profile.id, discordUserId);
       }
       this.db.prepare(`
         INSERT INTO profiles (
@@ -111,6 +121,9 @@ export class SqliteStore implements DatabaseStore {
       this.db.exec("COMMIT");
     } catch (error) {
       this.db.exec("ROLLBACK");
+      if (error instanceof Error && error.message.includes("UNIQUE constraint failed")) {
+        throw new UserError("Someone else just verified that Roblox account in this server. Please try again.");
+      }
       throw error;
     }
   }
@@ -165,7 +178,7 @@ export class SqliteStore implements DatabaseStore {
 
   async listPublicProfiles(guildId: string): Promise<LinkedProfile[]> {
     const rows = this.db.prepare(`
-      SELECT * FROM profiles WHERE guild_id = ? AND public_profile = 1
+      SELECT * FROM profiles WHERE guild_id = ? AND public_profile = 1 AND verified = 1
       ORDER BY rascal_rep DESC, badge_count DESC LIMIT 10
     `).all(guildId) as Record<string, unknown>[];
     return rows.map(rowToProfile);

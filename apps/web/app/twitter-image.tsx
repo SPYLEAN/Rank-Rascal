@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "Rank Rascal — Roblox Discord Gaming Identity Bot";
+export const alt = "Rascal Realms: Crownfall — an upcoming Roblox adventure";
 export const size = {
   width: 1200,
   height: 630,
@@ -11,7 +11,7 @@ export const size = {
 export const contentType = "image/png";
 
 export default async function Image() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rankrascal.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rankrascal.lol";
 
   return new ImageResponse(
     (
@@ -58,7 +58,7 @@ export default async function Image() {
               letterSpacing: "1px",
             }}
           >
-            <span>⚡ RANK RASCAL DISCORD BOT</span>
+            <span>UPCOMING ROBLOX ADVENTURE</span>
           </div>
 
           <div
@@ -73,9 +73,9 @@ export default async function Image() {
               letterSpacing: "-1px",
             }}
           >
-            <span>PLAY GAMES.</span>
-            <span style={{ color: "#ccff00" }}>FLEX ACHIEVEMENTS.</span>
-            <span style={{ color: "#ff2a85" }}>COLLECT CHAOS.</span>
+            <span>THE WORLD LIES.</span>
+            <span style={{ color: "#ccff00" }}>YOUR SQUAD</span>
+            <span style={{ color: "#ff2a85" }}>FINDS OUT WHY.</span>
           </div>
 
           <div
@@ -86,7 +86,7 @@ export default async function Image() {
               fontWeight: 500,
             }}
           >
-            Turn public Roblox stats into verified identity cards, Drip Checks, friendly server rivalries, and collectible badges.
+            Explore Stickerwood, expose false paths, and survive a Crown corruption that rewrites reality.
           </div>
 
           <div
@@ -107,7 +107,7 @@ export default async function Image() {
                 fontWeight: 800,
               }}
             >
-              Add to Discord (Coming Soon) →
+              Enter the Founders Guild →
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default async function Image() {
               textAlign: "center",
             }}
           >
-            &quot;Certified Server Brain Rot!&quot;
+            &quot;Trust the path. Question the sign.&quot;
           </div>
         </div>
       </div>

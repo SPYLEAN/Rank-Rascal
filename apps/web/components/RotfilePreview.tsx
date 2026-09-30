@@ -56,7 +56,7 @@ export const RotfilePreview: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5 text-toxic-lime" />
             <span>DRIP VERDICT</span>
           </span>
-          <span className="text-toxic-lime font-bold">CERTIFIED HEAT 🔥</span>
+          <span className="text-toxic-lime font-bold">CERTIFIED HEAT</span>
         </div>
         <p className="text-xs text-cloud-white/90 italic font-mono leading-relaxed">
           &quot;Avatar is rocking pristine 2018 neon accessories. Certified server brain rot approved.&quot;

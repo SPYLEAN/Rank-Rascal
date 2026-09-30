@@ -1,5 +1,5 @@
-import { existsSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { existsSync, readdirSync } from "node:fs";
+import { join, resolve, sep } from "node:path";
 import { BRAND_ASSETS } from "../apps/web/lib/brand-assets.js";
 import { CANONICAL_THREE_BADGES } from "../apps/web/lib/badge-data.js";
 
@@ -66,6 +66,45 @@ for (const badge of CANONICAL_THREE_BADGES) {
   }
 
   console.log(`✓ Verified canonical badge "${badge.id}" -> ${badge.image} [Status: ${badge.status}]`);
+}
+
+// Check 3: Internal-only files must never ship in the public web folder
+console.log("\n🔍 Checking public/brand for internal-only files...\n");
+
+const INTERNAL_PATTERN = /(contact|prompts?|readme|razz-load-0[2-9])/i;
+
+function walk(dir: string): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
+    entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)],
+  );
+}
+
+for (const file of walk(join(publicDir, "brand"))) {
+  const name = file.slice(publicDir.length + 1).split(sep).join("/");
+  if (INTERNAL_PATTERN.test(name.split("/").pop() ?? "")) {
+    console.error(`❌ ERROR: Internal-only file must not be published: ${name}`);
+    errorCount++;
+  }
+}
+
+for (const assetPath of allAssetPaths) {
+  if (INTERNAL_PATTERN.test(assetPath.split("/").pop() ?? "") && !/razz-load-01\.png$/.test(assetPath)) {
+    console.error(`❌ ERROR: Manifest references an internal-only file: ${assetPath}`);
+    errorCount++;
+  }
+}
+
+// Check 4: Manifest paths must match on-disk casing exactly (Linux hosts are case-sensitive)
+for (const assetPath of allAssetPaths) {
+  let current = publicDir;
+  for (const segment of assetPath.replace(/^\//, "").split("/")) {
+    if (!readdirSync(current).includes(segment)) {
+      console.error(`❌ ERROR: Case mismatch or missing segment "${segment}" in ${assetPath}`);
+      errorCount++;
+      break;
+    }
+    current = join(current, segment);
+  }
 }
 
 if (errorCount > 0) {

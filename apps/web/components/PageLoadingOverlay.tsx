@@ -1,92 +1,94 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 import { BRAND_ASSETS } from "@/lib/brand-assets";
+import { PORTRAIT_QUERY, markIntroDone, prefersReducedMotion } from "@/lib/media-preferences";
 
+/** Seconds, first visit. Returning visitors run the same beats at INTRO_SHORT_SCALE. */
+const INTRO_TOTAL_S = 3.55;
+const INTRO_SHORT_SCALE = 0.37;
+
+/**
+ * The Crownfall entrance: black, a small purple fracture, the crack widening,
+ * "THE WORLD LIES.", Stickerwood revealed through the break, the title resolving,
+ * then a fade into the homepage.
+ *
+ * The whole sequence is CSS keyframes that start at first paint (see `.intro` in
+ * globals.css), so it finishes on time even on a slow device or with JavaScript disabled.
+ * JavaScript only reports completion so the hero video can start on the matching frame.
+ * `prefers-reduced-motion: reduce` hides it entirely.
+ */
 export const PageLoadingOverlay: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [isFadingOut, setIsFadingOut] = useState(false);
-  const [statusText, setStatusText] = useState("Waking up Razz...");
+  const ref = useRef<HTMLDivElement>(null);
+  const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    // Only run on initial site entrance / page refresh (mount once)
-    const step1 = setTimeout(() => {
-      setStatusText("Cooking your server lore...");
-    }, 900);
-
-    const step2 = setTimeout(() => {
-      setStatusText("Ready for chaos! ✨");
-    }, 1800);
-
-    const fadeStart = setTimeout(() => {
-      setIsFadingOut(true);
-    }, 2400);
-
-    const finish = setTimeout(() => {
-      setIsVisible(false);
-    }, 2700);
-
+    const el = ref.current;
+    let timer = 0;
+    const finish = () => {
+      window.clearTimeout(timer);
+      markIntroDone();
+      setGone(true);
+    };
+    if (!el || prefersReducedMotion() || getComputedStyle(el).display === "none") {
+      finish();
+      return;
+    }
+    const short = document.documentElement.getAttribute("data-intro-seen") === "1";
+    const totalMs = INTRO_TOTAL_S * (short ? INTRO_SHORT_SCALE : 1) * 1000;
+    // performance.now() is time since navigation; the CSS animation started at first paint,
+    // so this is (conservatively) how long is left. Hydration may land after it already ended.
+    const remaining = totalMs - performance.now();
+    if (remaining <= 0) {
+      finish();
+      return;
+    }
+    const onEnd = (event: AnimationEvent) => {
+      if (event.animationName === "intro-out") finish();
+    };
+    el.addEventListener("animationend", onEnd);
+    timer = window.setTimeout(finish, remaining + 150);
     return () => {
-      clearTimeout(step1);
-      clearTimeout(step2);
-      clearTimeout(fadeStart);
-      clearTimeout(finish);
+      el.removeEventListener("animationend", onEnd);
+      window.clearTimeout(timer);
     };
   }, []);
 
-  if (!isVisible) return null;
+  if (gone) return null;
 
   return (
-    <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-[#181335] via-[#120f29] to-[#0c0a1b] text-cloud-white transition-opacity duration-300 ${
-        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
-      role="status"
-      aria-live="polite"
-      aria-label="Site loading screen"
-    >
-      {/* Background Dotted Grid Texture */}
-      <div className="absolute inset-0 bg-[radial-gradient(#a855f7_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
+    <div ref={ref} className="intro" role="status" aria-label="Entering Rascal Realms: Crownfall">
+      {/* Stickerwood, revealed through the fracture. Same poster as the hero, so the browser
+          fetches it once and the reveal dissolves into an identical frame. */}
+      <div className="intro-reveal" aria-hidden="true">
+        <picture>
+          <source media={PORTRAIT_QUERY} srcSet={BRAND_ASSETS.media.posterMobile} />
+          {/* eslint-disable-next-line @next/next/no-img-element -- shared, pre-optimized poster */}
+          <img
+            src={BRAND_ASSETS.media.poster}
+            alt=""
+            width={1920}
+            height={964}
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+        </picture>
+        <div className="absolute inset-0 bg-[#050308]/55" />
+      </div>
 
-      <div className="relative flex flex-col items-center justify-center space-y-6 p-8 text-center z-10 max-w-sm">
-        {/* Orbit Ring & Sparkles */}
-        <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56">
-          <div className="absolute inset-1 rounded-full border-2 border-toxic-lime/40 animate-spin-slow glow-lime motion-reduce:hidden" />
-          <div className="absolute top-2 right-4 w-2.5 h-2.5 rounded-full bg-hot-pink animate-ping motion-reduce:hidden" />
-          <div className="absolute bottom-4 left-6 w-2 h-2 rounded-full bg-toxic-lime animate-pulse motion-reduce:hidden" />
+      <div className="intro-crack" aria-hidden="true" />
 
-          {/* Centered Razz Slow GIF Animation */}
-          <div className="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center">
-            <picture>
-              <source
-                media="(prefers-reduced-motion: reduce)"
-                srcSet={BRAND_ASSETS.animation.loadStatic}
-              />
-              <Image
-                src={BRAND_ASSETS.animation.loadingSlowGif}
-                alt="Razz loading animation"
-                width={160}
-                height={160}
-                className="object-contain w-full h-full"
-                priority
-                unoptimized
-              />
-            </picture>
-          </div>
-        </div>
-
-        {/* Dynamic Status Text with Smooth Expression Pacing */}
-        <div className="space-y-3 min-h-[50px] flex flex-col items-center justify-center">
-          <p className="font-display font-extrabold text-xl text-cloud-white tracking-wide uppercase transition-all duration-300">
-            {statusText}
-          </p>
-          <div className="flex items-center justify-center space-x-2" aria-hidden="true">
-            <div className="w-2.5 h-2.5 rounded-full bg-toxic-lime animate-bounce [animation-delay:-0.3s] motion-reduce:animate-none" />
-            <div className="w-2.5 h-2.5 rounded-full bg-hot-pink animate-bounce [animation-delay:-0.15s] motion-reduce:animate-none" />
-            <div className="w-2.5 h-2.5 rounded-full bg-royal-purple animate-bounce motion-reduce:animate-none" />
-          </div>
-        </div>
+      <div className="relative z-10 flex flex-col items-center gap-4 px-6 text-center">
+        <p className="intro-lie font-display text-3xl font-extrabold uppercase tracking-[0.08em] text-cloud-white sm:text-5xl">
+          The world lies.
+        </p>
+        {/* eslint-disable-next-line @next/next/no-img-element -- 77 KB pre-optimized title art */}
+        <img
+          src={BRAND_ASSETS.titleLogo.small}
+          alt=""
+          width={600}
+          height={337}
+          className="intro-title h-auto w-[min(72vw,20rem)] drop-shadow-[0_8px_24px_rgba(0,0,0,.7)]"
+        />
       </div>
     </div>
   );

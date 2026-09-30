@@ -1,61 +1,49 @@
-import { Activity, CheckCircle2, Server, ShieldCheck, Zap } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { SimplePage } from "@/components/SimplePage";
+
+export const metadata: Metadata = {
+  title: "Project Status",
+  description: "What exists today for Rascal Realms: Crownfall, stage by stage. Development status, not live-service monitoring.",
+};
+
+// Stages follow the production phases in docs/rascal-realms/FIRST_RELEASE.md §39.
+const ITEMS = [
+  { name: "Foundation", status: "Now", tone: "current", detail: "Game bible, Release 1.0 scope, canon, art direction, the Rascal Labs concept archive, the teaser and this website." },
+  { name: "Prototype (vertical slice 0.1)", status: "Next", tone: "next", detail: "One small Stickerwood area, Crown Knight, Razz, a Crown Sprout, basic combat, the first Fraud sign, one quest and saving." },
+  { name: "Private playtesting", status: "Not open yet", tone: "later", detail: "Founding QA candidates may be invited in small groups once a build is ready. No date yet." },
+  { name: "Release 1.0: A Sign of Trouble", status: "Unannounced", tone: "later", detail: "The open-world foundation and one polished main quest. No release date has been set." },
+  { name: "Rank Rascal Discord bot", status: "Paused", tone: "paused", detail: "Installation and bot feature work are closed while the team focuses on the game. Preserved data stays covered by the privacy policy." },
+] as const;
+
+const TONE = {
+  current: "bg-antique-gold text-ink-plum",
+  next: "border border-antique-gold text-antique-gold",
+  later: "border border-cloud-white/35 text-cloud-white/80",
+  paused: "border border-cloud-white/35 text-cloud-white/80",
+} as const;
 
 export default function StatusPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-toxic-lime/10 border border-toxic-lime/40 text-toxic-lime font-mono text-xs font-bold uppercase">
-          <Activity className="w-4 h-4" />
-          <span>System Operational Status</span>
-        </div>
-        <h1 className="font-display font-extrabold text-4xl text-cloud-white">
-          Rank Rascal System Status
-        </h1>
-        <p className="text-muted-text text-sm font-mono">
-          All Core Gateway Services & OAuth Systems Operational
-        </p>
-      </div>
-
-      <div className="p-8 rounded-3xl bg-panel-navy border-sticker space-y-4 text-xs font-mono">
-        <div className="flex items-center justify-between p-4 rounded-xl bg-midnight-bg border border-panel-navy-light">
-          <div className="flex items-center space-x-3">
-            <Server className="w-5 h-5 text-toxic-lime" />
+    <SimplePage
+      kicker="Project status"
+      title="What exists today"
+      lede="A plain snapshot of development, updated as things change. This is production status, not live-service monitoring."
+    >
+      <ol className="not-prose border-t border-cloud-white/15">
+        {ITEMS.map((item) => (
+          <li key={item.name} className="grid gap-3 border-b border-cloud-white/10 py-6 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-8">
             <div>
-              <h3 className="font-bold text-cloud-white">Discord Gateway Worker</h3>
-              <p className="text-muted-text text-[11px]">Always-on Node Gateway Connection</p>
+              <h2 className="!mt-0 font-display text-lg font-bold text-cloud-white">{item.name}</h2>
+              <p className="!mt-1 text-sm leading-relaxed text-cloud-white/80">{item.detail}</p>
             </div>
-          </div>
-          <span className="px-3 py-1 rounded-full bg-toxic-lime/20 text-toxic-lime font-bold border border-toxic-lime/40">
-            OPERATIONAL
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between p-4 rounded-xl bg-midnight-bg border border-panel-navy-light">
-          <div className="flex items-center space-x-3">
-            <ShieldCheck className="w-5 h-5 text-toxic-lime" />
-            <div>
-              <h3 className="font-bold text-cloud-white">Roblox OAuth 2.0 PKCE Auth Server</h3>
-              <p className="text-muted-text text-[11px]">Expiring state verifiers & token exchange</p>
-            </div>
-          </div>
-          <span className="px-3 py-1 rounded-full bg-toxic-lime/20 text-toxic-lime font-bold border border-toxic-lime/40">
-            OPERATIONAL
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between p-4 rounded-xl bg-midnight-bg border border-panel-navy-light">
-          <div className="flex items-center space-x-3">
-            <Zap className="w-5 h-5 text-toxic-lime" />
-            <div>
-              <h3 className="font-bold text-cloud-white">Vercel Web Application</h3>
-              <p className="text-muted-text text-[11px]">App Router frontend & documentation</p>
-            </div>
-          </div>
-          <span className="px-3 py-1 rounded-full bg-toxic-lime/20 text-toxic-lime font-bold border border-toxic-lime/40">
-            OPERATIONAL
-          </span>
-        </div>
-      </div>
-    </div>
+            <span className={`w-fit rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] ${TONE[item.tone]}`}>{item.status}</span>
+          </li>
+        ))}
+      </ol>
+      <p>
+        For announcements see <Link href="/updates">Updates</Link>; for the reasoning behind decisions, the <Link href="/devlog">development log</Link>.
+      </p>
+    </SimplePage>
   );
 }

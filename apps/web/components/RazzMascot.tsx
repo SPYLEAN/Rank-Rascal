@@ -19,19 +19,19 @@ interface RazzMascotProps {
 
 const POSE_MAP: Record<MascotPose, { src: string; defaultAlt: string }> = {
   "hero-point": {
-    src: "/brand/poses/razz-hero-point.png",
+    src: "/brand/poses/razz-hero-point.webp",
     defaultAlt: "Razz pointing forward enthusiastically",
   },
   "badge-present": {
-    src: "/brand/poses/razz-badge-present.png",
+    src: "/brand/poses/razz-badge-present.webp",
     defaultAlt: "Razz presenting shiny gaming badges",
   },
   detective: {
-    src: "/brand/poses/razz-detective.png",
+    src: "/brand/poses/razz-detective.webp",
     defaultAlt: "Razz investigating suspicious server stats with a magnifying glass",
   },
   celebrate: {
-    src: "/brand/poses/razz-celebrate.png",
+    src: "/brand/poses/razz-celebrate.webp",
     defaultAlt: "Razz celebrating victory with confetti and hype",
   },
   loading: {
@@ -40,11 +40,11 @@ const POSE_MAP: Record<MascotPose, { src: string; defaultAlt: string }> = {
   },
   default: {
     src: "/brand/mascot.png",
-    defaultAlt: "Razz the Rank Rascal mascot",
+    defaultAlt: "Razz, the Rascal Realms: Crownfall mascot",
   },
   "app-icon": {
     src: "/brand/app-icon.png",
-    defaultAlt: "Rank Rascal App Icon",
+    defaultAlt: "Rascal Realms App Icon",
   },
 };
 
@@ -63,6 +63,7 @@ export const RazzMascot: React.FC<RazzMascotProps> = ({
         alt={alt || defaultAlt}
         width={size}
         height={size}
+        style={{ width: size, height: size }}
         className="object-contain transition-transform duration-300 hover:scale-105"
         priority={pose === "hero-point" || pose === "default"}
       />

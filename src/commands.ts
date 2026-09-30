@@ -31,6 +31,7 @@ import {
   utcPeriodKey,
 } from "./badges.js";
 import { accountAge, dripVerdict, profileStatus } from "./humor.js";
+import { UserError } from "./errors.js";
 import { createRobloxAuthorization } from "./oauth.js";
 import { findRobloxProfile } from "./roblox.js";
 
@@ -80,15 +81,15 @@ export const commandData = [
 ].map((command) => command.toJSON());
 
 function guildId(interaction: ChatInputCommandInteraction): string {
-  if (!interaction.guildId) throw new Error("Rank Rascal only works inside a server.");
+  if (!interaction.guildId) throw new UserError("Rank Rascal only works inside a server.");
   return interaction.guildId;
 }
 
 async function getVisibleProfile(interaction: ChatInputCommandInteraction, userId: string) {
   const profile = await getProfile(guildId(interaction), userId);
-  if (!profile) throw new Error("That player has no Rotfile yet. Use `/link-roblox` first.");
+  if (!profile) throw new UserError("That player has no Rotfile yet. Use `/link-roblox` first.");
   if (userId !== interaction.user.id && !profile.publicProfile) {
-    throw new Error("That Rascal is currently in Witness Protection.");
+    throw new UserError("That Rascal is currently in Witness Protection.");
   }
   return profile;
 }
@@ -102,7 +103,7 @@ function addUnlockField(embed: EmbedBuilder, names: string[]): void {
 }
 
 export async function handleCommand(interaction: ChatInputCommandInteraction): Promise<void> {
-  if (!interaction.inGuild()) throw new Error("Rank Rascal only works inside a server.");
+  if (!interaction.inGuild()) throw new UserError("Rank Rascal only works inside a server.");
 
   if (interaction.commandName === "link-roblox") {
     const url = await createRobloxAuthorization(interaction.user.id, guildId(interaction));
@@ -121,11 +122,11 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
     await interaction.deferReply({ ephemeral: true });
     const existing = await getProfile(guildId(interaction), interaction.user.id);
     if (existing?.verified) {
-      throw new Error("You already have a verified Rotfile. Unlink it before creating a preview for another account.");
+      throw new UserError("You already have a verified Rotfile. Unlink it before creating a preview for another account.");
     }
     const username = interaction.options.getString("username", true).trim();
     const profile = await findRobloxProfile(username);
-    if (!profile) throw new Error("That Roblox username escaped the database. Check the spelling.");
+    if (!profile) throw new UserError("That Roblox username escaped the database. Check the spelling.");
     await saveProfile(guildId(interaction), interaction.user.id, profile);
     await interaction.editReply({
       embeds: [new EmbedBuilder()
@@ -185,9 +186,12 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
 
   if (interaction.commandName === "fraudcheck") {
     const opponent = interaction.options.getUser("opponent", true);
-    if (opponent.id === interaction.user.id) throw new Error("Self-beef detected. Please locate an actual opponent.");
+    if (opponent.id === interaction.user.id) throw new UserError("Self-beef detected. Please locate an actual opponent.");
     const own = await getVisibleProfile(interaction, interaction.user.id);
     const theirs = await getVisibleProfile(interaction, opponent.id);
+    if (!own.verified || !theirs.verified) {
+      throw new UserError("Fraud Checks compare verified Rotfiles only. Both players need to finish `/link-roblox`.");
+    }
     const difference = Math.abs(own.badgeCount - theirs.badgeCount);
     const winner = own.badgeCount === theirs.badgeCount
       ? "Nobody. An unprecedented draw in tiny JPEG ownership."
@@ -260,7 +264,7 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
 
   if (interaction.commandName === "quests") {
     const profile = await getProfile(guildId(interaction), interaction.user.id);
-    if (!profile?.verified) throw new Error("Verify your Roblox identity before starting badge quests.");
+    if (!profile?.verified) throw new UserError("Verify your Roblox identity before starting badge quests.");
     await evaluateAutomaticBadges(profile);
     const today = utcPeriodKey();
     const completedToday = new Set(await listQuestCompletionsForPeriod(
@@ -303,7 +307,7 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
   if (interaction.commandName === "witness-protection") {
     const isPublic = interaction.options.getBoolean("public", true);
     if (!await setPrivacy(guildId(interaction), interaction.user.id, isPublic)) {
-      throw new Error("Create a Rotfile before entering Witness Protection.");
+      throw new UserError("Create a Rotfile before entering Witness Protection.");
     }
     await interaction.reply({
       content: isPublic
@@ -325,7 +329,7 @@ export async function handleCommand(interaction: ChatInputCommandInteraction): P
 
   if (interaction.commandName === "rascal-config") {
     if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
-      throw new Error("You need Manage Server permission to operate the Rascal machinery.");
+      throw new UserError("You need Manage Server permission to operate the Rascal machinery.");
     }
     const settings = await getGuildSettings(guildId(interaction));
     settings.announcementsEnabled = interaction.options.getBoolean("announcements") ?? settings.announcementsEnabled;

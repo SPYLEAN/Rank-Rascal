@@ -1,11 +1,33 @@
+import { UserError } from "./errors.js";
 import type { RobloxProfile } from "./types.js";
+
+const REQUEST_TIMEOUT_MS = 8_000;
+const ROBLOX_UNAVAILABLE = "Roblox is not answering right now. Try again in a moment.";
 
 const headers = { "User-Agent": "RankRascal/0.1 (Discord bot prototype)" };
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, { ...init, headers: { ...headers, ...init?.headers } });
-  if (!response.ok) throw new Error(`Roblox API returned ${response.status}`);
-  return response.json() as Promise<T>;
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...init,
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      headers: { ...headers, ...init?.headers },
+    });
+  } catch (error) {
+    console.error("Roblox API request failed", new URL(url).pathname, error instanceof Error ? error.name : "unknown");
+    throw new UserError(ROBLOX_UNAVAILABLE);
+  }
+  if (!response.ok) {
+    console.error("Roblox API returned", response.status, new URL(url).pathname);
+    throw new UserError(ROBLOX_UNAVAILABLE);
+  }
+  try {
+    return await response.json() as T;
+  } catch {
+    console.error("Roblox API returned an unreadable body", new URL(url).pathname);
+    throw new UserError(ROBLOX_UNAVAILABLE);
+  }
 }
 
 export async function resolveUsername(username: string): Promise<number | null> {
@@ -37,7 +59,11 @@ async function getBadgeCount(userId: number): Promise<number> {
   return count;
 }
 
-export async function getRobloxProfile(userId: number): Promise<RobloxProfile> {
+/**
+ * `fallbackBadgeCount` is used when the badge list cannot be fetched, so a transient
+ * Roblox failure never overwrites a known count with 0.
+ */
+export async function getRobloxProfile(userId: number, fallbackBadgeCount = 0): Promise<RobloxProfile> {
   const [user, avatar, badgeCount] = await Promise.all([
     request<{
       id: number;
@@ -50,7 +76,7 @@ export async function getRobloxProfile(userId: number): Promise<RobloxProfile> {
     request<{ data: Array<{ imageUrl: string; state: string }> }>(
       `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=420x420&format=Png&isCircular=false`,
     ),
-    getBadgeCount(userId).catch(() => 0),
+    getBadgeCount(userId).catch(() => fallbackBadgeCount),
   ]);
 
   return {

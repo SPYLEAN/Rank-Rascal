@@ -1,93 +1,852 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Rascal Realms design system
+   Warm Stickerwood tones carry the journey. Crown violet, magenta and lime are
+   reserved for corruption, lies, Razz and critical feedback (ART_DIRECTION.md).
+   ========================================================================== */
+
 :root {
-  --font-fredoka: 'Fredoka', cursive, sans-serif;
+  --font-sora: 'Sora', sans-serif;
   --font-inter: 'Inter', sans-serif;
   --font-space-mono: 'Space Mono', monospace;
+  --page: #121526;
+  --gold: #D5A84B;
+  --cream: #F3E5C8;
+  --ink: #1B1426;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #121526;
+  background-color: var(--page);
   color: #F8F8FF;
   font-family: var(--font-inter);
   overflow-x: hidden;
 }
 
-/* Custom scrollbars */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #121526;
-}
-::-webkit-scrollbar-thumb {
-  background: #7A4DFF;
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #B7FF36;
+main {
+  isolation: isolate;
 }
 
-/* Touch-friendly horizontal scrollbar hiding */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+::selection {
+  background: var(--gold);
+  color: var(--ink);
 }
 
-/* Custom utilities */
-.glow-purple {
-  box-shadow: 0 0 30px rgba(122, 77, 255, 0.35);
+/* One visible focus style everywhere; components may refine it. */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
 }
 
-.glow-lime {
-  box-shadow: 0 0 30px rgba(183, 255, 54, 0.35);
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--page); }
+::-webkit-scrollbar-thumb { background: #3b3448; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Legacy bot-preview utilities (kept for the preserved bot-era components). */
+.glow-purple { box-shadow: 0 0 30px rgba(122, 77, 255, 0.35); }
+.glow-lime { box-shadow: 0 0 30px rgba(183, 255, 54, 0.35); }
+.glow-pink { box-shadow: 0 0 30px rgba(255, 79, 163, 0.35); }
+.border-sticker { border: 2px solid rgba(255, 255, 255, 0.15); box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6); }
+.border-sticker-lime { border: 2px solid #B7FF36; box-shadow: 4px 4px 0 #000; }
+.border-sticker-purple { border: 2px solid #7A4DFF; box-shadow: 4px 4px 0 #000; }
+.border-sticker-pink { border: 2px solid #FF4FA3; box-shadow: 4px 4px 0 #000; }
+.rot-tilt-left { transform: rotate(-1.5deg); }
+.rot-tilt-right { transform: rotate(1.5deg); }
+
+.world-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
 }
 
-.glow-pink {
-  box-shadow: 0 0 30px rgba(255, 79, 163, 0.35);
+/* Crownfall intro -------------------------------------------------------------- */
+/* Pure CSS so it starts at first paint and ends on time without waiting for hydration.
+   Timeline (first visit, --intro-s: 1): fracture 0.3s -> crack widens 0.9s -> "THE WORLD
+   LIES." 1.5s -> Stickerwood revealed 2.05s -> title 2.65s -> fade 3.15-3.55s. */
+:root { --intro-s: 1; }
+html[data-intro-seen="1"] { --intro-s: .37; }
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #050308;
+  animation: intro-out calc(.4s * var(--intro-s)) ease calc(3.15s * var(--intro-s)) forwards;
 }
 
-.border-sticker {
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
+.intro-reveal {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  clip-path: polygon(48% 38%, 52% 38%, 54% 52%, 60% 58%, 50% 100%, 40% 58%, 46% 52%);
+  animation: intro-reveal calc(.7s * var(--intro-s)) ease-out calc(2.05s * var(--intro-s)) forwards;
 }
 
-.border-sticker-lime {
-  border: 2px solid #B7FF36;
-  box-shadow: 4px 4px 0px #000000;
+.intro-crack {
+  position: absolute;
+  width: 3px;
+  height: 70vmin;
+  opacity: 0;
+  background: linear-gradient(180deg, transparent, #7A4DFF, transparent);
+  box-shadow: 0 0 30px 8px rgba(122, 77, 255, .55);
+  animation: intro-crack calc(2.05s * var(--intro-s)) ease-out calc(.3s * var(--intro-s)) forwards;
 }
 
-.border-sticker-purple {
-  border: 2px solid #7A4DFF;
-  box-shadow: 4px 4px 0px #000000;
+.intro-lie,
+.intro-title {
+  opacity: 0;
+  transform: translateY(.5rem);
 }
 
-.border-sticker-pink {
-  border: 2px solid #FF4FA3;
-  box-shadow: 4px 4px 0px #000000;
+.intro-lie { animation: intro-rise calc(.5s * var(--intro-s)) ease calc(1.5s * var(--intro-s)) forwards; }
+.intro-title { animation: intro-rise calc(.5s * var(--intro-s)) ease calc(2.65s * var(--intro-s)) forwards; }
+
+@keyframes intro-crack {
+  0% { opacity: 0; transform: scale(1, .08); }
+  10% { opacity: 1; transform: scale(1, .18); }
+  30% { transform: scale(1, .18); }
+  62% { transform: scale(7, 1); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: scale(9, 1); }
 }
 
-.rot-tilt-left {
+@keyframes intro-reveal {
+  to {
+    opacity: 1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 52%, 100% 100%, 50% 100%, 0% 100%, 0% 52%);
+  }
+}
+
+@keyframes intro-rise { to { opacity: 1; transform: translateY(0); } }
+@keyframes intro-out { to { opacity: 0; visibility: hidden; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+}
+
+/* Cinematic video hero ------------------------------------------------------- */
+/* Poster -> video handoff: the video is transparent until its first frame renders. */
+.hero-video {
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.hero-video.is-visible {
+  opacity: 1;
+}
+
+/* Landscape: darken the lower-left title column, the top edge under the nav, and fade the
+   bottom into the page colour so the hero flows into the next chapter. The centre of the
+   frame (every hero shot's focal point) stays untouched. */
+.hero-scrim {
+  background:
+    linear-gradient(90deg, rgba(11, 9, 18, .82) 0%, rgba(11, 9, 18, .58) 30%, rgba(11, 9, 18, .16) 58%, rgba(11, 9, 18, 0) 76%),
+    linear-gradient(0deg, #121526 0%, rgba(18, 21, 38, .7) 15%, rgba(18, 21, 38, 0) 46%),
+    linear-gradient(180deg, rgba(11, 9, 18, .5) 0%, rgba(11, 9, 18, 0) 20%);
+}
+
+/* Portrait: the copy block fills the lower ~60%, so the scrim is bottom-weighted and reaches
+   high enough that the kicker never sits on bare bright water. */
+@media (max-aspect-ratio: 4/5) {
+  .hero-scrim {
+    background:
+      linear-gradient(0deg, #121526 0%, rgba(18, 21, 38, .92) 32%, rgba(18, 21, 38, .72) 52%, rgba(18, 21, 38, 0) 74%),
+      linear-gradient(180deg, rgba(11, 9, 18, .5) 0%, rgba(11, 9, 18, 0) 18%);
+  }
+}
+
+/* Phones: the copy sits higher (the bottom of the frame is kept clear for Ask Razz's greeting),
+   so the dark band moves up behind it and the art shows through above and below. */
+@media (max-width: 639px) and (max-aspect-ratio: 4/5) {
+  .hero-scrim {
+    background:
+      linear-gradient(0deg, #121526 0%, rgba(18, 21, 38, .5) 16%, rgba(18, 21, 38, .84) 32%, rgba(18, 21, 38, .84) 64%, rgba(18, 21, 38, .35) 80%, rgba(18, 21, 38, 0) 92%),
+      linear-gradient(180deg, rgba(11, 9, 18, .5) 0%, rgba(11, 9, 18, 0) 18%);
+  }
+}
+
+.hero-shadow {
+  text-shadow: 0 2px 24px rgba(8, 5, 14, .55), 0 1px 2px rgba(8, 5, 14, .7);
+}
+
+/* Theater-style teaser player ------------------------------------------------ */
+.teaser-dialog {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #F8F8FF;
+  overflow-y: auto;
+}
+
+/* margin:auto (not align-items:center) so tall content scrolls instead of being clipped. */
+.teaser-dialog[open] {
+  display: flex;
+}
+
+/* Solid theater black: any translucency let bright page text ghost through the controls. */
+.teaser-dialog::backdrop {
+  background: #030206;
+}
+
+.teaser-stage {
+  width: min(100%, 1280px);
+  margin: auto;
+  padding: 1rem .75rem;
+}
+
+@media (min-width: 640px) {
+  .teaser-stage { padding: 2rem 1.5rem; }
+}
+
+.teaser-seek {
+  height: 2.75rem;
+  accent-color: #D5A84B;
+  cursor: pointer;
+}
+
+.teaser-seek:focus-visible {
+  outline: 2px solid #B7FF36;
+  outline-offset: 2px;
+}
+
+/* Chapters ------------------------------------------------------------------- */
+/* Full-bleed scenes; each chapter's art fades in from and out to the page colour so the
+   homepage reads as one continuous journey rather than stacked boxes. */
+.chapter {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.chapter-art {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.fade-edges {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--page) 0%, rgba(18, 21, 38, 0) 22%, rgba(18, 21, 38, 0) 70%, var(--page) 100%);
+}
+
+.chapter-title {
+  font-family: var(--font-sora);
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: .96;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: #F8F8FF;
+}
+
+.chapter-lede {
+  margin-top: 1.25rem;
+  max-width: 34rem;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: rgba(248, 248, 255, .8);
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  color: var(--gold);
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+
+.text-link:hover { text-decoration: underline; color: var(--cream); }
+
+/* Crown corruption briefly takes hold of type, then lets go. One-shot, story-driven. */
+.corrupt-type {
+  animation: corrupt-type 1.1s steps(9, end) both;
+}
+
+@keyframes corrupt-type {
+  0%, 100% { text-shadow: none; transform: none; }
+  15% { text-shadow: -3px 0 #E632A9, 3px 0 #6B31A8; transform: translateX(2px) skewX(-4deg); }
+  35% { text-shadow: 4px 0 #B9F227, -2px 0 #E632A9; transform: translateX(-3px); }
+  55% { text-shadow: -2px 0 #6B31A8, 2px 0 #E632A9; transform: translateX(1px) skewX(3deg); }
+  75% { text-shadow: 1px 0 #E632A9; transform: none; }
+}
+
+/* A painted wooden sign plank (physical, in-world interface). */
+.sign-plank {
+  position: relative;
+  display: inline-block;
+  max-width: 26rem;
+  padding: 1rem 1.4rem 1.1rem;
+  color: #F3E5C8;
+  background:
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, .12) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, #8a5a34, #6c4326);
+  border: 2px solid #2b1a10;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .45), inset 0 1px rgba(255, 230, 190, .25);
   transform: rotate(-1.5deg);
+  transition: transform 500ms cubic-bezier(.2, .8, .2, 1);
 }
 
-.rot-tilt-right {
-  transform: rotate(1.5deg);
+.sign-plank::before,
+.sign-plank::after {
+  position: absolute;
+  top: .55rem;
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: #2b1a10;
+  content: "";
 }
 
-/* Reduced motion overrides */
+.sign-plank::before { left: .55rem; }
+.sign-plank::after { right: .55rem; }
+
+.sign-plank.is-true {
+  transform: rotate(1deg);
+}
+
+/* Hero selector scene crossfade and atlas spotlight. */
+.scene-in {
+  animation: scene-in 900ms ease both;
+}
+
+@keyframes scene-in {
+  from { opacity: 0; transform: scale(1.04); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.atlas-spotlight {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300%;
+  height: 300%;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(10, 8, 16, 0) 0%, rgba(10, 8, 16, 0) 7%, rgba(10, 8, 16, .58) 17%);
+  transition: transform 650ms cubic-bezier(.2, .8, .2, 1);
+  will-change: transform;
+}
+
+/* Ask Razz storybook drawer. */
+.storybook {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 255, 255, .5), transparent 45%),
+    var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+/* Scroll-driven reveal where supported; content is simply visible elsewhere.
+   The range ends inside `entry`, so the reveal completes as soon as an element is fully on
+   screen. (It used to end at `cover 28%`, which the last sections of a page can never reach,
+   leaving page endings stuck half-transparent.) */
+.reveal-up {
+  animation: reveal-up linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 70%;
+}
+
+/* Painted-paper frame for artwork: a thin cream keyline and a soft drop, like a mounted print. */
+.paper-frame {
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(243, 229, 200, .22), 0 24px 60px -24px rgba(0, 0, 0, .75);
+}
+
+/* Community form panel: a dark storybook page with a cream keyline and a gold spine. */
+.form-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(243, 229, 200, .18);
+  border-top: 3px solid var(--gold);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(213, 168, 75, .08), transparent 40%),
+    #151329;
+  box-shadow: 0 30px 80px -40px rgba(0, 0, 0, .8);
+}
+
+/* Rascal Labs archive: a dark study with parchment sheets. Sheets get a gold hairline, a single
+   strip of tape and a very slight tilt that settles on hover. No glass, no card grid chrome. */
+.labs-archive {
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(213, 168, 75, .08), transparent 45%),
+    radial-gradient(ellipse at 90% 30%, rgba(107, 49, 168, .10), transparent 50%),
+    #0b0a12;
+}
+
+.concept-sheet {
+  position: relative;
+  padding: 8px 8px 6px;
+  border-radius: 2px;
+  background: #eadcbc;
+  box-shadow: 0 0 0 1px rgba(213, 168, 75, .55), 0 28px 60px -28px rgba(0, 0, 0, .9);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 350ms cubic-bezier(.2, .8, .2, 1), box-shadow 350ms ease;
+}
+
+.concept-sheet::before {
+  position: absolute;
+  top: -9px;
+  left: 22px;
+  width: 58px;
+  height: 18px;
+  background: rgba(243, 229, 200, .6);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+  transform: rotate(-4deg);
+  content: "";
+  pointer-events: none;
+}
+
+.group:hover .concept-sheet,
+.group:focus-visible .concept-sheet {
+  transform: translateY(-4px) rotate(0deg);
+  box-shadow: 0 0 0 1px rgba(213, 168, 75, .9), 0 34px 70px -28px rgba(0, 0, 0, .95);
+}
+
+/* "Something is moving downriver": dark water, faint ripples, violet light under the surface. */
+.unknown-specimen { background: #06070d; }
+
+.unknown-specimen-water {
+  background:
+    radial-gradient(ellipse 45% 30% at 62% 78%, rgba(155, 92, 255, .45), transparent 70%),
+    repeating-radial-gradient(ellipse at 62% 78%, rgba(243, 229, 200, .05) 0 2px, transparent 2px 22px),
+    linear-gradient(180deg, #06070d 0%, #0b1422 55%, #0a0f1a 100%);
+  animation: specimen-glow 6s ease-in-out infinite alternate;
+}
+
+@keyframes specimen-glow {
+  from { opacity: .75; }
+  to { opacity: 1; }
+}
+
+/* Full-sheet viewer: solid dark backdrop so text on the sheets stays legible. */
+.concept-viewer {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100svh;
+  max-height: 100svh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #050308;
+  color: var(--cream);
+}
+
+.concept-viewer::backdrop {
+  background: #050308;
+}
+
+/* The atlas route: the stretch of road walked so far draws itself in. */
+.atlas-route {
+  stroke-dasharray: 6000;
+  stroke-dashoffset: 6000;
+  animation: atlas-route 1.4s cubic-bezier(.3, .7, .2, 1) forwards;
+  filter: drop-shadow(0 0 6px rgba(213, 168, 75, .55));
+}
+
+@keyframes atlas-route {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Fraud exposed: the sign cracks and Crown energy escapes before the truth lands. */
+.sign-fracture {
+  animation: sign-fracture 1.1s steps(8, end) both;
+}
+
+@keyframes sign-fracture {
+  0% { box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
+  30% { transform: rotate(-3deg) translateX(-3px); box-shadow: 0 0 0 2px #E632A9, 0 0 38px rgba(107, 49, 168, .9); filter: saturate(1.4); }
+  55% { transform: rotate(2deg) translateX(3px) skewX(-3deg); box-shadow: 0 0 0 2px #B9F227, 0 0 48px rgba(230, 50, 169, .8); }
+  80% { transform: rotate(-1deg); opacity: .6; }
+  100% { transform: rotate(1deg); opacity: 1; }
+}
+
+/* The Chapter 1 epilogue: clouds drift apart very slowly over the far realms. */
+.beyond-clouds {
+  animation: beyond-drift 40s ease-in-out infinite alternate;
+  transform-origin: 50% 30%;
+}
+
+@keyframes beyond-drift {
+  from { transform: scale(1.12) translateY(0); }
+  to { transform: scale(1.02) translateY(-2%); }
+}
+
+/* The title logo settles into place once, like a stamp pressed onto the scene. */
+.title-rise {
+  animation: title-rise 1.1s cubic-bezier(.2, .8, .2, 1) .15s both;
+}
+
+@keyframes title-rise {
+  from { opacity: 0; transform: translateY(14px) scale(.97); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+/* A small pink heart beside the SPYLEAN credit; it gives one soft beat on hover. */
+.spylean-heart { transition: transform 200ms ease; }
+a:hover > .spylean-heart,
+a:focus-visible > .spylean-heart { animation: heart-beat 700ms ease; }
+
+@keyframes heart-beat {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  55% { transform: scale(.95); }
+}
+
+/* Scroll-linked depth: artwork drifts slower than the page where the browser supports it. */
+@supports (animation-timeline: view()) {
+  .parallax-art {
+    animation: parallax-art linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+
+  @keyframes parallax-art {
+    from { transform: translateY(-6%) scale(1.12); }
+    to { transform: translateY(6%) scale(1.12); }
+  }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(44px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Shared editorial classes used by /game, /devlog, /community and /status. */
+.archive-label {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  color: var(--gold);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.archive-meta {
+  color: var(--gold);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.story-section { position: relative; }
+.story-rail { display: none; }
+
+.story-lead {
+  max-width: 58rem;
+  color: #F8F8FF;
+  font-family: var(--font-sora);
+  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+}
+
+.evidence-rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), rgba(213, 168, 75, 0));
+}
+
+.lore-timeline { border-top: 1px solid rgba(248, 248, 255, .12); }
+
+.lore-entry {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1.5rem;
+  border-bottom: 1px solid rgba(248, 248, 255, .12);
+  padding: 1.75rem 0;
+}
+
+.lore-index {
+  color: rgba(213, 168, 75, .7);
+  font-family: var(--font-sora);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.lore-entry h3 {
+  color: #F8F8FF;
+  font-family: var(--font-sora);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.lore-entry p {
+  margin-top: .6rem;
+  max-width: 43rem;
+  color: rgba(248, 248, 255, .7);
+  line-height: 1.75;
+}
+
+/* Buttons ---------------------------------------------------------------------- */
+.action-primary,
+.action-secondary {
+  position: relative;
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  padding: .8rem 1.5rem;
+  border-radius: 3px;
+  font-family: var(--font-sora);
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.action-primary {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.action-primary:hover {
+  background: var(--cream);
+  transform: translateY(-2px);
+}
+
+.action-secondary {
+  border: 1px solid rgba(243, 229, 200, .35);
+  color: #F8F8FF;
+}
+
+.action-secondary:hover {
+  border-color: var(--cream);
+  background: rgba(243, 229, 200, .08);
+  transform: translateY(-2px);
+}
+
+/* Phones lead the hero with the teaser, so its button takes the primary look there. */
+@media (max-width: 639px) {
+  .action-secondary.hero-cta-teaser {
+    border-color: var(--gold);
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .action-secondary.hero-cta-teaser:hover {
+    border-color: var(--cream);
+    background: var(--cream);
+  }
+}
+
+/* How the realm plays ----------------------------------------------------------- */
+/* A soft light that travels along the gameplay loop's thread, left to right. */
+.loop-light {
+  background: linear-gradient(90deg, transparent, rgba(255, 226, 150, .95), transparent) no-repeat;
+  background-size: 18% 100%;
+  animation: loop-light 7s linear infinite;
+}
+
+@keyframes loop-light {
+  from { background-position: -30% 0; }
+  to { background-position: 130% 0; }
+}
+
+/* The quest journal page: cream paper, a faint grain and ruled lines. */
+.journal-page {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 6%, rgba(255, 255, 255, .55), transparent 40%),
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(123, 78, 45, .07) 27px 28px),
+    var(--cream);
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(123, 78, 45, .35), 0 30px 60px -30px rgba(0, 0, 0, .8);
+}
+
+/* Turning to another journal tab: a short fade, no zoom. */
+.journal-turn {
+  animation: journal-turn 280ms ease-out both;
+}
+
+@keyframes journal-turn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* A note scribbled in the margin. */
+.journal-note {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  transform: rotate(-1.2deg);
+}
+
+.quest-stamp {
+  transform: rotate(-5deg);
+}
+
+/* Crown Shards glint now and then; nothing floats. */
+.shard-pulse {
+  animation: shard-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes shard-pulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(185, 155, 255, 0)); }
+  50% { filter: drop-shadow(0 0 8px rgba(185, 155, 255, .85)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loop-light { display: none; }
+}
+
+/* Ask Razz's once-a-session hello: a speech bubble whose tail points at the launcher below. */
+.razz-greeting-enter {
+  animation: razz-greeting-in 320ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.razz-greeting::after {
+  content: "";
+  position: absolute;
+  right: 1.25rem;
+  bottom: -9px;
+  width: 16px;
+  height: 16px;
+  background: var(--cream);
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg);
+}
+
+/* One wave and one soft ring when Razz says hello. Neither repeats. */
+.razz-wave {
+  animation: razz-wave 1s ease-in-out 200ms 1 both;
+  transform-origin: 50% 80%;
+}
+
+.razz-glow {
+  animation: razz-glow 1.6s ease-out 1;
+}
+
+@keyframes razz-wave {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-16deg); }
+  40% { transform: rotate(13deg); }
+  60% { transform: rotate(-9deg); }
+  80% { transform: rotate(4deg); }
+}
+
+@keyframes razz-glow {
+  0% { box-shadow: 3px 3px 0 #1B1426, 0 0 0 0 rgba(213, 168, 75, .8); }
+  100% { box-shadow: 3px 3px 0 #1B1426, 0 0 0 20px rgba(213, 168, 75, 0); }
+}
+
+@keyframes razz-greeting-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Simple document pages (privacy, terms, safety, support, status). */
+.doc h2 {
+  margin-top: 2.75rem;
+  color: #F8F8FF;
+  font-family: var(--font-sora);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.doc h2:first-child { margin-top: 0; }
+
+.doc p,
+.doc li {
+  color: rgba(248, 248, 255, .74);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.doc p { margin-top: .75rem; }
+.doc ul { margin-top: .75rem; padding-left: 1.2rem; list-style: disc; }
+.doc li + li { margin-top: .45rem; }
+.doc strong { color: #F8F8FF; font-weight: 600; }
+.doc a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+.doc code { color: var(--cream); font-family: var(--font-space-mono); font-size: .9em; }
+
+.doc-note {
+  margin-top: 1.25rem;
+  border-left: 2px solid var(--gold);
+  padding: .25rem 0 .25rem 1rem;
+  color: rgba(248, 248, 255, .78);
+}
+
+@layer components {
+  .section-kicker {
+    @apply text-xs font-semibold uppercase tracking-[0.22em] text-antique-gold;
+  }
+
+  .section-title {
+    @apply mt-3 font-display text-4xl font-extrabold uppercase leading-[1.02] tracking-[-0.035em] text-cloud-white sm:text-5xl;
+  }
+
+  .section-lede {
+    @apply mt-5 text-base leading-relaxed text-cloud-white/75 sm:text-lg;
+  }
+}
+
+@media (max-width: 767px) {
+  .lore-entry {
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+  }
+
+  .lore-index { font-size: 1.75rem; }
+}
+
+/* Reduced motion: stop every animation and transition; content stays fully visible. */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Scroll-linked and ambient motion is removed outright, not just shortened. */
+  .concept-sheet,
+  .group:hover .concept-sheet {
+    transform: none !important;
+  }
+
+  .unknown-specimen-water {
+    animation: none !important;
+  }
+
+  .reveal-up,
+  .parallax-art,
+  .beyond-clouds {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

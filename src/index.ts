@@ -2,7 +2,9 @@ import { Client, Events, GatewayIntentBits } from "discord.js";
 import { handleCommand } from "./commands.js";
 import { config } from "./config.js";
 import { closeDatabase, initializeDatabase } from "./db.js";
+import { UserError, logError, userFacingMessage } from "./errors.js";
 import { startProfileRefreshJob } from "./jobs.js";
+import { checkCommandRate, rateLimitMessage } from "./ratelimit.js";
 import { startWebServer } from "./web.js";
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -13,17 +15,31 @@ client.once(Events.ClientReady, (readyClient) => {
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
+  const respond = async (message: string) => {
+    const payload = { content: `⚠️ ${message}`, ephemeral: true } as const;
+    try {
+      if (interaction.deferred || interaction.replied) await interaction.editReply(payload);
+      else await interaction.reply(payload);
+    } catch (replyError) {
+      console.error("Could not send error reply", replyError instanceof Error ? replyError.name : "unknown");
+    }
+  };
+  const rate = checkCommandRate(interaction.user.id, interaction.commandName);
+  if (!rate.allowed) {
+    await respond(rateLimitMessage(rate.retryAfterMs));
+    return;
+  }
   try {
     await handleCommand(interaction);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "The Rascal fell down the stairs internally.";
-    const payload = { content: `⚠️ ${message}`, ephemeral: true } as const;
-    if (interaction.deferred || interaction.replied) await interaction.editReply(payload);
-    else await interaction.reply(payload);
+    // Only UserError messages are shown to members; everything else is logged and hidden.
+    const message = userFacingMessage(error);
+    if (!(error instanceof UserError)) logError(`Command /${interaction.commandName} failed`, error);
+    await respond(message);
   }
 });
 
-process.on("unhandledRejection", (error) => console.error("Unhandled rejection", error));
+process.on("unhandledRejection", (error) => logError("Unhandled rejection", error));
 
 const databaseEngine = await initializeDatabase();
 console.log(`Rank Rascal database ready (${databaseEngine}).`);
