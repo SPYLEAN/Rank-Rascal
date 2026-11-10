@@ -86,7 +86,7 @@ export const Footer: React.FC = () => (
           <span className="inline-flex items-center gap-1.5">
             Created by{" "}
             <a
-              href="https://spylean-portfolio.vercel.app/"
+              href="https://spylean.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-1.5 font-bold text-cloud-white transition hover:text-[#FF8CC6] hover:underline hover:underline-offset-4"
